@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Prompt grátis: doze jurados de IA julgam a sua ideia, com acusação, defesa, voto secreto e um juiz que decide.">
+<meta property="og:title" content="Tribunal da Ideia">
+<meta property="og:description" content="Doze jurados de IA colocam a sua ideia no banco dos réus.">
+<style>*,*::before,*::after{box-sizing:border-box}img{max-width:100%}body{margin:0}</style>
+<title>Tribunal da Ideia</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: uma folha de avaliação em coluna única; o prompt é a peça principal, num bloco de papel com carimbo */
+:root {
+  --bg: #eef1f5; --papel: #ffffff; --tinta: #18202e; --suave: #5a6577; --linha: #d6dce5;
+  --carimbo: #c8321e; --ok: #1f7a4d; --bloco: #f6f8fb;
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --carimbo: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --carimbo: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark }
+body { background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); padding: 0 16px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 40px 64px; display: grid; gap: 28px; }
+header { display: grid; gap: 10px; position: relative; }
+.selo { font: 500 12px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--suave); }
+h1 { font: 800 clamp(34px, 7vw, 54px)/1.02 var(--f-titulo); margin: 0; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--carimbo); }
+.lead { margin: 0; max-width: 60ch; color: var(--suave); font-size: 17px; }
+.stamp { position: absolute; right: 0; top: 4px; transform: rotate(8deg); border: 3px solid var(--carimbo); color: var(--carimbo);
+  font: 800 15px var(--f-titulo); letter-spacing: .14em; padding: 4px 10px; border-radius: 4px; opacity: .85; }
+@media (max-width: 560px) { .stamp { display: none; } }
+h2 { font: 600 22px/1.2 var(--f-titulo); margin: 0 0 10px; }
+.passos { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+.banca { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.av { background: var(--papel); border: 1px solid var(--linha); border-radius: 8px; padding: 12px 14px; display: grid; gap: 2px; }
+.av b { font-weight: 600; } .av span { color: var(--suave); font-size: 14px; }
+.av small { font: 500 11px var(--f-mono); color: var(--carimbo); letter-spacing: .08em; text-transform: uppercase; }
+.folha { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+.folha-top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--linha); }
+.folha-top span { font: 500 13px var(--f-mono); color: var(--suave); }
+button { font: 600 15px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; border-radius: 6px; padding: 9px 16px; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--carimbo); outline-offset: 2px; }
+pre { margin: 0; padding: 18px 16px; background: var(--bloco); font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 560px; overflow: auto; }
+.nota { color: var(--suave); font-size: 14px; margin: 0; }
+.nota b { color: var(--ok); }
+</style>
+</head>
+<body>
+
+
+<main>
+  <header>
+    <div class="selo">Prompt grátis · @alvim_ai</div>
+    <h1>Doze jurados colocam a sua <em>ideia</em> no banco dos réus</h1>
+    <p class="lead">O Claude costuma concordar com tudo. Aqui ele discute com ele mesmo: uma acusação, uma defesa, doze votos secretos e um juiz que decide se você segue, ajusta ou desiste.</p>
+    <div class="stamp">CULPADA?</div>
+  </header>
+
+  <section>
+    <h2>Como usar</h2>
+    <ol class="passos">
+      <li>Copie o prompt abaixo.</li>
+      <li>Abra o Claude (claude.ai, o plano grátis já serve) e cole o prompt numa conversa nova.</li>
+      <li>Quando ele pedir, descreva a sua ideia: o que é, pra quem, como ganha dinheiro e o que você já tem.</li>
+      <li>Leia a acusação, a defesa, o placar dos jurados e o veredito do juiz.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>O tribunal</h2>
+    <div class="banca">
+      <div class="av"><small>Acusação</small><b>O promotor</b><span>Prova por que a sua ideia vai dar errado.</span></div>
+      <div class="av"><small>Defesa</small><b>O advogado</b><span>Prova por que vai dar certo e rebate a acusação.</span></div>
+      <div class="av"><small>Júri</small><b>Doze jurados</b><span>Votam em segredo, cada um como uma pessoa diferente: contador, cliente, concorrente, sócio e mais.</span></div>
+      <div class="av"><small>Sentença</small><b>O juiz</b><span>Segue, ajusta ou desiste, e o primeiro passo dos próximos 7 dias.</span></div>
+    </div>
+  </section>
+
+  <section class="folha" aria-label="Prompt">
+    <div class="folha-top"><span>prompt-tribunal-da-ideia.txt</span><button id="copiar" type="button">Copiar prompt</button></div>
+    <pre id="prompt">Você vai conduzir um julgamento da minha ideia. Regra principal: NÃO concorde comigo por educação. Cada papel defende só o seu lado, com argumentos concretos.
+
+1. ACUSAÇÃO. Um promotor prova por que a ideia VAI DAR ERRADO: ninguém paga, concorrente que já faz, custo de conseguir cliente, risco legal, motivo de eu estar me enganando. Use no máximo 6 provas, da mais forte para a mais fraca.
+
+2. DEFESA. Um advogado prova por que a ideia VAI DAR CERTO: quem tem esse problema hoje, quanto dói, por que agora, vantagem que eu tenho. Também no máximo 6 provas, e responda diretamente às 2 provas mais fortes da acusação.
+
+3. JÚRI DE 12. Doze jurados leem acusação e defesa e votam em segredo — nenhum vê o voto do outro. Cada um julga como uma pessoa diferente: contador, cliente ideal, cliente que acha caro, concorrente direto, investidor, sócio, funcionário nº 1, especialista do setor, advogado, vendedor, usuário iniciante, e um cético profissional. Para cada jurado: voto (CULPADA = vai falhar / INOCENTE = vale tentar) + o motivo em uma frase.
+
+4. PLACAR. Mostre a contagem (ex.: 7 culpada x 5 inocente) e os motivos que mais se repetiram.
+
+5. JUIZ. Um juiz lê tudo e bate o martelo com UMA decisão: SEGUE, AJUSTA ou DESISTE. Explique em 3 linhas e me dê o primeiro passo concreto para os próximos 7 dias (se for AJUSTA, diga exatamente o que mudar e como testar isso barato).
+
+Confirme que entendeu e peça a minha ideia.</pre>
+  </section>
+
+  <p class="nota"><b>Dica:</b> rode de novo depois de cada ajuste. Se o placar virar, você sabe que o ajuste funcionou.</p>
+  <p class="nota">Mais prompts e ferramentas de IA: <a href="https://www.instagram.com/alvim_ai/" style="color:inherit">@alvim_ai</a> no Instagram · <a href="../" style="color:inherit">todos os materiais</a></p>
+</main>
+
+<script>
+const btn = document.getElementById('copiar');
+btn.addEventListener('click', () => {
+  const texto = document.getElementById('prompt').innerText;
+  const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = 'Copiar prompt', 1800); };
+  const manual = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('prompt'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado: use Ctrl+C'; };
+  try { navigator.clipboard.writeText(texto).then(ok, manual); } catch (e) { manual(); }
+});
+</script>
+
+</body>
+</html>

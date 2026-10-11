@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Prompt grátis: cinco investidores de IA ouvem o seu pitch e procuram motivo pra dizer não.">
+<meta property="og:title" content="Shark Tank no Claude">
+<meta property="og:description" content="Cinco tubarões de IA tentam derrubar a sua ideia antes do mercado.">
+<style>*,*::before,*::after{box-sizing:border-box}img{max-width:100%}body{margin:0}</style>
+<title>Shark Tank no Claude</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: uma folha de avaliação em coluna única; o prompt é a peça principal, num bloco de papel com carimbo */
+:root {
+  --bg: #eef1f5; --papel: #ffffff; --tinta: #18202e; --suave: #5a6577; --linha: #d6dce5;
+  --carimbo: #c8321e; --ok: #1f7a4d; --bloco: #f6f8fb;
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --carimbo: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --carimbo: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark }
+body { background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); padding: 0 16px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 40px 64px; display: grid; gap: 28px; }
+header { display: grid; gap: 10px; position: relative; }
+.selo { font: 500 12px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--suave); }
+h1 { font: 800 clamp(34px, 7vw, 54px)/1.02 var(--f-titulo); margin: 0; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--carimbo); }
+.lead { margin: 0; max-width: 60ch; color: var(--suave); font-size: 17px; }
+.stamp { position: absolute; right: 0; top: 4px; transform: rotate(8deg); border: 3px solid var(--carimbo); color: var(--carimbo);
+  font: 800 15px var(--f-titulo); letter-spacing: .14em; padding: 4px 10px; border-radius: 4px; opacity: .85; }
+@media (max-width: 560px) { .stamp { display: none; } }
+h2 { font: 600 22px/1.2 var(--f-titulo); margin: 0 0 10px; }
+.passos { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+.banca { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.av { background: var(--papel); border: 1px solid var(--linha); border-radius: 8px; padding: 12px 14px; display: grid; gap: 2px; }
+.av b { font-weight: 600; } .av span { color: var(--suave); font-size: 14px; }
+.av small { font: 500 11px var(--f-mono); color: var(--carimbo); letter-spacing: .08em; text-transform: uppercase; }
+.folha { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+.folha-top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--linha); }
+.folha-top span { font: 500 13px var(--f-mono); color: var(--suave); }
+button { font: 600 15px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; border-radius: 6px; padding: 9px 16px; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--carimbo); outline-offset: 2px; }
+pre { margin: 0; padding: 18px 16px; background: var(--bloco); font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 560px; overflow: auto; }
+.nota { color: var(--suave); font-size: 14px; margin: 0; }
+.nota b { color: var(--ok); }
+</style>
+</head>
+<body>
+
+
+<main>
+  <header>
+    <div class="selo">Prompt grátis · @alvim_ai</div>
+    <h1>Cinco tubarões procuram motivo pra dizer <em>não</em></h1>
+    <p class="lead">Faça o pitch como se estivesse no programa. Cinco investidores fictícios fazem as perguntas difíceis, dão oferta ou dizem "tô fora", e no fim você sabe o que precisa provar.</p>
+    <div class="stamp">TÔ FORA</div>
+  </header>
+
+  <section>
+    <h2>Como usar</h2>
+    <ol class="passos">
+      <li>Copie o prompt abaixo.</li>
+      <li>Abra o Claude (claude.ai, o plano grátis já serve) e cole o prompt numa conversa nova.</li>
+      <li>Faça o pitch: nome, o que faz, pra quem, quanto custa, quanto você quer e por quanto da empresa.</li>
+      <li>Responda às perguntas de cada tubarão e leia as ofertas, os "tô fora" e o resumo final.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Os tubarões</h2>
+    <div class="banca">
+      <div class="av"><small>Tubarão 1</small><b>O cobrador</b><span>Quem, exatamente, paga? Quanto? Todo mês?</span></div>
+      <div class="av"><small>Tubarão 2</small><b>O dos royalties</b><span>Dá o dinheiro, mas quer uma fatia de cada venda pra sempre.</span></div>
+      <div class="av"><small>Tubarão 3</small><b>O da planilha</b><span>Faz a conta na sua frente: custo por cliente, margem, ou sonho.</span></div>
+      <div class="av"><small>Tubarões 4 e 5</small><b>O do mercado e a que nunca investe</b><span>Concorrência e o fundador: por que você?</span></div>
+    </div>
+  </section>
+
+  <section class="folha" aria-label="Prompt">
+    <div class="folha-top"><span>prompt-shark-tank.txt</span><button id="copiar" type="button">Copiar prompt</button></div>
+    <pre id="prompt">Você vai simular um programa no estilo Shark Tank com 5 investidores ("tubarões") fictícios. O trabalho de cada um é encontrar motivo para dizer NÃO. Não são pessoas reais; são perfis:
+
+1. O COBRADOR — só quer saber quem, exatamente, vai pagar, quanto e com que frequência. Pede prova (cliente, lista de espera, pré-venda).
+2. O DOS ROYALTIES — até oferece dinheiro, mas só em troca de uma porcentagem de cada venda para sempre. Explica por que esse acordo seria ruim (ou bom) pra mim.
+3. O DA PLANILHA — faz a conta na minha frente: preço, custo por cliente (CAC), margem, quantos clientes preciso para pagar as contas. Diz se os números fecham ou se é sonho.
+4. O DO MERCADO — conhece todos os concorrentes e diz por que o cliente não trocaria o que já usa por mim.
+5. A QUE NUNCA INVESTE — avalia o fundador: experiência, foco, por que eu e não outro. Quase sempre sai.
+
+Formato:
+- Depois do meu pitch, cada tubarão faz 1 pergunta difícil. Espere eu responder.
+- Depois das respostas, cada um decide: OFERTA (valor, porcentagem e condições) ou "TÔ FORA" + o motivo real em uma frase.
+- No fim, faça um RESUMO: as 3 objeções que mais pesaram, o que eu precisaria provar para virar cada "tô fora" em oferta, e um teste barato para fazer esta semana.
+
+Confirme que entendeu e diga: "Pode começar o seu pitch: nome do produto, o que faz, pra quem, quanto custa, quanto você quer e por quanto da empresa."</pre>
+  </section>
+
+  <p class="nota"><b>Dica:</b> os tubarões são perfis fictícios, não as pessoas do programa. Use as objeções pra preparar o pitch de verdade.</p>
+  <p class="nota">Mais prompts e ferramentas de IA: <a href="https://www.instagram.com/alvim_ai/" style="color:inherit">@alvim_ai</a> no Instagram · <a href="../" style="color:inherit">todos os materiais</a></p>
+</main>
+
+<script>
+const btn = document.getElementById('copiar');
+btn.addEventListener('click', () => {
+  const texto = document.getElementById('prompt').innerText;
+  const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = 'Copiar prompt', 1800); };
+  const manual = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('prompt'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado: use Ctrl+C'; };
+  try { navigator.clipboard.writeText(texto).then(ok, manual); } catch (e) { manual(); }
+});
+</script>
+
+</body>
+</html>
