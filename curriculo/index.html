@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Prompt grátis: sete avaliadores de IA tentam reprovar o seu currículo e depois escrevem uma versão corrigida.">
+<meta property="og:title" content="Banca do Currículo">
+<meta property="og:description" content="Sete avaliadores de IA tentam reprovar o seu currículo antes de qualquer empresa.">
+<style>*,*::before,*::after{box-sizing:border-box}img{max-width:100%}body{margin:0}</style>
+<title>Banca do Currículo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: uma folha de avaliação em coluna única; o prompt é a peça principal, num bloco de papel com carimbo */
+:root {
+  --bg: #eef1f5; --papel: #ffffff; --tinta: #18202e; --suave: #5a6577; --linha: #d6dce5;
+  --carimbo: #c8321e; --ok: #1f7a4d; --bloco: #f6f8fb;
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --carimbo: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --carimbo: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark }
+body { background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); padding: 0 16px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 40px 64px; display: grid; gap: 28px; }
+header { display: grid; gap: 10px; position: relative; }
+.selo { font: 500 12px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--suave); }
+h1 { font: 800 clamp(34px, 7vw, 54px)/1.02 var(--f-titulo); margin: 0; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--carimbo); }
+.lead { margin: 0; max-width: 60ch; color: var(--suave); font-size: 17px; }
+.stamp { position: absolute; right: 0; top: 4px; transform: rotate(8deg); border: 3px solid var(--carimbo); color: var(--carimbo);
+  font: 800 15px var(--f-titulo); letter-spacing: .14em; padding: 4px 10px; border-radius: 4px; opacity: .85; }
+@media (max-width: 560px) { .stamp { display: none; } }
+h2 { font: 600 22px/1.2 var(--f-titulo); margin: 0 0 10px; }
+.passos { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+.banca { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.av { background: var(--papel); border: 1px solid var(--linha); border-radius: 8px; padding: 12px 14px; display: grid; gap: 2px; }
+.av b { font-weight: 600; } .av span { color: var(--suave); font-size: 14px; }
+.av small { font: 500 11px var(--f-mono); color: var(--carimbo); letter-spacing: .08em; text-transform: uppercase; }
+.folha { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+.folha-top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--linha); }
+.folha-top span { font: 500 13px var(--f-mono); color: var(--suave); }
+button { font: 600 15px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; border-radius: 6px; padding: 9px 16px; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--carimbo); outline-offset: 2px; }
+pre { margin: 0; padding: 18px 16px; background: var(--bloco); font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 560px; overflow: auto; }
+.nota { color: var(--suave); font-size: 14px; margin: 0; }
+.nota b { color: var(--ok); }
+</style>
+</head>
+<body>
+
+
+<main>
+  <header>
+    <div class="selo">Prompt grátis · @alvim_ai</div>
+    <h1>Sete avaliadores tentam <em>reprovar</em> o seu currículo</h1>
+    <p class="lead">Uma empresa quase nunca conta por que disse não. Esta banca conta antes de você se candidatar, e no final escreve uma versão nova do seu currículo com cada erro corrigido.</p>
+    <div class="stamp">REPROVADO?</div>
+  </header>
+
+  <section>
+    <h2>Como usar</h2>
+    <ol class="passos">
+      <li>Copie o prompt abaixo.</li>
+      <li>Abra o Claude (claude.ai, o plano grátis já serve) e cole o prompt numa conversa nova.</li>
+      <li>No lugar indicado, cole o texto do seu currículo e o anúncio da vaga. Pode anexar o PDF do currículo.</li>
+      <li>Envie e leia o veredito de cada avaliador. No final vem o currículo corrigido.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>A banca</h2>
+    <div class="banca">
+      <div class="av"><small>Avaliador 1</small><b>O filtro automático</b><span>Decide se um humano chega a ver o seu currículo.</span></div>
+      <div class="av"><small>Avaliador 2</small><b>A gestora da vaga</b><span>Decide se você vai pra entrevista.</span></div>
+      <div class="av"><small>Avaliadores 3 a 7</small><b>Cinco leitores</b><span>Futuro chefe, colega de equipe, recrutadora, outro candidato e o dono da empresa.</span></div>
+    </div>
+  </section>
+
+  <section class="folha" aria-label="Prompt">
+    <div class="folha-top"><span>prompt-banca-curriculo.txt</span><button id="copiar" type="button">Copiar prompt</button></div>
+    <pre id="prompt">Você vai montar uma BANCA DE SETE AVALIADORES cujo trabalho é tentar REPROVAR o meu currículo para a vaga abaixo. Seja duro e específico, como uma empresa de verdade seria. Não invente nada sobre mim: use só o que está no currículo.
+
+Antes de começar, se faltar o currículo ou a vaga, peça o que falta e pare.
+
+AVALIADOR 1: O FILTRO AUTOMÁTICO
+Faça o papel do sistema que filtra currículos antes de qualquer humano ler.
+- Compare o currículo com os requisitos e as palavras-chave da vaga.
+- Aponte o que um sistema desses não conseguiria ler (tabelas, colunas, imagens, títulos fora do padrão).
+- Veredito: PASSA ou BARRADO, e o motivo em uma frase.
+
+AVALIADOR 2: A GESTORA DA VAGA
+Faça o papel de quem decide quem vai para a entrevista.
+- Você tem 30 segundos para olhar o currículo.
+- Veredito: CHAMARIA ou NÃO CHAMARIA para entrevista, e o motivo principal.
+
+AVALIADORES 3 A 7: CINCO LEITORES, CADA UM COM SEU OLHAR
+Cada um avalia sozinho, sem ler a opinião dos outros:
+3. O futuro chefe direto: essa pessoa resolve os problemas do meu time?
+4. Um colega de equipe: eu gostaria de trabalhar com essa pessoa?
+5. A recrutadora: o currículo é claro, sem erros e fácil de defender para a gestora?
+6. Outro candidato à mesma vaga: onde eu sou mais forte que esse currículo?
+7. O dono da empresa: essa contratação vale o salário?
+Para cada um: primeira impressão em uma frase, os 3 maiores problemas e uma nota de 0 a 10.
+
+DEPOIS DA BANCA
+1. Junte todos os problemas apontados numa lista única, do mais grave para o menos grave, sem repetir.
+2. Escreva uma VERSÃO NOVA do meu currículo corrigindo cada problema da lista. Mantenha só fatos verdadeiros do currículo original; onde faltar uma informação (um número, um resultado), escreva [PREENCHER: o que falta] em vez de inventar.
+3. Passe a versão nova de novo pelo Avaliador 1 e pela Avaliadora 2 e mostre os vereditos novos.
+
+Responda em português do Brasil.
+
+MEU CURRÍCULO:
+[cole aqui]
+
+A VAGA:
+[cole aqui o anúncio da vaga]</pre>
+  </section>
+
+  <p class="nota"><b>Dica:</b> rode a banca de novo a cada vaga. O que reprova numa empresa pode passar em outra.</p>
+  <p class="nota">Mais prompts e ferramentas de IA: <a href="https://www.instagram.com/alvim_ai/" style="color:inherit">@alvim_ai</a> no Instagram · <a href="../" style="color:inherit">todos os materiais</a></p>
+</main>
+
+<script>
+const btn = document.getElementById('copiar');
+btn.addEventListener('click', () => {
+  const texto = document.getElementById('prompt').innerText;
+  const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = 'Copiar prompt', 1800); };
+  const manual = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('prompt'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado: use Ctrl+C'; };
+  try { navigator.clipboard.writeText(texto).then(ok, manual); } catch (e) { manual(); }
+});
+</script>
+
+</body>
+</html>
