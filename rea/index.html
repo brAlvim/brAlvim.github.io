@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Peça pro seu agente de IA desmontar qualquer app</title>
+<meta name="description" content="O REA (Reverse Engineer Anything) é open source: ele dá pro Claude Code, Codex ou Cursor as ferramentas pra investigar um software por dentro, mesmo sem o código original, e explicar como cada recurso funciona, com as provas.">
+<meta property="og:title" content="Peça pro seu agente de IA desmontar qualquer app">
+<meta property="og:description" content="O REA (Reverse Engineer Anything) é open source: ele dá pro Claude Code, Codex ou Cursor as ferramentas pra investigar um software por dentro, mesmo sem o código original, e explicar como cada recurso funciona, com as provas.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #eef1f5; --papel: #ffffff; --tinta: #18202e; --suave: #5a6577; --linha: #d6dce5;
+  --acento: #c8321e; --ok: #1f7a4d; --bloco: #f6f8fb;
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box } body { margin: 0 }
+body { background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); padding: 0 16px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 40px 64px; display: grid; gap: 32px; }
+header { display: grid; gap: 12px; }
+.selo { font: 500 12px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--suave); }
+h1 { font: 800 clamp(32px, 7vw, 50px)/1.04 var(--f-titulo); margin: 0; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--acento); }
+.lead { margin: 0; max-width: 62ch; color: var(--suave); font-size: 17px; }
+h2 { font: 600 22px/1.2 var(--f-titulo); margin: 0 0 12px; }
+a { color: inherit; }
+.oficial { display: inline-flex; align-items: center; gap: 8px; width: fit-content; font: 600 15px var(--f-texto);
+  background: var(--tinta); color: var(--papel); text-decoration: none; border-radius: 6px; padding: 10px 16px; }
+.oficial:focus-visible, button:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+ul.lista { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.chips li { background: var(--papel); border: 1px solid var(--linha); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; gap: 14px; }
+ol.passos > li { counter-increment: p; display: grid; grid-template-columns: 32px 1fr; gap: 4px 12px; }
+ol.passos > li::before { content: counter(p); font: 600 15px var(--f-mono); color: var(--papel); background: var(--acento);
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; margin-top: 1px; }
+ol.passos > li > * { grid-column: 2; }
+.cmd { display: flex; align-items: stretch; background: var(--bloco); border: 1px solid var(--linha); border-radius: 8px; overflow: hidden; }
+.cmd code { flex: 1; font: 14px/1.5 var(--f-mono); padding: 10px 12px; overflow-x: auto; white-space: pre; }
+.cmd button, .card button { font: 600 13px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; padding: 0 14px; cursor: pointer; }
+.cards { display: grid; gap: 12px; }
+.card { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+.card-top { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--linha); }
+.card-top b { font-weight: 600; } .card-top span { display: block; color: var(--suave); font-size: 13px; font-weight: 400; }
+.card button { border-radius: 6px; padding: 8px 14px; flex-shrink: 0; }
+.card pre { margin: 0; padding: 14px; background: var(--bloco); font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cuidados { background: var(--papel); border: 1px solid var(--linha); border-left: 4px solid var(--acento); border-radius: 8px; padding: 14px 16px; }
+.resumo { margin: 0; font-size: 17px; }
+.nota { color: var(--suave); font-size: 14px; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="selo">Guia grátis · @alvim_ai</div>
+    <h1>Peça pro seu agente de IA <em>desmontar qualquer app</em></h1>
+    <p class="lead">O REA (Reverse Engineer Anything) é open source: ele dá pro Claude Code, Codex ou Cursor as ferramentas pra investigar um software por dentro, mesmo sem o código original, e explicar como cada recurso funciona, com as provas.</p>
+    <a class="oficial" href="https://github.com/morluto/rea" target="_blank" rel="noopener">Repositório oficial no GitHub ↗</a>
+  </header>
+  <section><h2>Pra que serve</h2><ul class="lista"><li>Entender como um recurso de um app funciona por dentro (busca, sincronização, login, exportação…), com o caminho no código e as provas.</li><li>Construir uma versão parecida desse recurso no seu próprio projeto, com o agente usando o que encontrou.</li><li>Inspecionar apps Electron/JavaScript, binários nativos (com Ghidra, Hopper ou IDA), WASM, bancos SQLite e mais.</li><li>Tudo roda no seu computador: o app analisado não é enviado pra lugar nenhum.</li></ul></section>
+  <section><h2>O que você precisa</h2><ul class="chips"><li>Node.js 22.19+ (ou 24.11+)</li><li>npm</li><li>Um agente: Claude Code, Codex, Cursor, Gemini CLI…</li><li>Ghidra, Hopper ou IDA só pra binário nativo</li></ul></section>
+  <section><h2>Passo a passo</h2><ol class="passos"><li><div>Confira a versão do Node.js. Se for menor que 22.19, instale a versão LTS em nodejs.org.</div><div class="cmd"><code id="c0">node --version</code><button type="button" data-copiar="c0">Copiar</button></div></li><li><div>Rode o instalador do REA. Ele detecta os agentes que você tem, pergunta quais quer ligar e mostra o que vai mudar antes de mexer em qualquer arquivo.</div><div class="cmd"><code id="c1">npx rea-agents setup</code><button type="button" data-copiar="c1">Copiar</button></div></li><li><div>Escolha o seu agente na lista, revise as mudanças e aprove. O REA entra como servidor MCP, com as instruções de uso.</div></li><li><div>Feche e abra o agente de novo. Pronto: é só pedir em português, como nos prompts abaixo.</div></li><li><div>O REA muda rápido. De tempos em tempos, atualize:</div><div class="cmd"><code id="c4">npx rea-agents@latest setup</code><button type="button" data-copiar="c4">Copiar</button></div></li></ol></section>
+  <section><h2>Prompts prontos pra colar no seu agente</h2><div class="cards"><div class="card"><div class="card-top"><b>Entender um recurso<span>O pedido principal: troque o app e o recurso pelos seus</span></b><button type="button" data-copiar="p0">Copiar</button></div><pre id="p0">Use o REA para investigar como funciona a busca do app [NOME DO APP], instalado em [CAMINHO DA PASTA DO APP].
+Quero entender o caminho completo: onde a busca começa, quais funções ela chama, onde os dados ficam e como o resultado volta pra tela.
+Mostre as provas de cada conclusão (arquivo, função, trecho) e diga claramente o que você não conseguiu confirmar.
+Responda em português.</pre></div><div class="card"><div class="card-top"><b>Copiar a ideia pro seu projeto<span>Depois da investigação, na mesma conversa</span></b><button type="button" data-copiar="p1">Copiar</button></div><pre id="p1">Com base no que você encontrou, construa uma versão parecida desse recurso no meu projeto, nesta pasta.
+Antes de escrever código, me mostre um plano curto: o que vai criar, quais arquivos vai mexer e o que vai ficar diferente do original.
+Não copie código do app analisado: reescreva do zero seguindo a mesma ideia. No fim, rode os testes.</pre></div><div class="card"><div class="card-top"><b>Mapa de um app Electron<span>Pra apps de desktop feitos com Electron (VS Code, Slack, Discord, Notion…)</span></b><button type="button" data-copiar="p2">Copiar</button></div><pre id="p2">Use o REA para analisar o app Electron em [CAMINHO DO APP OU DO ARQUIVO .asar].
+Me dê um mapa em português: os módulos principais, o que roda no processo principal e o que roda na janela, as bibliotecas que ele usa e onde ficam as configurações.
+Termine com os 3 recursos mais interessantes pra eu investigar depois.</pre></div><div class="card"><div class="card-top"><b>Pelo terminal, sem agente<span>Análise rápida de um app JavaScript/Electron</span></b><button type="button" data-copiar="p3">Copiar</button></div><pre id="p3">npx -y rea-agents@latest analyze-javascript-application &quot;C:/caminho/do/app&quot; --json</pre></div></div></section>
+  <section class="cuidados"><h2>Antes de usar</h2><ul class="lista"><li>Use só em software que você tem direito de analisar e respeite a licença: entender como funciona é diferente de copiar código.</li><li>O REA diz o que confirmou e o que é suposição. Leia as provas antes de confiar na conclusão.</li><li>Binário nativo (.exe, .dll, apps de Mac) precisa de Ghidra, Hopper ou IDA instalado. O próprio setup oferece instalar o Hopper.</li></ul></section>
+  <p class="resumo">Resumindo: instala com um comando, liga no agente que você já usa e pergunta em português como qualquer recurso funciona.</p>
+  <a class="oficial" href="https://github.com/morluto/rea" target="_blank" rel="noopener">Repositório oficial no GitHub ↗</a>
+  <p class="nota">Mais ferramentas e prompts de IA: <a href="https://www.instagram.com/alvim_ai/">@alvim_ai</a> no Instagram · <a href="../">todos os materiais</a></p>
+</main>
+<script>
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const rotulo = btn.textContent;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = rotulo, 1800); };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>
