@@ -3,39 +3,96 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Alvim AI · materiais</title>
-<meta name="description" content="Prompts e materiais grátis dos vídeos do @alvim_ai.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<title>Alvim AI · guias e prompts</title>
+<meta name="description" content="Guias em português e prompts prontos das ferramentas de IA dos vídeos do @alvim_ai.">
+<meta name="theme-color" content="#121318">
+<meta property="og:title" content="Alvim AI · guias e prompts de IA">
+<meta property="og:description" content="Guias em português e prompts prontos das ferramentas de IA dos vídeos do @alvim_ai.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd23f'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' font-family='sans-serif' fill='%23121318'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<!--GA-->
 <style>
-:root{--bg:#eef1f5;--papel:#fff;--tinta:#18202e;--suave:#5a6577;--linha:#d6dce5;--acento:#c8321e;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#11151c;--papel:#1a202a;--tinta:#e6eaf0;--suave:#9aa5b5;--linha:#2c3442;--acento:#f0624d;color-scheme:dark}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tinta);font:16px/1.6 "IBM Plex Sans",system-ui,sans-serif;padding:0 16px}
-main{max-width:760px;margin:0 auto;padding-block:40px 64px;display:grid;gap:24px}
-h1{font:800 clamp(32px,7vw,48px)/1.05 "Bricolage Grotesque",system-ui,sans-serif;margin:0}
-p{margin:0;color:var(--suave)}
-ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-a.item{display:grid;gap:2px;background:var(--papel);border:1px solid var(--linha);border-radius:10px;padding:14px 16px;color:inherit;text-decoration:none}
-a.item:hover,a.item:focus-visible{border-color:var(--acento)}
-a.item b{font-weight:600}a.item span{color:var(--suave);font-size:14px}
+/* Página da bio: mesma identidade dos guias (topo escuro + amarelo das capas). Busca pela palavra que a pessoa comentou. */
+:root { --bg: #f4f2ec; --papel: #fff; --tinta: #121318; --suave: #5d6170; --linha: #e3e0d6; --amarelo: #ffd23f; --hero: #121318;
+  --hero-tinta: #f5f3ee; --hero-suave: #a9adbb; --sombra: 0 1px 2px rgba(18,19,24,.06), 0 6px 20px rgba(18,19,24,.06);
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0;
+  --linha: #262932; --hero: #17191f; --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932; --hero: #17191f;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); -webkit-font-smoothing: antialiased; }
+a { color: inherit; } :focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; border-radius: 6px; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+.hero { background: var(--hero); color: var(--hero-tinta); padding: 32px 0 30px; text-align: center; }
+.avatar { width: 72px; height: 72px; border-radius: 50%; background: var(--amarelo); color: #121318; display: grid; place-items: center;
+  font: 800 34px var(--f-titulo); margin: 0 auto 12px; }
+.hero .user { font: 600 15px var(--f-texto); color: var(--hero-suave); }
+h1 { font: 800 clamp(30px, 8vw, 46px)/1.05 var(--f-titulo); margin: 10px 0 0; text-wrap: balance; }
+h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em; }
+.hero p { margin: 12px auto 0; color: var(--hero-suave); max-width: 46ch; }
+.seguir { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 22px; margin-top: 20px; border-radius: 10px;
+  background: var(--amarelo); color: #121318; font: 600 15px var(--f-texto); text-decoration: none; }
+main.wrap { display: grid; gap: 14px; padding-block: 24px 56px; }
+.busca { display: grid; gap: 6px; }
+.busca label { font: 600 14px var(--f-texto); }
+.busca input { width: 100%; font: 16px var(--f-texto); padding: 12px 14px; border-radius: 12px; border: 1px solid var(--linha);
+  background: var(--papel); color: var(--tinta); }
+ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+a.item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 14px; padding: 14px 16px; text-decoration: none; box-shadow: var(--sombra); }
+a.item:hover { border-color: var(--amarelo); }
+.tag { grid-column: 1; width: fit-content; font: 600 11px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; padding: 2px 8px; border-radius: 6px;
+  background: var(--amarelo); color: #121318; }
+.tag-prompt { background: var(--tinta); color: var(--bg); }
+a.item b { grid-column: 1; font: 600 18px/1.3 var(--f-titulo); }
+a.item .desc { grid-column: 1 / -1; color: var(--suave); font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+a.item .kw { grid-column: 2; grid-row: 1 / 3; align-self: center; font: 600 12px var(--f-mono); color: var(--suave); border: 1px dashed var(--linha);
+  padding: 4px 8px; border-radius: 8px; }
+.vazio { color: var(--suave); text-align: center; display: none; }
+.rodape { color: var(--suave); font-size: 14px; text-align: center; margin: 12px 0 0; }
 </style>
 </head>
 <body>
-<main>
-<h1>Materiais do Alvim</h1>
-<p>Os prompts e passo a passos que eu mando no direct, num lugar só. É só abrir e copiar.</p>
-<ul>
+<header class="hero">
+  <div class="wrap">
+    <div class="avatar">A</div>
+    <div class="user">@alvim_ai · Lucas Alvim</div>
+    <h1>Guias e prompts de IA, <em>em português</em></h1>
+    <p>Tudo que eu mostro nos vídeos, com o passo a passo pra instalar e prompts prontos pra copiar.</p>
+    <a class="seguir" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">Seguir no Instagram</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="busca">
+    <label for="q">Comentou uma palavra num vídeo? Procure aqui</label>
+    <input id="q" type="search" placeholder="Ex.: REA, SLIDES, currículo…" autocomplete="off">
+  </div>
+  <ul id="lista">
 <!-- itens: o mais novo primeiro -->
-<li><a class="item" href="ia-por-voz/"><b>Open WebUI: converse por voz com a sua IA</b><span>O Open WebUI é uma interface de IA que você mesmo hospeda (tipo um ChatGPT seu), com mais de 150 mil estrelas no GitHub. Na versão nova, a chamada de voz pode ser em tempo real: você fala, interrompe, e ela responde na hora.</span></a></li>
-<li><a class="item" href="ppt-master/"><b>PPT Master: PDF vira PowerPoint editável</b><span>O PPT Master é open source: você pede no chat do seu agente de IA e ele analisa o conteúdo, monta o design e exporta um .pptx de verdade, com formas, gráficos e tabelas que continuam editáveis.</span></a></li>
-<li><a class="item" href="gmail-ia/"><b>Google Workspace MCP: IA no seu Gmail, Drive e agenda</b><span>O Google Workspace MCP é um conector open source que liga o Claude (ou outra IA compatível com MCP) às suas contas do Google: Gmail, Drive, Agenda, Docs, Planilhas e mais, com mais de 120 ferramentas.</span></a></li>
-<li><a class="item" href="oss-scanner/"><b>OSS Scanner: segurança grátis pro seu open source</b><span>O OSS Scanner é um serviço da Anthropic: os modelos mais fortes dela varrem projetos open source atrás de falhas de segurança, de tempos em tempos, e mandam o que acharem por e-mail. A Anthropic paga o custo.</span></a></li>
-<li><a class="item" href="freevideo/"><b>FreeVideo: vídeo com IA no seu PC</b><span>O FreeVideo roda o modelo de vídeo MiniMax H3 no seu próprio PC, com 8 GB de memória de vídeo, dentro do ComfyUI. Sem assinatura e sem fila: você escreve o prompt e o vídeo sai na sua máquina.</span></a></li>
-<li><a class="item" href="rea/"><b>REA: desmonte qualquer app com o seu agente</b><span>O REA (Reverse Engineer Anything) é open source: ele dá pro Claude Code, Codex ou Cursor as ferramentas pra investigar um software por dentro, mesmo sem o código original, e explicar como cada recurso funciona, com as provas.</span></a></li>
-<li><a class="item" href="tribunal/"><b>Tribunal da Ideia</b><span>Doze jurados de IA julgam a sua ideia: acusação, defesa, voto secreto e um juiz que decide.</span></a></li>
-<li><a class="item" href="tubarao/"><b>Shark Tank no Claude</b><span>Cinco investidores de IA ouvem o seu pitch e procuram motivo pra dizer não.</span></a></li>
-<li><a class="item" href="curriculo/"><b>Banca do Currículo</b><span>Sete avaliadores de IA tentam reprovar o seu currículo e depois escrevem uma versão corrigida.</span></a></li>
-</ul>
-<p><a href="https://www.instagram.com/alvim_ai/" style="color:inherit">@alvim_ai no Instagram</a></p>
+<li><a class="item" href="ia-por-voz/" data-busca="open webui: converse por voz com a sua ia o open webui é uma interface de ia que você mesmo hospeda (tipo um chatgpt seu), com mais de 150 mil estrelas no github. na versão nova, a chamada de voz pode ser em tempo real: você fala, interrompe, e ela responde na hora. voz"><span class="tag tag-guia">Guia</span><b>Open WebUI: converse por voz com a sua IA</b><span class="desc">O Open WebUI é uma interface de IA que você mesmo hospeda (tipo um ChatGPT seu), com mais de 150 mil estrelas no GitHub. Na versão nova, a chamada de voz pode ser em tempo real: você fala, interrompe, e ela responde na hora.</span><span class="kw">VOZ</span></a></li>
+<li><a class="item" href="ppt-master/" data-busca="ppt master: pdf vira powerpoint editável o ppt master é open source: você pede no chat do seu agente de ia e ele analisa o conteúdo, monta o design e exporta um .pptx de verdade, com formas, gráficos e tabelas que continuam editáveis. slides"><span class="tag tag-guia">Guia</span><b>PPT Master: PDF vira PowerPoint editável</b><span class="desc">O PPT Master é open source: você pede no chat do seu agente de IA e ele analisa o conteúdo, monta o design e exporta um .pptx de verdade, com formas, gráficos e tabelas que continuam editáveis.</span><span class="kw">SLIDES</span></a></li>
+<li><a class="item" href="gmail-ia/" data-busca="google workspace mcp: ia no seu gmail, drive e agenda o google workspace mcp é um conector open source que liga o claude (ou outra ia compatível com mcp) às suas contas do google: gmail, drive, agenda, docs, planilhas e mais, com mais de 120 ferramentas. gmail"><span class="tag tag-guia">Guia</span><b>Google Workspace MCP: IA no seu Gmail, Drive e agenda</b><span class="desc">O Google Workspace MCP é um conector open source que liga o Claude (ou outra IA compatível com MCP) às suas contas do Google: Gmail, Drive, Agenda, Docs, Planilhas e mais, com mais de 120 ferramentas.</span><span class="kw">GMAIL</span></a></li>
+<li><a class="item" href="oss-scanner/" data-busca="oss scanner: segurança grátis pro seu open source o oss scanner é um serviço da anthropic: os modelos mais fortes dela varrem projetos open source atrás de falhas de segurança, de tempos em tempos, e mandam o que acharem por e-mail. a anthropic paga o custo. scanner"><span class="tag tag-guia">Guia</span><b>OSS Scanner: segurança grátis pro seu open source</b><span class="desc">O OSS Scanner é um serviço da Anthropic: os modelos mais fortes dela varrem projetos open source atrás de falhas de segurança, de tempos em tempos, e mandam o que acharem por e-mail. A Anthropic paga o custo.</span><span class="kw">SCANNER</span></a></li>
+<li><a class="item" href="freevideo/" data-busca="freevideo: vídeo com ia no seu pc o freevideo roda o modelo de vídeo minimax h3 no seu próprio pc, com 8 gb de memória de vídeo, dentro do comfyui. sem assinatura e sem fila: você escreve o prompt e o vídeo sai na sua máquina. video"><span class="tag tag-guia">Guia</span><b>FreeVideo: vídeo com IA no seu PC</b><span class="desc">O FreeVideo roda o modelo de vídeo MiniMax H3 no seu próprio PC, com 8 GB de memória de vídeo, dentro do ComfyUI. Sem assinatura e sem fila: você escreve o prompt e o vídeo sai na sua máquina.</span><span class="kw">VIDEO</span></a></li>
+<li><a class="item" href="rea/" data-busca="rea: desmonte qualquer app com o seu agente o rea (reverse engineer anything) é open source: ele dá pro claude code, codex ou cursor as ferramentas pra investigar um software por dentro, mesmo sem o código original, e explicar como cada recurso funciona, com as provas. rea"><span class="tag tag-guia">Guia</span><b>REA: desmonte qualquer app com o seu agente</b><span class="desc">O REA (Reverse Engineer Anything) é open source: ele dá pro Claude Code, Codex ou Cursor as ferramentas pra investigar um software por dentro, mesmo sem o código original, e explicar como cada recurso funciona, com as provas.</span><span class="kw">REA</span></a></li>
+<li><a class="item" href="tribunal/" data-busca="tribunal da ideia doze jurados de ia julgam a sua ideia: acusação, defesa, voto secreto e um juiz que decide. veredito"><span class="tag tag-prompt">Prompt</span><b>Tribunal da Ideia</b><span class="desc">Doze jurados de IA julgam a sua ideia: acusação, defesa, voto secreto e um juiz que decide.</span><span class="kw">VEREDITO</span></a></li>
+<li><a class="item" href="tubarao/" data-busca="shark tank no claude cinco investidores de ia ouvem o seu pitch e procuram motivo pra dizer não. sharktank"><span class="tag tag-prompt">Prompt</span><b>Shark Tank no Claude</b><span class="desc">Cinco investidores de IA ouvem o seu pitch e procuram motivo pra dizer não.</span><span class="kw">SHARKTANK</span></a></li>
+<li><a class="item" href="curriculo/" data-busca="banca do currículo sete avaliadores de ia tentam reprovar o seu currículo e depois escrevem uma versão corrigida. blindado"><span class="tag tag-prompt">Prompt</span><b>Banca do Currículo</b><span class="desc">Sete avaliadores de IA tentam reprovar o seu currículo e depois escrevem uma versão corrigida.</span><span class="kw">BLINDADO</span></a></li>
+  </ul>
+  <p class="vazio" id="vazio">Nada com esse nome ainda. Me manda no direct que eu procuro pra você.</p>
+  <p class="rodape">Novidade de IA todo dia no <a href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">@alvim_ai</a></p>
 </main>
+<script>
+const q = document.getElementById('q'), itens = [...document.querySelectorAll('#lista li')], vazio = document.getElementById('vazio');
+const norm = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+q.addEventListener('input', () => {
+  const t = norm(q.value.trim()); let n = 0;
+  for (const li of itens) { const ok = !t || norm(li.firstElementChild.dataset.busca).includes(t); li.hidden = !ok; n += ok; }
+  vazio.style.display = n ? 'none' : 'block';
+});
+</script>
 </body>
 </html>
