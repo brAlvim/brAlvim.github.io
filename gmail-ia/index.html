@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Deixe a IA cuidar do seu Gmail, Drive e agenda</title>
+<meta name="description" content="O Google Workspace MCP é um conector open source que liga o Claude (ou outra IA compatível com MCP) às suas contas do Google: Gmail, Drive, Agenda, Docs, Planilhas e mais, com mais de 120 ferramentas.">
+<meta property="og:title" content="Deixe a IA cuidar do seu Gmail, Drive e agenda">
+<meta property="og:description" content="O Google Workspace MCP é um conector open source que liga o Claude (ou outra IA compatível com MCP) às suas contas do Google: Gmail, Drive, Agenda, Docs, Planilhas e mais, com mais de 120 ferramentas.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #eef1f5; --papel: #ffffff; --tinta: #18202e; --suave: #5a6577; --linha: #d6dce5;
+  --acento: #c8321e; --ok: #1f7a4d; --bloco: #f6f8fb;
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box } body { margin: 0 }
+body { background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); padding: 0 16px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 40px 64px; display: grid; gap: 32px; }
+header { display: grid; gap: 12px; }
+.selo { font: 500 12px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--suave); }
+h1 { font: 800 clamp(32px, 7vw, 50px)/1.04 var(--f-titulo); margin: 0; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--acento); }
+.lead { margin: 0; max-width: 62ch; color: var(--suave); font-size: 17px; }
+h2 { font: 600 22px/1.2 var(--f-titulo); margin: 0 0 12px; }
+a { color: inherit; }
+.oficial { display: inline-flex; align-items: center; gap: 8px; width: fit-content; font: 600 15px var(--f-texto);
+  background: var(--tinta); color: var(--papel); text-decoration: none; border-radius: 6px; padding: 10px 16px; }
+.oficial:focus-visible, button:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+ul.lista { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.chips li { background: var(--papel); border: 1px solid var(--linha); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; gap: 14px; }
+ol.passos > li { counter-increment: p; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 4px 12px; }
+ol.passos > li::before { content: counter(p); font: 600 15px var(--f-mono); color: var(--papel); background: var(--acento);
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; margin-top: 1px; }
+ol.passos > li > * { grid-column: 2; min-width: 0; }
+.cmd { display: flex; align-items: stretch; background: var(--bloco); border: 1px solid var(--linha); border-radius: 8px; overflow: hidden; }
+.cmd code { flex: 1; min-width: 0; font: 14px/1.5 var(--f-mono); padding: 10px 12px; overflow-x: auto; white-space: pre; }
+.cmd button, .card button { flex-shrink: 0; font: 600 13px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; padding: 0 14px; cursor: pointer; }
+.cards { display: grid; gap: 12px; }
+.card { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+.card-top { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--linha); }
+.card-top b { font-weight: 600; } .card-top span { display: block; color: var(--suave); font-size: 13px; font-weight: 400; }
+.card button { border-radius: 6px; padding: 8px 14px; flex-shrink: 0; }
+.card pre { margin: 0; padding: 14px; background: var(--bloco); font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cuidados { background: var(--papel); border: 1px solid var(--linha); border-left: 4px solid var(--acento); border-radius: 8px; padding: 14px 16px; }
+.resumo { margin: 0; font-size: 17px; }
+.nota { color: var(--suave); font-size: 14px; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="selo">Guia grátis · @alvim_ai</div>
+    <h1>Deixe a IA cuidar do seu <em>Gmail, Drive e agenda</em></h1>
+    <p class="lead">O Google Workspace MCP é um conector open source que liga o Claude (ou outra IA compatível com MCP) às suas contas do Google: Gmail, Drive, Agenda, Docs, Planilhas e mais, com mais de 120 ferramentas.</p>
+    <a class="oficial" href="https://github.com/taylorwilsdon/google_workspace_mcp" target="_blank" rel="noopener">Repositório oficial no GitHub ↗</a>
+  </header>
+  <section><h2>Pra que serve</h2><ul class="lista"><li>Gmail: buscar, resumir, escrever rascunhos e enviar e-mails conversando.</li><li>Agenda: ver o dia, achar horário livre e criar eventos.</li><li>Drive e Docs: procurar arquivos, criar documentos e compartilhar.</li><li>Modo só leitura, se você quiser testar sem a IA poder enviar ou apagar nada.</li></ul></section>
+  <section><h2>O que você precisa</h2><ul class="chips"><li>Conta Google (a grátis serve)</li><li>Projeto no Google Cloud com cliente OAuth</li><li>uv instalado (comando uvx)</li><li>Claude Code, Claude Desktop ou outro cliente MCP</li></ul></section>
+  <section><h2>Passo a passo</h2><ol class="passos"><li><div>Instale o uv, que traz o comando uvx (Windows, no PowerShell):</div><div class="cmd"><code id="c0">powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</code><button type="button" data-copiar="c0">Copiar</button></div></li><li><div>No Google Cloud Console, crie um projeto, ative as APIs do Gmail, Drive e Calendar e crie um ID do cliente OAuth. O guia oficial com imagens leva uns 5 minutos.</div><div class="cmd"><code id="c1">https://workspacemcp.com/quick-start</code><button type="button" data-copiar="c1">Copiar</button></div></li><li><div>Coloque o ID e a chave do cliente nas variáveis de ambiente (PowerShell):</div><div class="cmd"><code id="c2">$env:GOOGLE_OAUTH_CLIENT_ID=&quot;cole-o-id&quot;
+$env:GOOGLE_OAUTH_CLIENT_SECRET=&quot;cole-a-chave&quot;</code><button type="button" data-copiar="c2">Copiar</button></div></li><li><div>Suba o servidor só com Gmail, Drive e Agenda, no modo HTTP:</div><div class="cmd"><code id="c3">uvx workspace-mcp --transport streamable-http --tools gmail drive calendar</code><button type="button" data-copiar="c3">Copiar</button></div></li><li><div>Conecte no Claude Code (com o servidor rodando). No Claude Desktop, use Configurações → Conectores → Adicionar conector personalizado.</div><div class="cmd"><code id="c4">claude mcp add --transport http workspace-mcp http://localhost:8000/mcp</code><button type="button" data-copiar="c4">Copiar</button></div></li><li><div>Na primeira vez, o Google pede pra você autorizar o acesso no navegador. Depois é só conversar.</div></li></ol></section>
+  <section><h2>Prompts prontos pro dia a dia</h2><div class="cards"><div class="card"><div class="card-top"><b>Resumo da manhã<span>Pra abrir o dia</span></b><button type="button" data-copiar="p0">Copiar</button></div><pre id="p0">Me dá o resumo de hoje: os compromissos da minha agenda com horário, e os e-mails não lidos que parecem importantes (ignore newsletters e promoções). Pra cada e-mail, uma linha dizendo quem mandou, o que quer e se precisa de resposta minha.</pre></div><div class="card"><div class="card-top"><b>Responder sem enviar<span>A IA escreve, você revisa</span></b><button type="button" data-copiar="p1">Copiar</button></div><pre id="p1">Procure o último e-mail de [NOME/EMPRESA] e escreva um RASCUNHO de resposta educada e curta, em português, dizendo que [O QUE VOCÊ QUER RESPONDER]. Não envie: deixe nos rascunhos do Gmail pra eu revisar.</pre></div><div class="card"><div class="card-top"><b>Marcar reunião<span>Acha o horário e cria o evento</span></b><button type="button" data-copiar="p2">Copiar</button></div><pre id="p2">Ache um horário livre de 30 minutos na minha agenda entre terça e quinta da próxima semana, de manhã. Crie o evento &quot;[TÍTULO]&quot; e me mostre o link antes de convidar alguém.</pre></div><div class="card"><div class="card-top"><b>Achar arquivo perdido<span>Busca no Drive</span></b><button type="button" data-copiar="p3">Copiar</button></div><pre id="p3">Procure no meu Drive os arquivos sobre [ASSUNTO] modificados nos últimos 30 dias. Liste nome, data e link, e resuma em 2 linhas o mais recente.</pre></div></div></section>
+  <section class="cuidados"><h2>Antes de usar</h2><ul class="lista"><li>Quer testar sem risco? Rode com --read-only: a IA só lê, não envia nem apaga nada.</li><li>Peça sempre rascunho antes de enviar e-mail em seu nome.</li><li>A chave do cliente OAuth é como uma senha: não compartilhe nem coloque em print.</li></ul></section>
+  <p class="resumo">Resumindo: cria o acesso no Google, sobe o servidor com um comando e liga no Claude. Daí em diante, o e-mail e a agenda se resolvem conversando.</p>
+  <a class="oficial" href="https://github.com/taylorwilsdon/google_workspace_mcp" target="_blank" rel="noopener">Repositório oficial no GitHub ↗</a>
+  <p class="nota">Mais ferramentas e prompts de IA: <a href="https://www.instagram.com/alvim_ai/">@alvim_ai</a> no Instagram · <a href="../">todos os materiais</a></p>
+</main>
+<script>
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const rotulo = btn.textContent;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = rotulo, 1800); };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>

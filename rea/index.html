@@ -39,13 +39,13 @@ ul.lista { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .chips li { background: var(--papel); border: 1px solid var(--linha); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
 ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; gap: 14px; }
-ol.passos > li { counter-increment: p; display: grid; grid-template-columns: 32px 1fr; gap: 4px 12px; }
+ol.passos > li { counter-increment: p; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 4px 12px; }
 ol.passos > li::before { content: counter(p); font: 600 15px var(--f-mono); color: var(--papel); background: var(--acento);
   width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; margin-top: 1px; }
-ol.passos > li > * { grid-column: 2; }
+ol.passos > li > * { grid-column: 2; min-width: 0; }
 .cmd { display: flex; align-items: stretch; background: var(--bloco); border: 1px solid var(--linha); border-radius: 8px; overflow: hidden; }
-.cmd code { flex: 1; font: 14px/1.5 var(--f-mono); padding: 10px 12px; overflow-x: auto; white-space: pre; }
-.cmd button, .card button { font: 600 13px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; padding: 0 14px; cursor: pointer; }
+.cmd code { flex: 1; min-width: 0; font: 14px/1.5 var(--f-mono); padding: 10px 12px; overflow-x: auto; white-space: pre; }
+.cmd button, .card button { flex-shrink: 0; font: 600 13px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; padding: 0 14px; cursor: pointer; }
 .cards { display: grid; gap: 12px; }
 .card { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
 .card-top { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--linha); }

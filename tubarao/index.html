@@ -66,8 +66,9 @@ pre { margin: 0; padding: 18px 16px; background: var(--bloco); font: 14px/1.6 va
     <ol class="passos">
       <li>Copie o prompt abaixo.</li>
       <li>Abra o Claude (claude.ai, o plano grátis já serve) e cole o prompt numa conversa nova.</li>
-      <li>Faça o pitch: nome, o que faz, pra quem, quanto custa, quanto você quer e por quanto da empresa.</li>
-      <li>Responda às perguntas de cada tubarão e leia as ofertas, os "tô fora" e o resumo final.</li>
+      <li>Mande o pitch. Use o modelo mais abaixo: é só trocar o que está entre colchetes.</li>
+      <li>Responda às perguntas de cada tubarão e leia as ofertas e os "tô fora".</li>
+      <li>No fim vem o relatório: placar, nota de 0 a 10 em cada ponto, o que você precisa provar, um teste de 7 dias e o seu pitch reescrito.</li>
     </ol>
   </section>
 
@@ -82,21 +83,55 @@ pre { margin: 0; padding: 18px 16px; background: var(--bloco); font: 14px/1.6 va
   </section>
 
   <section class="folha" aria-label="Prompt">
-    <div class="folha-top"><span>prompt-shark-tank.txt</span><button id="copiar" type="button">Copiar prompt</button></div>
-    <pre id="prompt">Você vai simular um programa no estilo Shark Tank com 5 investidores ("tubarões") fictícios. O trabalho de cada um é encontrar motivo para dizer NÃO. Não são pessoas reais; são perfis:
+    <div class="folha-top"><span>prompt-shark-tank.txt</span><button type="button" data-copiar="prompt">Copiar prompt</button></div>
+    <pre id="prompt">Você vai simular um programa no estilo Shark Tank, com 5 investidores ("tubarões") fictícios. O trabalho de cada um é achar motivo para dizer NÃO. Não são pessoas reais: são perfis, cada um com uma obsessão.
 
-1. O COBRADOR — só quer saber quem, exatamente, vai pagar, quanto e com que frequência. Pede prova (cliente, lista de espera, pré-venda).
-2. O DOS ROYALTIES — até oferece dinheiro, mas só em troca de uma porcentagem de cada venda para sempre. Explica por que esse acordo seria ruim (ou bom) pra mim.
-3. O DA PLANILHA — faz a conta na minha frente: preço, custo por cliente (CAC), margem, quantos clientes preciso para pagar as contas. Diz se os números fecham ou se é sonho.
-4. O DO MERCADO — conhece todos os concorrentes e diz por que o cliente não trocaria o que já usa por mim.
-5. A QUE NUNCA INVESTE — avalia o fundador: experiência, foco, por que eu e não outro. Quase sempre sai.
+OS TUBARÕES
+1. O COBRADOR. Só quer saber quem, exatamente, paga, quanto e com que frequência. Desconfia de "todo mundo precisa disso". Pede prova: cliente pagante, pré-venda, lista de espera com nomes.
+2. O DOS ROYALTIES. Até oferece dinheiro, mas em troca de uma porcentagem de cada venda, para sempre. Diz com números quanto isso me custaria em 3 anos se eu aceitasse.
+3. O DA PLANILHA. Faz a conta na minha frente: preço, custo de cada venda, margem, quanto custa conseguir um cliente, quantos clientes por mês eu preciso para pagar as contas. Mostra a conta passo a passo. Se eu não der um número, ele faz uma suposição, avisa que é suposição e me cobra o número real.
+4. O DO MERCADO. Conhece os concorrentes e as alternativas (inclusive "fazer na mão" ou "não fazer nada"). Diz por que o cliente não trocaria o que já usa por mim.
+5. A QUE NUNCA INVESTE. Avalia o fundador: por que eu, que vantagem injusta eu tenho, quanto tempo eu dedico. Quase sempre sai.
 
-Formato:
-- Depois do meu pitch, cada tubarão faz 1 pergunta difícil. Espere eu responder.
-- Depois das respostas, cada um decide: OFERTA (valor, porcentagem e condições) ou "TÔ FORA" + o motivo real em uma frase.
-- No fim, faça um RESUMO: as 3 objeções que mais pesaram, o que eu precisaria provar para virar cada "tô fora" em oferta, e um teste barato para fazer esta semana.
+REGRAS
+- Seja duro e específico. Nada de elogio vazio nem de "ótima ideia". Cada crítica aponta o trecho exato do meu pitch.
+- Não invente dados sobre mim. O que eu não disse é "não informado" e conta contra mim.
+- Uma rodada de cada vez. Espere a minha resposta sempre que fizer pergunta.
 
-Confirme que entendeu e diga: "Pode começar o seu pitch: nome do produto, o que faz, pra quem, quanto custa, quanto você quer e por quanto da empresa."</pre>
+COMO A RODADA FUNCIONA
+1. Depois do meu pitch, cada tubarão faz UMA pergunta difícil, a que mais assusta o perfil dele. Numere as perguntas e espere eu responder todas.
+2. Com as respostas, cada tubarão decide: OFERTA (valor, porcentagem e condições) ou "TÔ FORA", com o motivo real em uma frase. Se alguém fizer oferta, eu posso negociar uma vez.
+3. Termine com o PLACAR e o RELATÓRIO:
+   - Placar: quantas ofertas e quantos "tô fora".
+   - Nota de 0 a 10 em: problema real, quem paga, números, concorrência, fundador.
+   - As 3 objeções que mais pesaram e o que eu precisaria provar para virar cada "tô fora" em oferta.
+   - Um teste barato para fazer em 7 dias, com meta clara (exemplo: "conseguir 10 pré-vendas de R$ 50").
+   - O meu pitch reescrito em 60 segundos, mais forte, usando só o que é verdade.
+
+Responda em português do Brasil. Confirme que entendeu e diga: "Pode começar o seu pitch: nome do produto, o que faz, pra quem, quanto custa, o que você já tem (clientes, vendas, lista), quanto você quer e por quanto da empresa."</pre>
+  </section>
+
+  <section>
+    <h2>Modelo de pitch</h2>
+    <p class="nota" style="margin-bottom:10px">Mande logo depois do prompt. Troque o que está entre colchetes. Quanto mais número real, mais útil fica.</p>
+    <div class="folha">
+      <div class="folha-top"><span>meu-pitch.txt</span><button type="button" data-copiar="pitch">Copiar modelo</button></div>
+      <pre id="pitch">Meu negócio se chama [NOME]. Ele resolve [PROBLEMA] pra [QUEM, o mais específico possível].
+Hoje essas pessoas resolvem isso [COMO FAZEM HOJE].
+Custa R$ [PREÇO] por [mês / unidade / projeto].
+O que eu já tenho: [clientes pagantes, vendas, lista de espera, nada ainda].
+Meu custo pra entregar cada venda é mais ou menos R$ [CUSTO].
+Eu sou a pessoa certa porque [SUA EXPERIÊNCIA OU VANTAGEM].
+Quero R$ [VALOR] por [X]% da empresa, pra [O QUE VAI FAZER COM O DINHEIRO].</pre>
+    </div>
+  </section>
+
+  <section>
+    <h2>Depois da rodada</h2>
+    <div class="folha">
+      <div class="folha-top"><span>segunda-rodada.txt</span><button type="button" data-copiar="rodada2">Copiar</button></div>
+      <pre id="rodada2">Vou fazer o teste de 7 dias que vocês sugeriram. Antes, me ajudem a montar: a mensagem exata que eu mando pros primeiros 20 possíveis clientes, onde eu acho essas pessoas e qual número no fim da semana prova que vale continuar. Depois do teste, eu volto com os resultados pra uma segunda rodada.</pre>
+    </div>
   </section>
 
   <p class="nota"><b>Dica:</b> os tubarões são perfis fictícios, não as pessoas do programa. Use as objeções pra preparar o pitch de verdade.</p>
@@ -104,13 +139,15 @@ Confirme que entendeu e diga: "Pode começar o seu pitch: nome do produto, o que
 </main>
 
 <script>
-const btn = document.getElementById('copiar');
-btn.addEventListener('click', () => {
-  const texto = document.getElementById('prompt').innerText;
-  const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = 'Copiar prompt', 1800); };
-  const manual = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('prompt'));
-    const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado: use Ctrl+C'; };
-  try { navigator.clipboard.writeText(texto).then(ok, manual); } catch (e) { manual(); }
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const rotulo = btn.textContent;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = rotulo, 1800); };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado: use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (e) { manual(); }
+  });
 });
 </script>
 

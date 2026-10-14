@@ -67,7 +67,7 @@ pre { margin: 0; padding: 18px 16px; background: var(--bloco); font: 14px/1.6 va
       <li>Copie o prompt abaixo.</li>
       <li>Abra o Claude (claude.ai, o plano grátis já serve) e cole o prompt numa conversa nova.</li>
       <li>No lugar indicado, cole o texto do seu currículo e o anúncio da vaga. Pode anexar o PDF do currículo.</li>
-      <li>Envie e leia o veredito de cada avaliador. No final vem o currículo corrigido.</li>
+      <li>Envie e leia o veredito de cada avaliador. No final vem o currículo corrigido, a nota antes e depois e as perguntas que a entrevista vai trazer.</li>
     </ol>
   </section>
 
@@ -81,7 +81,7 @@ pre { margin: 0; padding: 18px 16px; background: var(--bloco); font: 14px/1.6 va
   </section>
 
   <section class="folha" aria-label="Prompt">
-    <div class="folha-top"><span>prompt-banca-curriculo.txt</span><button id="copiar" type="button">Copiar prompt</button></div>
+    <div class="folha-top"><span>prompt-banca-curriculo.txt</span><button type="button" data-copiar="prompt">Copiar prompt</button></div>
     <pre id="prompt">Você vai montar uma BANCA DE SETE AVALIADORES cujo trabalho é tentar REPROVAR o meu currículo para a vaga abaixo. Seja duro e específico, como uma empresa de verdade seria. Não invente nada sobre mim: use só o que está no currículo.
 
 Antes de começar, se faltar o currículo ou a vaga, peça o que falta e pare.
@@ -90,11 +90,13 @@ AVALIADOR 1: O FILTRO AUTOMÁTICO
 Faça o papel do sistema que filtra currículos antes de qualquer humano ler.
 - Compare o currículo com os requisitos e as palavras-chave da vaga.
 - Aponte o que um sistema desses não conseguiria ler (tabelas, colunas, imagens, títulos fora do padrão).
+- Monte uma tabela com as palavras-chave da vaga: TEM no currículo / NÃO TEM / TEM COM OUTRO NOME.
+- Dê uma nota de compatibilidade de 0 a 100.
 - Veredito: PASSA ou BARRADO, e o motivo em uma frase.
 
 AVALIADOR 2: A GESTORA DA VAGA
 Faça o papel de quem decide quem vai para a entrevista.
-- Você tem 30 segundos para olhar o currículo.
+- Você tem 30 segundos para olhar o currículo. Diga o que os seus olhos pegaram primeiro e o que passou batido.
 - Veredito: CHAMARIA ou NÃO CHAMARIA para entrevista, e o motivo principal.
 
 AVALIADORES 3 A 7: CINCO LEITORES, CADA UM COM SEU OLHAR
@@ -109,7 +111,9 @@ Para cada um: primeira impressão em uma frase, os 3 maiores problemas e uma not
 DEPOIS DA BANCA
 1. Junte todos os problemas apontados numa lista única, do mais grave para o menos grave, sem repetir.
 2. Escreva uma VERSÃO NOVA do meu currículo corrigindo cada problema da lista. Mantenha só fatos verdadeiros do currículo original; onde faltar uma informação (um número, um resultado), escreva [PREENCHER: o que falta] em vez de inventar.
-3. Passe a versão nova de novo pelo Avaliador 1 e pela Avaliadora 2 e mostre os vereditos novos.
+   Use verbos de ação e resultados ("reduzi o prazo de 10 para 6 dias"), coloque as palavras-chave da vaga onde elas forem verdade e mantenha o formato simples (sem tabelas, colunas ou imagens), pra o filtro automático conseguir ler.
+3. Passe a versão nova de novo pelo Avaliador 1 e pela Avaliadora 2 e mostre os vereditos e a nota de compatibilidade novos (antes → depois).
+4. Liste as 5 perguntas que um entrevistador faria ao ler a versão nova, com uma dica curta de como eu responderia cada uma usando o que está no currículo.
 
 Responda em português do Brasil.
 
@@ -120,18 +124,41 @@ A VAGA:
 [cole aqui o anúncio da vaga]</pre>
   </section>
 
+  <section>
+    <h2>Depois da banca</h2>
+    <p class="nota" style="margin-bottom:10px">Na mesma conversa, peça mais:</p>
+    <div class="banca" style="grid-template-columns:1fr">
+      <div class="folha">
+        <div class="folha-top"><span>preencher-lacunas.txt</span><button type="button" data-copiar="f1">Copiar</button></div>
+        <pre id="f1">Me faça uma pergunta de cada vez pra preencher cada [PREENCHER] do currículo novo. Quando eu responder todas, me mostre a versão final completa.</pre>
+      </div>
+      <div class="folha">
+        <div class="folha-top"><span>outra-vaga.txt</span><button type="button" data-copiar="f2">Copiar</button></div>
+        <pre id="f2">Agora adapte o currículo novo pra esta outra vaga, mudando só o necessário, e passe de novo pelo filtro automático e pela gestora:
+
+[cole o anúncio da outra vaga]</pre>
+      </div>
+      <div class="folha">
+        <div class="folha-top"><span>linkedin-e-mensagem.txt</span><button type="button" data-copiar="f3">Copiar</button></div>
+        <pre id="f3">Com base no currículo novo, escreva: (1) um título pro meu LinkedIn com até 120 caracteres, (2) um resumo "Sobre" de 5 linhas e (3) uma mensagem curta pra mandar pra quem recruta nessa empresa, sem parecer cópia.</pre>
+      </div>
+    </div>
+  </section>
+
   <p class="nota"><b>Dica:</b> rode a banca de novo a cada vaga. O que reprova numa empresa pode passar em outra.</p>
   <p class="nota">Mais prompts e ferramentas de IA: <a href="https://www.instagram.com/alvim_ai/" style="color:inherit">@alvim_ai</a> no Instagram · <a href="../" style="color:inherit">todos os materiais</a></p>
 </main>
 
 <script>
-const btn = document.getElementById('copiar');
-btn.addEventListener('click', () => {
-  const texto = document.getElementById('prompt').innerText;
-  const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = 'Copiar prompt', 1800); };
-  const manual = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('prompt'));
-    const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado: use Ctrl+C'; };
-  try { navigator.clipboard.writeText(texto).then(ok, manual); } catch (e) { manual(); }
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const rotulo = btn.textContent;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = rotulo, 1800); };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado: use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (e) { manual(); }
+  });
 });
 </script>
 

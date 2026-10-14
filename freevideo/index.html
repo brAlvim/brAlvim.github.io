@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gere vídeo com IA no computador que você já tem</title>
+<meta name="description" content="O FreeVideo roda o modelo de vídeo MiniMax H3 no seu próprio PC, com 8 GB de memória de vídeo, dentro do ComfyUI. Sem assinatura e sem fila: você escreve o prompt e o vídeo sai na sua máquina.">
+<meta property="og:title" content="Gere vídeo com IA no computador que você já tem">
+<meta property="og:description" content="O FreeVideo roda o modelo de vídeo MiniMax H3 no seu próprio PC, com 8 GB de memória de vídeo, dentro do ComfyUI. Sem assinatura e sem fila: você escreve o prompt e o vídeo sai na sua máquina.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #eef1f5; --papel: #ffffff; --tinta: #18202e; --suave: #5a6577; --linha: #d6dce5;
+  --acento: #c8321e; --ok: #1f7a4d; --bloco: #f6f8fb;
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box } body { margin: 0 }
+body { background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); padding: 0 16px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 40px 64px; display: grid; gap: 32px; }
+header { display: grid; gap: 12px; }
+.selo { font: 500 12px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--suave); }
+h1 { font: 800 clamp(32px, 7vw, 50px)/1.04 var(--f-titulo); margin: 0; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--acento); }
+.lead { margin: 0; max-width: 62ch; color: var(--suave); font-size: 17px; }
+h2 { font: 600 22px/1.2 var(--f-titulo); margin: 0 0 12px; }
+a { color: inherit; }
+.oficial { display: inline-flex; align-items: center; gap: 8px; width: fit-content; font: 600 15px var(--f-texto);
+  background: var(--tinta); color: var(--papel); text-decoration: none; border-radius: 6px; padding: 10px 16px; }
+.oficial:focus-visible, button:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+ul.lista { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.chips li { background: var(--papel); border: 1px solid var(--linha); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; gap: 14px; }
+ol.passos > li { counter-increment: p; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 4px 12px; }
+ol.passos > li::before { content: counter(p); font: 600 15px var(--f-mono); color: var(--papel); background: var(--acento);
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; margin-top: 1px; }
+ol.passos > li > * { grid-column: 2; min-width: 0; }
+.cmd { display: flex; align-items: stretch; background: var(--bloco); border: 1px solid var(--linha); border-radius: 8px; overflow: hidden; }
+.cmd code { flex: 1; min-width: 0; font: 14px/1.5 var(--f-mono); padding: 10px 12px; overflow-x: auto; white-space: pre; }
+.cmd button, .card button { flex-shrink: 0; font: 600 13px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; padding: 0 14px; cursor: pointer; }
+.cards { display: grid; gap: 12px; }
+.card { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+.card-top { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--linha); }
+.card-top b { font-weight: 600; } .card-top span { display: block; color: var(--suave); font-size: 13px; font-weight: 400; }
+.card button { border-radius: 6px; padding: 8px 14px; flex-shrink: 0; }
+.card pre { margin: 0; padding: 14px; background: var(--bloco); font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cuidados { background: var(--papel); border: 1px solid var(--linha); border-left: 4px solid var(--acento); border-radius: 8px; padding: 14px 16px; }
+.resumo { margin: 0; font-size: 17px; }
+.nota { color: var(--suave); font-size: 14px; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="selo">Guia grátis · @alvim_ai</div>
+    <h1>Gere vídeo com IA <em>no computador que você já tem</em></h1>
+    <p class="lead">O FreeVideo roda o modelo de vídeo MiniMax H3 no seu próprio PC, com 8 GB de memória de vídeo, dentro do ComfyUI. Sem assinatura e sem fila: você escreve o prompt e o vídeo sai na sua máquina.</p>
+    <a class="oficial" href="https://github.com/FlashML-org/FreeVideo" target="_blank" rel="noopener">Repositório oficial no GitHub ↗</a>
+  </header>
+  <section><h2>Pra que serve</h2><ul class="lista"><li>Gerar vídeos a partir de um texto, de graça, no seu computador.</li><li>Animar uma imagem: você dá o primeiro (e o último) quadro e ele cria o movimento.</li><li>Usar imagens, vídeos ou áudios como referência do estilo ou do personagem.</li><li>Gerar vários de uma vez e manter o histórico de tudo que criou.</li></ul></section>
+  <section><h2>O que você precisa</h2><ul class="chips"><li>Placa de vídeo com 8 GB+</li><li>16 GB de RAM</li><li>Windows, Linux ou Mac Apple Silicon (prévia)</li><li>Espaço em disco pros modelos</li></ul></section>
+  <section><h2>Passo a passo</h2><ol class="passos"><li><div>Windows: baixe o instalador oficial (link direto da página de Releases) e abra.</div><div class="cmd"><code id="c0">https://github.com/FlashML-org/FreeVideo/releases/latest/download/FreeVideo.exe</code><button type="button" data-copiar="c0">Copiar</button></div></li><li><div>Escolha uma pasta do ComfyUI que você já tem ou deixe ele instalar uma nova. Se você já tem modelos baixados, aponte a pasta: ele reaproveita e só baixa o que falta.</div></li><li><div>Clique em Install &amp; launch. O ComfyUI abre no navegador já com a área do FreeVideo.</div></li><li><div>Já usa ComfyUI? Instale como custom node e depois abra Workflow → Browse Templates → FreeVideo → FreeVideo-All-in-One.</div><div class="cmd"><code id="c3">cd ComfyUI/custom_nodes
+git clone https://github.com/FlashML-org/FreeVideo.git</code><button type="button" data-copiar="c3">Copiar</button></div></li><li><div>Mac (Apple Silicon): baixe o FreeVideo-Mac-arm64.dmg na página de Releases. Linux: o AppImage, no mesmo lugar.</div></li></ol></section>
+  <section><h2>Prompts prontos pra testar</h2><div class="cards"><div class="card"><div class="card-top"><b>Cena de cinema<span>Bom pro primeiro teste</span></b><button type="button" data-copiar="p0">Copiar</button></div><pre id="p0">Um gato laranja de óculos escuros andando de skate numa rua de São Paulo ao pôr do sol. Câmera acompanhando de lado, na altura do skate. Luz dourada, reflexos nos prédios, estilo filme de cinema, movimento suave.</pre></div><div class="card"><div class="card-top"><b>Produto / anúncio<span>Pra quem faz conteúdo de marca</span></b><button type="button" data-copiar="p1">Copiar</button></div><pre id="p1">Close de uma xícara de café sobre uma mesa de madeira, vapor subindo devagar, luz da manhã entrando pela janela. Câmera parada, foco raso, fundo desfocado. Estilo comercial de TV.</pre></div><div class="card"><div class="card-top"><b>Animar uma foto<span>Use com a sua imagem como primeiro quadro</span></b><button type="button" data-copiar="p2">Copiar</button></div><pre id="p2">A pessoa da foto vira o rosto devagar para a câmera e sorri. O cabelo mexe levemente com o vento. Câmera parada. Mantenha o rosto, a roupa e o fundo iguais aos da imagem.</pre></div><div class="card"><div class="card-top"><b>Estrutura que funciona<span>Monte o seu prompt nessa ordem</span></b><button type="button" data-copiar="p3">Copiar</button></div><pre id="p3">[QUEM/O QUÊ] fazendo [AÇÃO] em [LUGAR].
+Câmera: [parada / acompanhando / aproximando devagar].
+Luz e clima: [pôr do sol / noite com neon / luz de estúdio].
+Estilo: [cinema / anime / comercial / filmado no celular].</pre></div></div></section>
+  <section class="cuidados"><h2>Antes de usar</h2><ul class="lista"><li>A primeira instalação baixa os modelos e pode demorar. Deixe o PC ligado e na internet.</li><li>Com 8 GB de vídeo funciona, mas é mais lento. Comece com vídeos curtos.</li><li>No Mac, o app ainda não é assinado pela Apple: o macOS bloqueia na primeira vez. Baixe só da página oficial de Releases e siga o guia do Mac no repositório.</li></ul></section>
+  <p class="resumo">Resumindo: baixa o instalador, clica em Install &amp; launch e escreve o prompt. O vídeo sai no seu PC, sem pagar por geração.</p>
+  <a class="oficial" href="https://github.com/FlashML-org/FreeVideo" target="_blank" rel="noopener">Repositório oficial no GitHub ↗</a>
+  <p class="nota">Mais ferramentas e prompts de IA: <a href="https://www.instagram.com/alvim_ai/">@alvim_ai</a> no Instagram · <a href="../">todos os materiais</a></p>
+</main>
+<script>
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const rotulo = btn.textContent;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = rotulo, 1800); };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A Anthropic caça falhas no seu projeto open source, de graça</title>
+<meta name="description" content="O OSS Scanner é um serviço da Anthropic: os modelos mais fortes dela varrem projetos open source atrás de falhas de segurança, de tempos em tempos, e mandam o que acharem por e-mail. A Anthropic paga o custo.">
+<meta property="og:title" content="A Anthropic caça falhas no seu projeto open source, de graça">
+<meta property="og:description" content="O OSS Scanner é um serviço da Anthropic: os modelos mais fortes dela varrem projetos open source atrás de falhas de segurança, de tempos em tempos, e mandam o que acharem por e-mail. A Anthropic paga o custo.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #eef1f5; --papel: #ffffff; --tinta: #18202e; --suave: #5a6577; --linha: #d6dce5;
+  --acento: #c8321e; --ok: #1f7a4d; --bloco: #f6f8fb;
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box } body { margin: 0 }
+body { background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); padding: 0 16px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 40px 64px; display: grid; gap: 32px; }
+header { display: grid; gap: 12px; }
+.selo { font: 500 12px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--suave); }
+h1 { font: 800 clamp(32px, 7vw, 50px)/1.04 var(--f-titulo); margin: 0; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--acento); }
+.lead { margin: 0; max-width: 62ch; color: var(--suave); font-size: 17px; }
+h2 { font: 600 22px/1.2 var(--f-titulo); margin: 0 0 12px; }
+a { color: inherit; }
+.oficial { display: inline-flex; align-items: center; gap: 8px; width: fit-content; font: 600 15px var(--f-texto);
+  background: var(--tinta); color: var(--papel); text-decoration: none; border-radius: 6px; padding: 10px 16px; }
+.oficial:focus-visible, button:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+ul.lista { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.chips li { background: var(--papel); border: 1px solid var(--linha); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; gap: 14px; }
+ol.passos > li { counter-increment: p; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 4px 12px; }
+ol.passos > li::before { content: counter(p); font: 600 15px var(--f-mono); color: var(--papel); background: var(--acento);
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; margin-top: 1px; }
+ol.passos > li > * { grid-column: 2; min-width: 0; }
+.cmd { display: flex; align-items: stretch; background: var(--bloco); border: 1px solid var(--linha); border-radius: 8px; overflow: hidden; }
+.cmd code { flex: 1; min-width: 0; font: 14px/1.5 var(--f-mono); padding: 10px 12px; overflow-x: auto; white-space: pre; }
+.cmd button, .card button { flex-shrink: 0; font: 600 13px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; padding: 0 14px; cursor: pointer; }
+.cards { display: grid; gap: 12px; }
+.card { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+.card-top { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--linha); }
+.card-top b { font-weight: 600; } .card-top span { display: block; color: var(--suave); font-size: 13px; font-weight: 400; }
+.card button { border-radius: 6px; padding: 8px 14px; flex-shrink: 0; }
+.card pre { margin: 0; padding: 14px; background: var(--bloco); font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cuidados { background: var(--papel); border: 1px solid var(--linha); border-left: 4px solid var(--acento); border-radius: 8px; padding: 14px 16px; }
+.resumo { margin: 0; font-size: 17px; }
+.nota { color: var(--suave); font-size: 14px; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="selo">Guia grátis · @alvim_ai</div>
+    <h1>A Anthropic caça falhas no seu projeto open source, <em>de graça</em></h1>
+    <p class="lead">O OSS Scanner é um serviço da Anthropic: os modelos mais fortes dela varrem projetos open source atrás de falhas de segurança, de tempos em tempos, e mandam o que acharem por e-mail. A Anthropic paga o custo.</p>
+    <a class="oficial" href="https://red.anthropic.com/oss-scanner" target="_blank" rel="noopener">Página oficial da Anthropic ↗</a>
+  </header>
+  <section><h2>Pra que serve</h2><ul class="lista"><li>Receber relatórios de falhas de segurança no seu projeto sem pagar uma auditoria.</li><li>Cada relatório traz uma prova de como a falha é explorada e, quando dá, uma sugestão de correção.</li><li>A análise roda isolada: o projeto é compilado numa máquina virtual e examinado sem acesso à internet.</li></ul></section>
+  <section><h2>O que você precisa</h2><ul class="chips"><li>Ser mantenedor de um projeto open source</li><li>Conta no GitHub</li><li>Um Dockerfile que compila o projeto</li><li>Um e-mail de contato (fica público)</li></ul></section>
+  <section><h2>Passo a passo</h2><ol class="passos"><li><div>Faça um fork do repositório oficial de inscrição.</div><div class="cmd"><code id="c0">https://github.com/anthropics/oss-scanner</code><button type="button" data-copiar="c0">Copiar</button></div></li><li><div>Crie a pasta do seu projeto: projects/&lt;nome-do-projeto&gt;.</div></li><li><div>Dentro dela, crie o project.yaml a partir do modelo (templates/project.yaml). O mínimo é isto:</div><div class="cmd"><code id="c2">repo: https://github.com/voce/seu-projeto
+primary_contact: seguranca@seudominio.com
+dockerfile: .oss-scanner/Dockerfile</code><button type="button" data-copiar="c2">Copiar</button></div></li><li><div>Escreva um Dockerfile que instala todas as dependências e compila o projeto. Ele pode ficar no seu repositório (recomendado) ou na mesma pasta do project.yaml. Tudo que os testes precisam tem que ser baixado nessa etapa: a análise roda sem internet.</div></li><li><div>Opcional: um threat_model.md explicando o que é sensível no projeto. Ajuda o scanner a focar no que importa.</div></li><li><div>Abra o pull request. Os relatórios chegam no primary_contact.</div></li></ol></section>
+  <section><h2>Prompts pra fazer com o Claude Code</h2><div class="cards"><div class="card"><div class="card-top"><b>Preparar a inscrição<span>Rode dentro da pasta do seu projeto</span></b><button type="button" data-copiar="p0">Copiar</button></div><pre id="p0">Leia o README de https://github.com/anthropics/oss-scanner e prepare a inscrição deste repositório:
+1. Um project.yaml com repo, primary_contact e dockerfile apontando pra .oss-scanner/Dockerfile.
+2. Um .oss-scanner/Dockerfile que instala todas as dependências, compila o projeto e baixa tudo que os testes precisam (a análise roda sem internet).
+3. Um rascunho de threat_model.md: o que um atacante iria querer aqui e quais partes recebem dados de fora.
+Depois rode o build do Dockerfile e os testes dentro dele pra confirmar que funciona.</pre></div><div class="card"><div class="card-top"><b>Entender um relatório<span>Quando chegar o primeiro e-mail</span></b><button type="button" data-copiar="p1">Copiar</button></div><pre id="p1">Recebi este relatório de segurança do OSS Scanner (abaixo). Explique em português, sem jargão: qual é a falha, quem conseguiria explorar e o que aconteceria. Depois reproduza a prova localmente, confirme se é real e proponha a correção com um teste que falha antes e passa depois.
+
+[cole o relatório aqui]</pre></div></div></section>
+  <section class="cuidados"><h2>Antes de usar</h2><ul class="lista"><li>Os relatórios são gerados pelo modelo e não passam por revisão humana. Confirme cada falha antes de corrigir ou divulgar.</li><li>Os e-mails do project.yaml ficam públicos: use um endereço de segurança, não o pessoal.</li><li>O foco são projetos open source críticos. A inscrição depende de aprovação do pull request.</li><li>O uso segue os termos do serviço: red.anthropic.com/oss-scanner/terms.</li></ul></section>
+  <p class="resumo">Resumindo: um pull request com dois arquivos, e o seu projeto passa a ser auditado pelos modelos mais fortes da Anthropic, sem custo.</p>
+  <a class="oficial" href="https://red.anthropic.com/oss-scanner" target="_blank" rel="noopener">Página oficial da Anthropic ↗</a>
+  <p class="nota">Mais ferramentas e prompts de IA: <a href="https://www.instagram.com/alvim_ai/">@alvim_ai</a> no Instagram · <a href="../">todos os materiais</a></p>
+</main>
+<script>
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const rotulo = btn.textContent;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = rotulo, 1800); };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>

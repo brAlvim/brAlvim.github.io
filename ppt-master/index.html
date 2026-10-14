@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Transforme um PDF numa apresentação de PowerPoint editável</title>
+<meta name="description" content="O PPT Master é open source: você pede no chat do seu agente de IA e ele analisa o conteúdo, monta o design e exporta um .pptx de verdade, com formas, gráficos e tabelas que continuam editáveis.">
+<meta property="og:title" content="Transforme um PDF numa apresentação de PowerPoint editável">
+<meta property="og:description" content="O PPT Master é open source: você pede no chat do seu agente de IA e ele analisa o conteúdo, monta o design e exporta um .pptx de verdade, com formas, gráficos e tabelas que continuam editáveis.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #eef1f5; --papel: #ffffff; --tinta: #18202e; --suave: #5a6577; --linha: #d6dce5;
+  --acento: #c8321e; --ok: #1f7a4d; --bloco: #f6f8fb;
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151c; --papel: #1a202a; --tinta: #e6eaf0; --suave: #9aa5b5; --linha: #2c3442;
+  --acento: #f0624d; --ok: #4cc28a; --bloco: #151a22; color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box } body { margin: 0 }
+body { background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); padding: 0 16px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 40px 64px; display: grid; gap: 32px; }
+header { display: grid; gap: 12px; }
+.selo { font: 500 12px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--suave); }
+h1 { font: 800 clamp(32px, 7vw, 50px)/1.04 var(--f-titulo); margin: 0; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--acento); }
+.lead { margin: 0; max-width: 62ch; color: var(--suave); font-size: 17px; }
+h2 { font: 600 22px/1.2 var(--f-titulo); margin: 0 0 12px; }
+a { color: inherit; }
+.oficial { display: inline-flex; align-items: center; gap: 8px; width: fit-content; font: 600 15px var(--f-texto);
+  background: var(--tinta); color: var(--papel); text-decoration: none; border-radius: 6px; padding: 10px 16px; }
+.oficial:focus-visible, button:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+ul.lista { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.chips li { background: var(--papel); border: 1px solid var(--linha); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; gap: 14px; }
+ol.passos > li { counter-increment: p; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 4px 12px; }
+ol.passos > li::before { content: counter(p); font: 600 15px var(--f-mono); color: var(--papel); background: var(--acento);
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; margin-top: 1px; }
+ol.passos > li > * { grid-column: 2; min-width: 0; }
+.cmd { display: flex; align-items: stretch; background: var(--bloco); border: 1px solid var(--linha); border-radius: 8px; overflow: hidden; }
+.cmd code { flex: 1; min-width: 0; font: 14px/1.5 var(--f-mono); padding: 10px 12px; overflow-x: auto; white-space: pre; }
+.cmd button, .card button { flex-shrink: 0; font: 600 13px var(--f-texto); background: var(--tinta); color: var(--papel); border: 0; padding: 0 14px; cursor: pointer; }
+.cards { display: grid; gap: 12px; }
+.card { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+.card-top { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--linha); }
+.card-top b { font-weight: 600; } .card-top span { display: block; color: var(--suave); font-size: 13px; font-weight: 400; }
+.card button { border-radius: 6px; padding: 8px 14px; flex-shrink: 0; }
+.card pre { margin: 0; padding: 14px; background: var(--bloco); font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cuidados { background: var(--papel); border: 1px solid var(--linha); border-left: 4px solid var(--acento); border-radius: 8px; padding: 14px 16px; }
+.resumo { margin: 0; font-size: 17px; }
+.nota { color: var(--suave); font-size: 14px; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="selo">Guia grátis · @alvim_ai</div>
+    <h1>Transforme um PDF numa apresentação de <em>PowerPoint editável</em></h1>
+    <p class="lead">O PPT Master é open source: você pede no chat do seu agente de IA e ele analisa o conteúdo, monta o design e exporta um .pptx de verdade, com formas, gráficos e tabelas que continuam editáveis.</p>
+    <a class="oficial" href="https://github.com/hugohe3/ppt-master" target="_blank" rel="noopener">Repositório oficial no GitHub ↗</a>
+  </header>
+  <section><h2>Pra que serve</h2><ul class="lista"><li>Transformar PDF, Word, texto ou um tema numa apresentação pronta.</li><li>Sair com um .pptx editável de verdade (não uma imagem achatada), com gráficos baseados nos dados.</li><li>Usar o modelo de slides da sua empresa.</li><li>Adicionar transições, animações e até narração a partir das notas do apresentador.</li></ul></section>
+  <section><h2>O que você precisa</h2><ul class="chips"><li>Python 3.10+</li><li>Um agente de IA (o autor recomenda o Claude Code)</li><li>Assinatura ou chave da IA que você usar</li><li>Git (opcional)</li></ul></section>
+  <section><h2>Passo a passo</h2><ol class="passos"><li><div>Instale o Python 3.10 ou mais novo em python.org. No Windows, marque &quot;Add Python to PATH&quot; na instalação.</div></li><li><div>Baixe o projeto. Com Git:</div><div class="cmd"><code id="c1">git clone https://github.com/hugohe3/ppt-master.git
+cd ppt-master</code><button type="button" data-copiar="c1">Copiar</button></div></li><li><div>Sem Git: na página do GitHub, clique em Code → Download ZIP e descompacte. Depois, dentro da pasta, instale as dependências:</div><div class="cmd"><code id="c2">pip install -r requirements.txt</code><button type="button" data-copiar="c2">Copiar</button></div></li><li><div>Abra a pasta no seu agente (Claude Code, Cursor, Copilot…) e peça pelo chat, como nos prompts abaixo.</div></li><li><div>Usa Claude Code? Dá pra instalar como plugin, sem baixar nada:</div><div class="cmd"><code id="c4">/plugin marketplace add hugohe3/ppt-master</code><button type="button" data-copiar="c4">Copiar</button></div></li></ol></section>
+  <section><h2>Prompts prontos pra pedir a apresentação</h2><div class="cards"><div class="card"><div class="card-top"><b>PDF vira apresentação<span>O uso principal</span></b><button type="button" data-copiar="p0">Copiar</button></div><pre id="p0">Use o PPT Master pra transformar o PDF [NOME DO ARQUIVO] numa apresentação de 10 slides em português.
+Público: [quem vai assistir]. Objetivo: [o que eles precisam entender ou decidir].
+Um slide de título, um de resumo, e gráficos pros números principais. Exporte em .pptx editável.</pre></div><div class="card"><div class="card-top"><b>Do zero, a partir de um tema<span>Quando você ainda não tem o conteúdo</span></b><button type="button" data-copiar="p1">Copiar</button></div><pre id="p1">Crie uma apresentação de 8 slides em português sobre [TEMA], pra [PÚBLICO].
+Estrutura: problema, por que agora, solução, como funciona, números, próximos passos.
+Visual limpo, pouco texto por slide, e coloque nas notas do apresentador o que eu devo falar em cada um.</pre></div><div class="card"><div class="card-top"><b>Com o modelo da empresa<span>Pra sair com a cara da sua marca</span></b><button type="button" data-copiar="p2">Copiar</button></div><pre id="p2">Use o arquivo [MODELO.pptx] como modelo de slides (cores, fontes e layout) e transforme o conteúdo abaixo numa apresentação de 12 slides. Mantenha tudo editável.
+
+[cole o texto aqui]</pre></div><div class="card"><div class="card-top"><b>Ajustes depois<span>Na mesma conversa</span></b><button type="button" data-copiar="p3">Copiar</button></div><pre id="p3">No slide 4, troque a lista por um gráfico de barras com esses números: [números]. Deixe o slide 7 com menos texto e adicione transições suaves entre todos os slides.</pre></div></div></section>
+  <section class="cuidados"><h2>Antes de usar</h2><ul class="lista"><li>O PPT Master é grátis, mas a IA que roda por trás não: o uso do Claude, GPT ou Gemini segue o seu plano.</li><li>No Windows, se o comando python não funcionar, siga o guia de instalação para Windows no repositório.</li><li>Revise números e gráficos antes de apresentar: a IA monta a partir do documento, mas pode errar.</li></ul></section>
+  <p class="resumo">Resumindo: Python, uma pasta baixada e um pedido no chat. O PowerPoint sai pronto e você continua editando como qualquer outro.</p>
+  <a class="oficial" href="https://github.com/hugohe3/ppt-master" target="_blank" rel="noopener">Repositório oficial no GitHub ↗</a>
+  <p class="nota">Mais ferramentas e prompts de IA: <a href="https://www.instagram.com/alvim_ai/">@alvim_ai</a> no Instagram · <a href="../">todos os materiais</a></p>
+</main>
+<script>
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const rotulo = btn.textContent;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => { btn.textContent = 'Copiado'; setTimeout(() => btn.textContent = rotulo, 1800); };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>
