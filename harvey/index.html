@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Um robô que acha clientes e escreve os e-mails por você</title>
+<meta name="description" content="O Harvey é gratuito e roda no seu computador. Você mostra o seu site, ele aprende o que você vende, procura empresas que podem virar clientes e escreve e-mails curtos pra cada uma. Ele usa a assinatura do Claude que você já paga, e nenhum e-mail sai sem você aprovar.">
+<meta name="theme-color" content="#121318">
+<meta property="og:title" content="Um robô que acha clientes e escreve os e-mails por você">
+<meta property="og:description" content="O Harvey é gratuito e roda no seu computador. Você mostra o seu site, ele aprende o que você vende, procura empresas que podem virar clientes e escreve e-mails curtos pra cada uma. Ele usa a assinatura do Claude que você já paga, e nenhum e-mail sai sem você aprovar.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd23f'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' font-family='sans-serif' fill='%23121318'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Identidade dos reels: tinta escura + amarelo das capas/stories. Coluna única, pensada pro celular (vem do direct). */
+:root {
+  --bg: #f4f2ec; --papel: #ffffff; --tinta: #121318; --suave: #5d6170; --linha: #e3e0d6;
+  --amarelo: #ffd23f; --amarelo-tinta: #121318; --marca: #ffd23f; --ok: #1f8a55; --alerta: #b4410f; --alerta-bg: #fff4ec;
+  --hero: #121318; --hero-tinta: #f5f3ee; --hero-suave: #a9adbb; --term: #16181f; --term-tinta: #e8eaf0; --term-suave: #8b90a0;
+  --sombra: 0 1px 2px rgba(18,19,24,.06), 0 6px 20px rgba(18,19,24,.06);
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+body { margin: 0; background: var(--bg); color: var(--tinta); font: 16px/1.65 var(--f-texto); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; border-radius: 6px; }
+
+/* topo escuro, como a capa do reel */
+.hero { background: var(--hero); color: var(--hero-tinta); padding: 28px 0 36px; border-bottom: 1px solid var(--linha); }
+.marca { display: flex; align-items: center; gap: 10px; text-decoration: none; width: fit-content; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--amarelo); color: #121318; display: grid; place-items: center;
+  font: 800 16px var(--f-titulo); }
+.marca b { font: 600 15px var(--f-texto); } .marca span { display: block; color: var(--hero-suave); font-size: 12px; line-height: 1.2; }
+.selo { display: inline-block; margin: 26px 0 14px; background: var(--amarelo); color: #121318; font: 600 12px var(--f-mono);
+  letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+h1 { font: 800 clamp(34px, 8.5vw, 54px)/1.02 var(--f-titulo); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.lead { margin: 16px 0 0; color: var(--hero-suave); font-size: 17px; max-width: 60ch; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 10px;
+  font: 600 15px var(--f-texto); text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn-amarelo { background: var(--amarelo); color: #121318; }
+.btn-linha { border-color: #3a3d48; color: var(--hero-tinta); }
+.btn svg { width: 16px; height: 16px; }
+
+/* menu rápido das seções */
+.menu { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--linha); }
+.menu ul { list-style: none; margin: 0 auto; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; max-width: 720px; scrollbar-width: none; }
+.menu ul::-webkit-scrollbar { display: none; }
+.menu a { display: block; white-space: nowrap; text-decoration: none; font: 500 14px var(--f-texto); padding: 6px 12px; border-radius: 999px;
+  background: var(--papel); border: 1px solid var(--linha); color: var(--suave); }
+
+main.wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+h2 { font: 800 26px/1.15 var(--f-titulo); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+h2 .n { font: 600 12px var(--f-mono); color: var(--suave); letter-spacing: .08em; }
+
+/* pra que serve: cartões com check */
+.serve { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.serve li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 12px; padding: 14px 16px; box-shadow: var(--sombra); }
+.serve svg { width: 22px; height: 22px; color: var(--ok); margin-top: 2px; }
+
+/* o que precisa */
+.precisa { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.precisa li { display: inline-flex; align-items: center; gap: 8px; background: var(--papel); border: 1px solid var(--linha); border-radius: 10px;
+  padding: 8px 12px; font-size: 14px; }
+.precisa li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--amarelo); flex-shrink: 0; box-shadow: 0 0 0 2px #121318 inset; }
+
+/* passo a passo em linha do tempo */
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; }
+ol.passos > li { counter-increment: p; position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 14px; padding-bottom: 22px; }
+ol.passos > li::before { content: counter(p); width: 36px; height: 36px; border-radius: 50%; background: var(--tinta); color: var(--bg);
+  font: 600 15px var(--f-mono); display: grid; place-items: center; position: relative; z-index: 1; }
+ol.passos > li::after { content: ""; position: absolute; left: 17px; top: 36px; bottom: 0; width: 2px; background: var(--linha); }
+ol.passos > li:last-child { padding-bottom: 0; } ol.passos > li:last-child::after { display: none; }
+ol.passos > li > div { grid-column: 2; min-width: 0; display: grid; gap: 10px; padding-top: 5px; }
+
+/* comando: bloco de terminal */
+.term { background: var(--term); color: var(--term-tinta); border-radius: 12px; overflow: hidden; border: 1px solid #262932; }
+.term-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 6px 6px 12px; border-bottom: 1px solid #262932; }
+.pontos { display: flex; gap: 6px; } .pontos i { width: 9px; height: 9px; border-radius: 50%; background: #3a3d48; }
+.term pre { margin: 0; padding: 12px 14px; font: 14px/1.55 var(--f-mono); overflow-x: auto; white-space: pre; }
+.term pre::before { content: "› "; color: var(--amarelo); }
+.copiar { display: inline-flex; align-items: center; gap: 6px; font: 600 13px var(--f-texto); border: 0; border-radius: 8px; padding: 7px 12px;
+  cursor: pointer; background: var(--amarelo); color: #121318; flex-shrink: 0; }
+.copiar svg { width: 14px; height: 14px; }
+.copiar.ok { background: var(--ok); color: #fff; }
+
+/* prompts prontos */
+.prompts { display: grid; gap: 14px; }
+.prompt { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; box-shadow: var(--sombra); }
+.prompt-top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 14px 16px 10px; }
+.prompt-top b { font: 600 17px/1.3 var(--f-titulo); display: block; }
+.prompt-top span { display: block; color: var(--suave); font-size: 13px; margin-top: 2px; }
+.prompt pre { margin: 0 16px 16px; padding: 14px; background: var(--bg); border-left: 3px solid var(--amarelo); border-radius: 0 10px 10px 0;
+  font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.prompt pre .troca { background: color-mix(in srgb, var(--amarelo) 45%, transparent); border-radius: 4px; padding: 0 2px; }
+
+/* cuidados */
+.cuidados { background: var(--alerta-bg); border: 1px solid color-mix(in srgb, var(--alerta) 35%, transparent); border-radius: 14px; padding: 18px; }
+.cuidados h2 { color: var(--alerta); font-size: 22px; }
+.cuidados ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+/* fecho */
+.fecho { background: var(--hero); color: var(--hero-tinta); border-radius: 18px; padding: 24px 20px; display: grid; gap: 14px; }
+.fecho p { margin: 0; font: 600 19px/1.4 var(--f-titulo); }
+.fecho .btn-linha { color: var(--hero-tinta); }
+.rodape { color: var(--suave); font-size: 14px; margin: 0; text-align: center; }
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; background: var(--tinta); color: var(--bg);
+  padding: 10px 16px; border-radius: 999px; font: 600 14px var(--f-texto); transition: .2s; pointer-events: none; z-index: 10; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toast { transition: none; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <a class="marca" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><span class="avatar">A</span><span><b>@alvim_ai</b><span>ferramentas de IA, testadas</span></span></a>
+    <div class="selo">Guia grátis em português</div>
+    <h1>Um robô que <em>acha clientes</em> e escreve os e-mails por você</h1>
+    <p class="lead">O Harvey é gratuito e roda no seu computador. Você mostra o seu site, ele aprende o que você vende, procura empresas que podem virar clientes e escreve e-mails curtos pra cada uma. Ele usa a assinatura do Claude que você já paga, e nenhum e-mail sai sem você aprovar.</p>
+    <div class="acoes">
+      <a class="btn btn-amarelo" href="#passos">Ver o passo a passo</a>
+      <a class="btn btn-linha" href="https://github.com/ethanplusai/harvey" target="_blank" rel="noopener">Página oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
+  </div>
+</header>
+<nav class="menu" aria-label="Seções"><ul><li><a href="#serve">Pra que serve</a></li><li><a href="#precisa">O que você precisa</a></li><li><a href="#passos">Passo a passo</a></li><li><a href="#prompts">Pedidos prontos pra fazer no Claude Code, dentro da pasta do Harvey</a></li><li><a href="#cuidados">Antes de usar</a></li></ul></nav>
+<main class="wrap">
+  <section id="serve" class=""><h2><span class="n">01</span>Pra que serve</h2><ul class="serve"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Aprender o seu produto lendo o seu site, pra escrever e-mails que falam do que você vende de verdade.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Achar empresas pra você abordar numa fonte grátis (o mapa aberto OpenStreetMap), sem criar conta em lugar nenhum.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Escrever 3 e-mails curtos pra cada empresa: o 1º e o 2º com menos de 75 palavras, o 3º com menos de 40. Ele bloqueia frases com cara de IA.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Trabalhar sozinho: a cada 15 minutos ele acorda, vê o que mais precisa ser feito, faz e volta a dormir.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Ler as respostas e preparar o próximo e-mail pra levar a conversa até uma reunião. Tudo passa pela sua aprovação.</span></li></ul></section><section id="precisa" class=""><h2><span class="n">02</span>O que você precisa</h2><ul class="precisa"><li>Claude Pro ou Max, com o Claude Code instalado e com login feito</li><li>Python 3.11 ou mais novo (o programa em que o Harvey roda)</li><li>Git (o programa que baixa o projeto)</li><li>Uma conta de e-mail num domínio separado, só pra prospecção (Gmail/Google Workspace ou Microsoft 365)</li></ul></section><section id="passos" class=""><h2><span class="n">03</span>Passo a passo</h2><ol class="passos"><li><div><span>Confira se o Python é 3.11 ou mais novo. Se for mais antigo ou não existir, instale a versão mais nova em python.org.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c0" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c0">python3 --version</pre></div></div></li><li><div><span>Abra o terminal (no Windows, o PowerShell) e rode estes três comandos, um por vez. Eles baixam o Harvey, entram na pasta dele e abrem o Claude Code lá dentro.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c1" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c1">git clone https://github.com/ethanplusai/harvey.git
+cd harvey
+claude</pre></div></div></li><li><div><span>Com o Claude Code aberto, escreva a frase abaixo. O projeto já vem com instruções que transformam o Claude num assistente de instalação: ele vê o que falta, instala, pede o que precisa (como os dados do e-mail) e ensina o seu produto pro Harvey.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c2" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c2">set up Harvey for me</pre></div></div></li><li><div><span>Quando ele pedir o site, passe o endereço do seu. Se preferir fazer na mão, o comando é este (troque pelo seu site):</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c3" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c3">harvey train https://your-company.com</pre></div></div></li><li><div><span>Escolha que tipo de empresa vale a pena abordar e mande ele procurar. O Harvey sabe olhar 23 sinais de uma empresa, por exemplo: tem telefone e endereço, mas não tem site.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c4" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c4">harvey signals --confirm free
+harvey discover</pre></div></div></li><li><div><span>Abra o painel e ligue o robô. O painel abre no navegador, em http://localhost:5555. Na Caixa de saída aparece um e-mail por vez: tecle A pra aprovar, R pra recusar, J e K pra andar na fila.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c5" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c5">harvey dashboard
+harvey run</pre></div></div></li></ol></section><section id="prompts" class=""><h2><span class="n">04</span>Pedidos prontos pra fazer no Claude Code, dentro da pasta do Harvey</h2><div class="prompts"><article class="prompt"><div class="prompt-top"><div><b>Instalar sem dor de cabeça</b><span>Primeira vez, logo depois de abrir o Claude Code na pasta</span></div><button type="button" class="copiar" data-copiar="p0" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p0">set up Harvey for me
+Estou no Windows e nunca programei. Explique cada passo em português antes de fazer e me avise quando precisar de alguma informação minha.
+Meu site é <span class="troca">[ENDEREÇO DO SEU SITE]</span> e vou mandar os e-mails pela conta <span class="troca">[SEU E-MAIL DE PROSPECÇÃO]</span>.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Mirar no cliente certo</b><span>Antes de mandar procurar empresas</span></div><button type="button" class="copiar" data-copiar="p1" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p1">Me ajude a escolher os sinais do Harvey pra achar bons clientes.
+Eu vendo <span class="troca">[O QUE VOCÊ VENDE]</span> pra <span class="troca">[TIPO DE EMPRESA, ex.: clínicas, restaurantes, academias]</span> em <span class="troca">[CIDADE OU REGIÃO]</span>.
+Me mostre quais sinais combinam com isso, explique cada um em uma frase e só depois rode a busca.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Revisar os e-mails antes de aprovar</b><span>Quando já tiver e-mails esperando na Caixa de saída</span></div><button type="button" class="copiar" data-copiar="p2" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p2">Leia os e-mails que estão esperando aprovação no Harvey e me diga, em português, quais parecem genéricos, quais têm alguma informação errada sobre a empresa e quais estão bons pra aprovar.
+Não aprove nada sozinho: só me dê a lista.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Ver se está tudo bem</b><span>Depois de alguns dias rodando</span></div><button type="button" class="copiar" data-copiar="p3" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p3">Rode harvey status e harvey usage e me explique em português: quantas empresas ele achou, quantos e-mails saíram, quantos voltaram com erro e quanto do meu limite do Claude ele está gastando.
+Se os e-mails que voltam com erro passarem de 3%, me avise e pause os envios.</pre></article></div></section><section id="cuidados" class="cuidados"><h2><span class="n">05</span>Antes de usar</h2><ul><li>O Harvey é grátis e usa a sua assinatura do Claude, mas gasta o limite dela. Se ele rodar muito, pode sobrar menos pro seu uso normal.</li><li>Você vai precisar de um e-mail num domínio separado (um endereço tipo seunomevendas.com). A página oficial avisa: mandar e-mail frio pelo domínio principal pode jogar tudo pro spam pra sempre. O Google Workspace custa cerca de US$ 7 por mês.</li><li>Comece devagar: a página recomenda aquecer o e-mail novo por 2 a 4 semanas antes de mandar muito. O limite padrão é de 50 envios por dia, e isso é um teto, não uma meta.</li><li>Se algo der errado, o comando harvey sending pause para todos os envios na hora. Se muitos e-mails voltarem com erro, ele para sozinho.</li><li>No Windows, use o Harvey com o Claude. A opção com o ChatGPT (Codex) só funciona em Mac e Linux.</li><li>Mandar e-mail pra quem não pediu tem regras. A própria página diz que não é orientação jurídica: em envio grande ou em setor regulado, fale com um advogado. Se alguém perguntar, o Harvey tem que dizer que é uma IA.</li></ul></section>
+  <div class="fecho"><p>Resumindo: você abre o Claude Code na pasta, pede &quot;set up Harvey for me&quot;, passa o seu site e ele começa a achar empresas e escrever os e-mails. Você só aprova no painel.</p><div class="acoes" style="margin:0"><a class="btn btn-amarelo" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">Seguir @alvim_ai</a><a class="btn btn-linha" href="https://github.com/ethanplusai/harvey" target="_blank" rel="noopener">Página oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div></div>
+  <p class="rodape"><a href="../">Todos os guias e prompts do Alvim</a></p>
+</main>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+const toast = document.querySelector('.toast');
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const original = btn.innerHTML;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => {
+      btn.classList.add('ok'); btn.textContent = 'Copiado';
+      toast.textContent = 'Copiado! Agora é só colar.'; toast.classList.add('on');
+      setTimeout(() => { btn.classList.remove('ok'); btn.innerHTML = original; toast.classList.remove('on'); }, 1800);
+    };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>
