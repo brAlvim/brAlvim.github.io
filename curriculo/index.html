@@ -48,6 +48,14 @@ button:focus-visible { outline: 3px solid var(--carimbo); outline-offset: 2px; }
 pre { margin: 0; padding: 18px 16px; background: var(--bloco); font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 560px; overflow: auto; }
 .nota { color: var(--suave); font-size: 14px; margin: 0; }
 .nota b { color: var(--ok); }
+.seguir-topo { justify-self: start; display: inline-flex; gap: 8px; align-items: center; font: 600 14px var(--f-texto); color: var(--tinta);
+  border: 1px solid var(--linha); background: var(--papel); border-radius: 999px; padding: 6px 14px; text-decoration: none; }
+.seguir-topo:hover { border-color: var(--carimbo); }
+.seguir { background: var(--papel); border: 2px solid var(--carimbo); border-radius: 10px; padding: 18px 20px; display: flex;
+  flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+.seguir p { margin: 0; max-width: 46ch; } .seguir b { font: 600 18px/1.3 var(--f-titulo); display: block; }
+.seguir a { font: 600 15px var(--f-texto); background: var(--carimbo); color: #fff; border-radius: 6px; padding: 10px 18px; text-decoration: none; white-space: nowrap; }
+.seguir a:focus-visible, .seguir-topo:focus-visible { outline: 3px solid var(--carimbo); outline-offset: 2px; }
 </style>
 </head>
 <body>
@@ -58,6 +66,7 @@ pre { margin: 0; padding: 18px 16px; background: var(--bloco); font: 14px/1.6 va
     <div class="selo">Prompt grátis · @alvim_ai</div>
     <h1>Sete avaliadores tentam <em>reprovar</em> o seu currículo</h1>
     <p class="lead">Uma empresa quase nunca conta por que disse não. Esta banca conta antes de você se candidatar, e no final escreve uma versão nova do seu currículo com cada erro corrigido.</p>
+    <a class="seguir-topo" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">📲 Seguir @alvim_ai no Instagram</a>
     <div class="stamp">REPROVADO?</div>
   </header>
 
@@ -146,6 +155,7 @@ A VAGA:
   </section>
 
   <p class="nota"><b>Dica:</b> rode a banca de novo a cada vaga. O que reprova numa empresa pode passar em outra.</p>
+  <div class="seguir"><p><b>Gostou? Me segue no @alvim_ai</b>Toda semana tem prompt grátis como esta banca. Ferramentas de IA testadas, sem enrolação.</p><a href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">Seguir @alvim_ai</a></div>
   <p class="nota">Mais prompts e ferramentas de IA: <a href="https://www.instagram.com/alvim_ai/" style="color:inherit">@alvim_ai</a> no Instagram · <a href="../" style="color:inherit">todos os materiais</a></p>
 </main>
 
