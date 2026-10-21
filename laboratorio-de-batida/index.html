@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monte um time de Claudes pra bater na sua ideia antes do mercado</title>
+<meta name="description" content="No Claude Code dá pra criar ajudantes, os subagentes: cada um é um Claude com uma função só, instruções próprias e memória separada. Aqui você monta um laboratório de batida. Um Claude apresenta a sua ideia, cinco bonecos de teste jogam um desastre diferente nela ao mesmo tempo e um engenheiro-chefe junta tudo e diz o que consertar.">
+<meta name="theme-color" content="#121318">
+<meta property="og:title" content="Monte um time de Claudes pra bater na sua ideia antes do mercado">
+<meta property="og:description" content="No Claude Code dá pra criar ajudantes, os subagentes: cada um é um Claude com uma função só, instruções próprias e memória separada. Aqui você monta um laboratório de batida. Um Claude apresenta a sua ideia, cinco bonecos de teste jogam um desastre diferente nela ao mesmo tempo e um engenheiro-chefe junta tudo e diz o que consertar.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd23f'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' font-family='sans-serif' fill='%23121318'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Identidade dos reels: tinta escura + amarelo das capas/stories. Coluna única, pensada pro celular (vem do direct). */
+:root {
+  --bg: #f4f2ec; --papel: #ffffff; --tinta: #121318; --suave: #5d6170; --linha: #e3e0d6;
+  --amarelo: #ffd23f; --amarelo-tinta: #121318; --marca: #ffd23f; --ok: #1f8a55; --alerta: #b4410f; --alerta-bg: #fff4ec;
+  --hero: #121318; --hero-tinta: #f5f3ee; --hero-suave: #a9adbb; --term: #16181f; --term-tinta: #e8eaf0; --term-suave: #8b90a0;
+  --sombra: 0 1px 2px rgba(18,19,24,.06), 0 6px 20px rgba(18,19,24,.06);
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+body { margin: 0; background: var(--bg); color: var(--tinta); font: 16px/1.65 var(--f-texto); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; border-radius: 6px; }
+
+/* topo escuro, como a capa do reel */
+.hero { background: var(--hero); color: var(--hero-tinta); padding: 28px 0 36px; border-bottom: 1px solid var(--linha); }
+.marca { display: flex; align-items: center; gap: 10px; text-decoration: none; width: fit-content; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--amarelo); color: #121318; display: grid; place-items: center;
+  font: 800 16px var(--f-titulo); }
+.marca b { font: 600 15px var(--f-texto); } .marca span { display: block; color: var(--hero-suave); font-size: 12px; line-height: 1.2; }
+.selo { display: inline-block; margin: 26px 0 14px; background: var(--amarelo); color: #121318; font: 600 12px var(--f-mono);
+  letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+h1 { font: 800 clamp(34px, 8.5vw, 54px)/1.02 var(--f-titulo); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.lead { margin: 16px 0 0; color: var(--hero-suave); font-size: 17px; max-width: 60ch; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 10px;
+  font: 600 15px var(--f-texto); text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn-amarelo { background: var(--amarelo); color: #121318; }
+.btn-linha { border-color: #3a3d48; color: var(--hero-tinta); }
+.btn svg { width: 16px; height: 16px; }
+
+/* menu rápido das seções */
+.menu { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--linha); }
+.menu ul { list-style: none; margin: 0 auto; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; max-width: 720px; scrollbar-width: none; }
+.menu ul::-webkit-scrollbar { display: none; }
+.menu a { display: block; white-space: nowrap; text-decoration: none; font: 500 14px var(--f-texto); padding: 6px 12px; border-radius: 999px;
+  background: var(--papel); border: 1px solid var(--linha); color: var(--suave); }
+
+main.wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+h2 { font: 800 26px/1.15 var(--f-titulo); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+h2 .n { font: 600 12px var(--f-mono); color: var(--suave); letter-spacing: .08em; }
+
+/* pra que serve: cartões com check */
+.serve { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.serve li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 12px; padding: 14px 16px; box-shadow: var(--sombra); }
+.serve svg { width: 22px; height: 22px; color: var(--ok); margin-top: 2px; }
+
+/* o que precisa */
+.precisa { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.precisa li { display: inline-flex; align-items: center; gap: 8px; background: var(--papel); border: 1px solid var(--linha); border-radius: 10px;
+  padding: 8px 12px; font-size: 14px; }
+.precisa li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--amarelo); flex-shrink: 0; box-shadow: 0 0 0 2px #121318 inset; }
+
+/* passo a passo em linha do tempo */
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; }
+ol.passos > li { counter-increment: p; position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 14px; padding-bottom: 22px; }
+ol.passos > li::before { content: counter(p); width: 36px; height: 36px; border-radius: 50%; background: var(--tinta); color: var(--bg);
+  font: 600 15px var(--f-mono); display: grid; place-items: center; position: relative; z-index: 1; }
+ol.passos > li::after { content: ""; position: absolute; left: 17px; top: 36px; bottom: 0; width: 2px; background: var(--linha); }
+ol.passos > li:last-child { padding-bottom: 0; } ol.passos > li:last-child::after { display: none; }
+ol.passos > li > div { grid-column: 2; min-width: 0; display: grid; gap: 10px; padding-top: 5px; }
+
+/* comando: bloco de terminal */
+.term { background: var(--term); color: var(--term-tinta); border-radius: 12px; overflow: hidden; border: 1px solid #262932; }
+.term-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 6px 6px 12px; border-bottom: 1px solid #262932; }
+.pontos { display: flex; gap: 6px; } .pontos i { width: 9px; height: 9px; border-radius: 50%; background: #3a3d48; }
+.term pre { margin: 0; padding: 12px 14px; font: 14px/1.55 var(--f-mono); overflow-x: auto; white-space: pre; }
+.term pre::before { content: "› "; color: var(--amarelo); }
+.copiar { display: inline-flex; align-items: center; gap: 6px; font: 600 13px var(--f-texto); border: 0; border-radius: 8px; padding: 7px 12px;
+  cursor: pointer; background: var(--amarelo); color: #121318; flex-shrink: 0; }
+.copiar svg { width: 14px; height: 14px; }
+.copiar.ok { background: var(--ok); color: #fff; }
+
+/* prompts prontos */
+.prompts { display: grid; gap: 14px; }
+.prompt { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; box-shadow: var(--sombra); }
+.prompt-top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 14px 16px 10px; }
+.prompt-top b { font: 600 17px/1.3 var(--f-titulo); display: block; }
+.prompt-top span { display: block; color: var(--suave); font-size: 13px; margin-top: 2px; }
+.prompt pre { margin: 0 16px 16px; padding: 14px; background: var(--bg); border-left: 3px solid var(--amarelo); border-radius: 0 10px 10px 0;
+  font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.prompt pre .troca { background: color-mix(in srgb, var(--amarelo) 45%, transparent); border-radius: 4px; padding: 0 2px; }
+
+/* cuidados */
+.cuidados { background: var(--alerta-bg); border: 1px solid color-mix(in srgb, var(--alerta) 35%, transparent); border-radius: 14px; padding: 18px; }
+.cuidados h2 { color: var(--alerta); font-size: 22px; }
+.cuidados ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+/* fecho */
+.fecho { background: var(--hero); color: var(--hero-tinta); border-radius: 18px; padding: 24px 20px; display: grid; gap: 14px; }
+.fecho p { margin: 0; font: 600 19px/1.4 var(--f-titulo); }
+.fecho .btn-linha { color: var(--hero-tinta); }
+.rodape { color: var(--suave); font-size: 14px; margin: 0; text-align: center; }
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; background: var(--tinta); color: var(--bg);
+  padding: 10px 16px; border-radius: 999px; font: 600 14px var(--f-texto); transition: .2s; pointer-events: none; z-index: 10; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toast { transition: none; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <a class="marca" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><span class="avatar">A</span><span><b>@alvim_ai</b><span>ferramentas de IA, testadas</span></span></a>
+    <div class="selo">Guia grátis em português</div>
+    <h1>Monte um time de Claudes pra <em>bater na sua ideia</em> antes do mercado</h1>
+    <p class="lead">No Claude Code dá pra criar ajudantes, os subagentes: cada um é um Claude com uma função só, instruções próprias e memória separada. Aqui você monta um laboratório de batida. Um Claude apresenta a sua ideia, cinco bonecos de teste jogam um desastre diferente nela ao mesmo tempo e um engenheiro-chefe junta tudo e diz o que consertar.</p>
+    <div class="acoes">
+      <a class="btn btn-amarelo" href="#passos">Ver o passo a passo</a>
+      <a class="btn btn-linha" href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">Página oficial dos subagentes (em inglês) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
+  </div>
+</header>
+<nav class="menu" aria-label="Seções"><ul><li><a href="#serve">Pra que serve</a></li><li><a href="#precisa">O que você precisa</a></li><li><a href="#passos">Passo a passo</a></li><li><a href="#prompts">Prompts prontos pra colar no Claude Code</a></li><li><a href="#cuidados">Antes de usar</a></li></ul></nav>
+<main class="wrap">
+  <section id="serve" class=""><h2><span class="n">01</span>Pra que serve</h2><ul class="serve"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Testar uma ideia de negócio contra problemas reais antes de gastar dinheiro: crise na economia, alguém te copiando, um processo, cliente que some, dinheiro que acaba.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Cada boneco de teste trabalha sozinho e ao mesmo tempo que os outros, então um desastre não contamina a análise do outro.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>No fim você recebe uma lista do que rachou no plano e do que consertar primeiro.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Serve pra qualquer tamanho de ideia: do bico de fim de semana a uma startup inteira.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>O laboratório fica salvo. Depois de mudar o plano, você roda o teste de novo com um pedido só.</span></li></ul></section><section id="precisa" class=""><h2><span class="n">02</span>O que você precisa</h2><ul class="precisa"><li>Claude Code instalado. É o Claude que trabalha numa pasta do seu computador (como instalar está no menu do link oficial)</li><li>Uma pasta só pra esse laboratório</li><li>A sua ideia escrita num arquivo de texto (meia página já serve)</li></ul></section><section id="passos" class=""><h2><span class="n">03</span>Passo a passo</h2><ol class="passos"><li><div><span>Crie uma pasta pro laboratório e, dentro dela, um arquivo ideia.md com a sua ideia: o que vende, pra quem, por quanto, como chega no cliente e quanto dinheiro você tem. Isso é importante porque os bonecos de teste não leem a sua conversa com o Claude, só o que você mandar pra eles.</span></div></li><li><div><span>Abra o Claude Code dentro dessa pasta. No terminal (a janela de comandos), entre na pasta e digite:</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c1" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c1">claude</pre></div></div></li><li><div><span>Cole o 1º prompt lá de baixo. O Claude cria um arquivo pra cada boneco de teste e um pro engenheiro-chefe na pasta .claude/agents/ do projeto. Cada arquivo diz o nome do ajudante, quando ele deve ser usado e as instruções dele.</span></div></li><li><div><span>Feche e abra o Claude Code de novo, pra ele enxergar o time novo. Se quiser ajustar um boneco, é só abrir o arquivo dele em .claude/agents/ e mudar o texto, ou pedir pro Claude mudar.</span></div></li><li><div><span>Cole o 2º prompt pra rodar a batida. Os bonecos trabalham ao mesmo tempo e cada um devolve um resumo do que quebrou. Pra chamar um só pelo nome, dá pra pedir assim:</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c4" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c4">Use o subagente boneco-processo para analisar o arquivo ideia.md</pre></div></div></li><li><div><span>Conserte o plano no ideia.md e rode o 4º prompt pra bater de novo e ver se a ideia ficou à prova de batida.</span></div></li></ol></section><section id="prompts" class=""><h2><span class="n">04</span>Prompts prontos pra colar no Claude Code</h2><div class="prompts"><article class="prompt"><div class="prompt-top"><div><b>1. Montar o laboratório</b><span>Uma vez só, na primeira vez que abrir a pasta</span></div><button type="button" class="copiar" data-copiar="p0" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p0">Crie subagentes deste projeto em .claude/agents/ para um laboratório de batida de ideias de negócio. Todos só leem arquivos, não mexem em nada, e respondem em português.
+
+1. piloto: lê o ideia.md e devolve a ideia organizada em 10 linhas (o que vende, pra quem, preço, como vende, custos, dinheiro disponível).
+2. boneco-crise: imagina uma crise na economia (juros altos, cliente cortando gasto, fornecedor mais caro) e mostra onde o plano quebra.
+3. boneco-copia: imagina um concorrente maior copiando a ideia em 3 meses e cobrando menos.
+4. boneco-processo: procura riscos legais e de regras do setor (contrato, marca, dados de cliente, licença, impostos) e diz o que precisa de um advogado ou contador de verdade.
+5. boneco-cliente: imagina que os clientes não aparecem ou somem depois da 1ª compra.
+6. boneco-caixa: imagina que o dinheiro acaba antes da hora e calcula quantos meses o plano aguenta com os números do ideia.md.
+7. engenheiro-chefe: junta os relatórios dos bonecos e entrega os 5 consertos mais importantes, em ordem.
+
+Cada boneco devolve: o desastre, o que rachou, a gravidade (leve, séria ou fatal) e uma pergunta que eu preciso responder. Ninguém inventa número: se faltar dado no ideia.md, o boneco diz o que falta.</pre></article><article class="prompt"><div class="prompt-top"><div><b>2. Rodar a batida</b><span>Depois de reabrir o Claude Code com o time criado</span></div><button type="button" class="copiar" data-copiar="p1" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p1">Rode o laboratório de batida na minha ideia do arquivo ideia.md.
+Primeiro use o subagente piloto pra organizar a ideia.
+Depois use os subagentes boneco-crise, boneco-copia, boneco-processo, boneco-cliente e boneco-caixa em paralelo, cada um com o resumo do piloto.
+No fim, use o engenheiro-chefe com todos os relatórios e salve tudo em relatorio-batida.md.
+Me mostre um placar: quantas rachaduras leves, sérias e fatais.</pre></article><article class="prompt"><div class="prompt-top"><div><b>3. Um desastre sob medida</b><span>Quando você tem um medo específico sobre a sua ideia</span></div><button type="button" class="copiar" data-copiar="p2" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p2">Crie mais um subagente em .claude/agents/ chamado boneco-<span class="troca">[NOME DO DESASTRE]</span>.
+Ele imagina este desastre: <span class="troca">[DESCREVA O DESASTRE, ex.: o aplicativo de entrega que eu uso dobra a taxa]</span>.
+Mesmas regras dos outros bonecos: só lê, responde em português, devolve o que rachou, a gravidade e uma pergunta pra mim.
+Depois rode ele no ideia.md e me diga se isso muda os consertos do engenheiro-chefe.</pre></article><article class="prompt"><div class="prompt-top"><div><b>4. Bater de novo depois do conserto</b><span>Depois de mudar o plano no ideia.md</span></div><button type="button" class="copiar" data-copiar="p3" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p3">Atualizei o ideia.md com os consertos. Rode o laboratório de batida de novo do mesmo jeito.
+Compare com o relatorio-batida.md anterior: o que foi consertado, o que continua rachado e se apareceu rachadura nova.
+Salve a comparação em relatorio-batida-<span class="troca">[DATA]</span>.md.</pre></article></div></section><section id="cuidados" class="cuidados"><h2><span class="n">05</span>Antes de usar</h2><ul><li>Cada boneco é um Claude trabalhando por conta própria e gasta do mesmo limite de uso da sua conta. Sete de uma vez consomem bem mais que uma conversa normal. Pra economizar, peça pra criar os bonecos usando o modelo Haiku, que é mais rápido e barato.</li><li>Os bonecos não veem a sua conversa. Tudo que eles precisam saber tem que estar no ideia.md. Ideia vaga gera crítica vaga.</li><li>É um teste de estresse, não uma consultoria. O que o boneco-processo levantar, confirme com advogado ou contador antes de decidir.</li><li>Não coloque senha, dados de cliente ou documento sigiloso no ideia.md.</li><li>Os bonecos são pessimistas de propósito. Uma rachadura &quot;fatal&quot; é um alerta pra investigar, não uma sentença de que a ideia não presta.</li></ul></section>
+  <div class="fecho"><p>Resumindo: escreve a ideia num arquivo, pede pro Claude Code criar o time de bonecos, roda a batida e conserta o que o engenheiro-chefe apontar.</p><div class="acoes" style="margin:0"><a class="btn btn-amarelo" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">Seguir @alvim_ai</a><a class="btn btn-linha" href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">Página oficial dos subagentes (em inglês) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div></div>
+  <p class="rodape"><a href="../">Todos os guias e prompts do Alvim</a></p>
+</main>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+const toast = document.querySelector('.toast');
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const original = btn.innerHTML;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => {
+      btn.classList.add('ok'); btn.textContent = 'Copiado';
+      toast.textContent = 'Copiado! Agora é só colar.'; toast.classList.add('on');
+      setTimeout(() => { btn.classList.remove('ok'); btn.innerHTML = original; toast.classList.remove('on'); }, 1800);
+    };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>
