@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monte o roteiro do seu reel em 8 blocos</title>
+<meta name="description" content="Um molde pra escrever vídeo curto sem travar: gancho, lead, corpo, loop aberto, corpo, loop aberto, corpo e CTA. Cada bloco tem uma função: prender quem está rolando, segurar até os 10 segundos, entregar valor e, no fim, levar quem gostou pro próximo passo. As dicas abaixo vêm dos guias oficiais da Meta sobre Reels.">
+<meta name="theme-color" content="#121318">
+<meta property="og:title" content="Monte o roteiro do seu reel em 8 blocos">
+<meta property="og:description" content="Um molde pra escrever vídeo curto sem travar: gancho, lead, corpo, loop aberto, corpo, loop aberto, corpo e CTA. Cada bloco tem uma função: prender quem está rolando, segurar até os 10 segundos, entregar valor e, no fim, levar quem gostou pro próximo passo. As dicas abaixo vêm dos guias oficiais da Meta sobre Reels.">
+<!--OG--><meta property="og:image" content="https://bralvim.github.io/roteiro-8-blocos/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:url" content="https://bralvim.github.io/roteiro-8-blocos/"><meta name="twitter:card" content="summary_large_image"><!--/OG-->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd23f'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' font-family='sans-serif' fill='%23121318'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Identidade dos reels: tinta escura + amarelo das capas/stories. Coluna única, pensada pro celular (vem do direct). */
+:root {
+  --bg: #f4f2ec; --papel: #ffffff; --tinta: #121318; --suave: #5d6170; --linha: #e3e0d6;
+  --amarelo: #ffd23f; --amarelo-tinta: #121318; --marca: #ffd23f; --ok: #1f8a55; --alerta: #b4410f; --alerta-bg: #fff4ec;
+  --hero: #121318; --hero-tinta: #f5f3ee; --hero-suave: #a9adbb; --term: #16181f; --term-tinta: #e8eaf0; --term-suave: #8b90a0;
+  --sombra: 0 1px 2px rgba(18,19,24,.06), 0 6px 20px rgba(18,19,24,.06);
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+body { margin: 0; background: var(--bg); color: var(--tinta); font: 16px/1.65 var(--f-texto); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; border-radius: 6px; }
+
+/* topo escuro, como a capa do reel */
+.hero { background: var(--hero); color: var(--hero-tinta); padding: 28px 0 36px; border-bottom: 1px solid var(--linha); }
+.marca { display: flex; align-items: center; gap: 10px; text-decoration: none; width: fit-content; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--amarelo); color: #121318; display: grid; place-items: center;
+  font: 800 16px var(--f-titulo); }
+.marca b { font: 600 15px var(--f-texto); } .marca span { display: block; color: var(--hero-suave); font-size: 12px; line-height: 1.2; }
+.selo { display: inline-block; margin: 26px 0 14px; background: var(--amarelo); color: #121318; font: 600 12px var(--f-mono);
+  letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+h1 { font: 800 clamp(34px, 8.5vw, 54px)/1.02 var(--f-titulo); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.lead { margin: 16px 0 0; color: var(--hero-suave); font-size: 17px; max-width: 60ch; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 10px;
+  font: 600 15px var(--f-texto); text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn-amarelo { background: var(--amarelo); color: #121318; }
+.btn-linha { border-color: #3a3d48; color: var(--hero-tinta); }
+.btn svg { width: 16px; height: 16px; }
+
+/* menu rápido das seções */
+.menu { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--linha); }
+.menu ul { list-style: none; margin: 0 auto; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; max-width: 720px; scrollbar-width: none; }
+.menu ul::-webkit-scrollbar { display: none; }
+.menu a { display: block; white-space: nowrap; text-decoration: none; font: 500 14px var(--f-texto); padding: 6px 12px; border-radius: 999px;
+  background: var(--papel); border: 1px solid var(--linha); color: var(--suave); }
+
+main.wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+h2 { font: 800 26px/1.15 var(--f-titulo); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+h2 .n { font: 600 12px var(--f-mono); color: var(--suave); letter-spacing: .08em; }
+
+/* pra que serve: cartões com check */
+.serve { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.serve li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 12px; padding: 14px 16px; box-shadow: var(--sombra); }
+.serve svg { width: 22px; height: 22px; color: var(--ok); margin-top: 2px; }
+
+/* o que precisa */
+.precisa { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.precisa li { display: inline-flex; align-items: center; gap: 8px; background: var(--papel); border: 1px solid var(--linha); border-radius: 10px;
+  padding: 8px 12px; font-size: 14px; }
+.precisa li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--amarelo); flex-shrink: 0; box-shadow: 0 0 0 2px #121318 inset; }
+
+/* passo a passo em linha do tempo */
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; }
+ol.passos > li { counter-increment: p; position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 14px; padding-bottom: 22px; }
+ol.passos > li::before { content: counter(p); width: 36px; height: 36px; border-radius: 50%; background: var(--tinta); color: var(--bg);
+  font: 600 15px var(--f-mono); display: grid; place-items: center; position: relative; z-index: 1; }
+ol.passos > li::after { content: ""; position: absolute; left: 17px; top: 36px; bottom: 0; width: 2px; background: var(--linha); }
+ol.passos > li:last-child { padding-bottom: 0; } ol.passos > li:last-child::after { display: none; }
+ol.passos > li > div { grid-column: 2; min-width: 0; display: grid; gap: 10px; padding-top: 5px; }
+
+/* comando: bloco de terminal */
+.term { background: var(--term); color: var(--term-tinta); border-radius: 12px; overflow: hidden; border: 1px solid #262932; }
+.term-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 6px 6px 12px; border-bottom: 1px solid #262932; }
+.pontos { display: flex; gap: 6px; } .pontos i { width: 9px; height: 9px; border-radius: 50%; background: #3a3d48; }
+.term pre { margin: 0; padding: 12px 14px; font: 14px/1.55 var(--f-mono); overflow-x: auto; white-space: pre; }
+.term pre::before { content: "› "; color: var(--amarelo); }
+.copiar { display: inline-flex; align-items: center; gap: 6px; font: 600 13px var(--f-texto); border: 0; border-radius: 8px; padding: 7px 12px;
+  cursor: pointer; background: var(--amarelo); color: #121318; flex-shrink: 0; }
+.copiar svg { width: 14px; height: 14px; }
+.copiar.ok { background: var(--ok); color: #fff; }
+
+/* prompts prontos */
+.prompts { display: grid; gap: 14px; }
+.prompt { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; box-shadow: var(--sombra); }
+.prompt-top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 14px 16px 10px; }
+.prompt-top b { font: 600 17px/1.3 var(--f-titulo); display: block; }
+.prompt-top span { display: block; color: var(--suave); font-size: 13px; margin-top: 2px; }
+.prompt pre { margin: 0 16px 16px; padding: 14px; background: var(--bg); border-left: 3px solid var(--amarelo); border-radius: 0 10px 10px 0;
+  font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.prompt pre .troca { background: color-mix(in srgb, var(--amarelo) 45%, transparent); border-radius: 4px; padding: 0 2px; }
+
+/* cuidados */
+.faq details { background: var(--papel); border: 1px solid var(--linha); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq p { margin: 10px 0 0; }
+.cuidados { background: var(--alerta-bg); border: 1px solid color-mix(in srgb, var(--alerta) 35%, transparent); border-radius: 14px; padding: 18px; }
+.cuidados h2 { color: var(--alerta); font-size: 22px; }
+.cuidados ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+/* fecho */
+.fecho { background: var(--hero); color: var(--hero-tinta); border-radius: 18px; padding: 24px 20px; display: grid; gap: 14px; }
+.fecho p { margin: 0; font: 600 19px/1.4 var(--f-titulo); }
+.fecho .btn-linha { color: var(--hero-tinta); }
+.rodape { color: var(--suave); font-size: 14px; margin: 0; text-align: center; }
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; background: var(--tinta); color: var(--bg);
+  padding: 10px 16px; border-radius: 999px; font: 600 14px var(--f-texto); transition: .2s; pointer-events: none; z-index: 10; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toast { transition: none; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <a class="marca" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><span class="avatar">A</span><span><b>@alvim_ai</b><span>ferramentas de IA, testadas</span></span></a>
+    <div class="selo">Guia grátis em português</div>
+    <h1>Monte o roteiro do seu reel <em>em 8 blocos</em></h1>
+    <p class="lead">Um molde pra escrever vídeo curto sem travar: gancho, lead, corpo, loop aberto, corpo, loop aberto, corpo e CTA. Cada bloco tem uma função: prender quem está rolando, segurar até os 10 segundos, entregar valor e, no fim, levar quem gostou pro próximo passo. As dicas abaixo vêm dos guias oficiais da Meta sobre Reels.</p>
+    <div class="acoes">
+      <a class="btn btn-amarelo" href="#passos">Ver o passo a passo</a>
+      <a class="btn btn-linha" href="https://www.facebook.com/business/news/the-science-of-the-hook-how-to-supercharge-your-reels-performance" target="_blank" rel="noopener">Artigo oficial da Meta sobre o gancho nos Reels (em inglês) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
+  </div>
+</header>
+<nav class="menu" aria-label="Seções"><ul><li><a href="#serve">Pra que serve</a></li><li><a href="#precisa">O que você precisa</a></li><li><a href="#passos">Passo a passo</a></li><li><a href="#prompts">Prompts prontos pra colar no ChatGPT, Claude ou Gemini</a></li><li><a href="#cuidados">Antes de usar</a></li><li><a href="#perguntas">Perguntas comuns</a></li></ul></nav>
+<main class="wrap">
+  <section id="serve" class=""><h2><span class="n">01</span>Pra que serve</h2><ul class="serve"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Escrever o roteiro de um reel em poucos minutos, sempre na mesma ordem, sem ficar olhando pra página em branco.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Caprichar no começo, que é onde a pessoa decide se fica: pela Meta, 65% de quem vê os 3 primeiros segundos de um vídeo fica pelo menos 10.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Segurar a pessoa até o fim com frases de curiosidade entre um pedaço de valor e outro.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Fechar com um pedido claro (comentar, seguir, clicar) no momento certo: no final.</span></li></ul></section><section id="precisa" class=""><h2><span class="n">02</span>O que você precisa</h2><ul class="precisa"><li>Um assunto que você domina</li><li>Papel, bloco de notas ou um chat de IA (ChatGPT, Claude, Gemini…)</li><li>Celular pra gravar na vertical</li></ul></section><section id="passos" class=""><h2><span class="n">03</span>Passo a passo</h2><ol class="passos"><li><div><span>Gancho (bloco 1): a primeira frase, que quebra o padrão de quem está rolando o feed. A Meta mostra 3 tipos que funcionam: prometer o benefício logo de cara (&quot;o que você ganha com isso&quot;), dizer o que a pessoa vai ver (&quot;vou te mostrar como eu…&quot;) ou fazer uma pergunta (&quot;o que você faria com R$ 100 a mais por mês?&quot;).</span></div></li><li><div><span>Lead (bloco 2): uma ou duas frases que puxam a pessoa até a marca dos 10 segundos. Diga por que vale ficar: o problema que você vai resolver ou o resultado que ela vai ver.</span></div></li><li><div><span>Corpo e loop aberto (blocos 3 a 7): corpo 1 (primeiro pedaço de valor), loop aberto, corpo 2, loop aberto, corpo 3. Loop aberto é uma frase curta que cria curiosidade pro próximo pedaço, tipo &quot;mas o mais absurdo nem é isso&quot;. Assim a pessoa tem que ficar pra ver o fim.</span></div></li><li><div><span>CTA (bloco 8): o pedido final, uma ação só. Ele leva quem está mais interessado pro próximo passo: comentar uma palavra, seguir, clicar no link. A Meta recomenda deixar o CTA no fim do vídeo.</span></div></li><li><div><span>Na gravação: vídeo na vertical (9:16), com som (voz ou música) e legenda. Deixe o gancho e o CTA na área segura da tela, a parte que não fica coberta pelos botões e pelo texto do Instagram.</span></div></li><li><div><span>Faça duas versões do mesmo vídeo trocando só o gancho e compare quanto tempo as pessoas assistem. A Meta diz que mudanças pequenas no gancho podem dar ganhos grandes.</span></div></li></ol></section><section id="prompts" class=""><h2><span class="n">04</span>Prompts prontos pra colar no ChatGPT, Claude ou Gemini</h2><div class="prompts"><article class="prompt"><div class="prompt-top"><div><b>Roteiro completo nos 8 blocos</b><span>O pedido principal: troque o assunto, o público e o CTA pelos seus</span></div><button type="button" class="copiar" data-copiar="p0" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p0">Escreva o roteiro de um reel de <span class="troca">[30 A 45]</span> segundos sobre <span class="troca">[SEU ASSUNTO]</span>, para <span class="troca">[SEU PÚBLICO, ex.: donos de pequenas lojas]</span>.
+Use exatamente estes 8 blocos, nesta ordem, com o nome de cada bloco antes do texto:
+1. Gancho (1 frase que para quem está rolando o feed)
+2. Lead (puxa até os 10 segundos)
+3. Corpo 1
+4. Loop aberto (1 frase de curiosidade)
+5. Corpo 2
+6. Loop aberto
+7. Corpo 3
+8. CTA: <span class="troca">[SEU PEDIDO, ex.: comenta GUIA que eu te mando o passo a passo]</span>
+Frases curtas, jeito de falar, em português do Brasil. Não invente números: se precisar de um dado, escreva <span class="troca">[DADO]</span> pra eu completar.</pre></article><article class="prompt"><div class="prompt-top"><div><b>5 ganchos pra testar</b><span>Quando o roteiro está pronto e você quer escolher (ou testar) o melhor começo</span></div><button type="button" class="copiar" data-copiar="p1" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p1">Este é o roteiro do meu reel: <span class="troca">[COLE O ROTEIRO]</span>.
+Escreva 5 ganchos diferentes para ele, com no máximo 12 palavras cada:
+- 2 que prometem o benefício logo de cara
+- 2 que dizem o que a pessoa vai ver ou aprender
+- 1 que faz uma pergunta pra pessoa pensar na vida dela
+Evite frases batidas de internet. Do lado de cada um, diga em 1 linha por que ele prenderia <span class="troca">[SEU PÚBLICO]</span>.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Loops abertos que não soam clichê</b><span>Pra trocar o &quot;mas o mais louco nem é isso&quot; por algo do seu assunto</span></div><button type="button" class="copiar" data-copiar="p2" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p2">No meu roteiro sobre <span class="troca">[SEU ASSUNTO]</span>, os loops abertos aparecem entre estes trechos:
+Corpo 1: <span class="troca">[TEXTO]</span>
+Corpo 2: <span class="troca">[TEXTO]</span>
+Corpo 3: <span class="troca">[TEXTO]</span>
+Escreva 3 opções de loop aberto para cada passagem (corpo 1 para 2 e corpo 2 para 3). Cada uma precisa adiantar algo concreto do próximo trecho sem entregar a resposta. Nada de &quot;você não vai acreditar&quot; ou &quot;a parte mais louca&quot;.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Revisar um roteiro que você já tem</b><span>Pra encaixar um texto pronto no molde</span></div><button type="button" class="copiar" data-copiar="p3" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p3">Aqui está um roteiro de reel que eu escrevi: <span class="troca">[COLE O TEXTO]</span>.
+Reorganize nos 8 blocos (gancho, lead, corpo 1, loop aberto, corpo 2, loop aberto, corpo 3, CTA) sem mudar as informações.
+Aponte o que está faltando (ex.: não tem lead, o CTA está no meio, pede mais de uma coisa) e corte o que for enrolação. Me devolva a versão final com o tempo estimado de cada bloco.</pre></article></div></section><section id="cuidados" class="cuidados"><h2><span class="n">05</span>Antes de usar</h2><ul><li>O molde é gratuito e serve pra qualquer assunto, mas não faz milagre: se o conteúdo do corpo for fraco, o gancho só atrasa a saída da pessoa.</li><li>O número de 65% (quem vê 3 segundos fica 10) vem de um estudo da Meta com vídeos no Facebook. Use como referência, não como garantia pro seu reel.</li><li>Frase de curiosidade muito batida (&quot;o mais louco nem é isso&quot;) pode soar repetida pro seu público. Adapte ao seu assunto e teste versões.</li><li>Som faz diferença: pela Meta, mais de 75% das visualizações de Reels no Instagram são com som ligado, e reels com música ou voz chegaram a ter até 13% mais conversões (compras, cadastros). Legenda também ajuda: aumentou o tempo assistido em 12% nos testes deles.</li><li>Se usar IA pra escrever, revise: ela inventa número e dado com facilidade. Só publique o que você consegue confirmar.</li></ul></section><section id="perguntas" class=""><h2><span class="n">06</span>Perguntas comuns</h2><div class="faq"><details><summary>Não é melhor pôr o CTA mais cedo pra mais gente reagir?</summary><p>A recomendação da Meta pra Reels é deixar o CTA no fim do vídeo. Antes disso, o trabalho do gancho e do lead é segurar a pessoa, e quem chega ao final é quem está mais interessado em agir.</p></details><details><summary>Como eu sei se o meu gancho está funcionando?</summary><p>Teste. A Meta sugere fazer versões do mesmo reel com ganchos diferentes e comparar o tempo assistido, os cliques e as ações. Mudanças pequenas no gancho podem dar ganhos grandes.</p></details><details><summary>Que tipo de gancho prende mais gente?</summary><p>A Meta mostra 3 tipos que funcionaram: prometer o benefício logo no começo, dizer o que a pessoa vai ver ou aprender e fazer uma pergunta que convida a pessoa a pensar. O melhor é o que conversa com o que o seu público quer ou com o problema dele.</p></details></div></section>
+  <div class="fecho"><p>Resumindo: gancho, lead, três pedaços de valor com dois loops de curiosidade no meio e o CTA no fim. Grave na vertical, com som e legenda, e teste mais de um gancho.</p><div class="acoes" style="margin:0"><a class="btn btn-amarelo" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">Seguir @alvim_ai</a><a class="btn btn-linha" href="https://www.facebook.com/business/news/the-science-of-the-hook-how-to-supercharge-your-reels-performance" target="_blank" rel="noopener">Artigo oficial da Meta sobre o gancho nos Reels (em inglês) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div></div>
+  <p class="rodape"><a href="../">Todos os guias e prompts do Alvim</a></p>
+</main>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+const toast = document.querySelector('.toast');
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const original = btn.innerHTML;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => {
+      btn.classList.add('ok'); btn.textContent = 'Copiado';
+      toast.textContent = 'Copiado! Agora é só colar.'; toast.classList.add('on');
+      setTimeout(() => { btn.classList.remove('ok'); btn.innerHTML = original; toast.classList.remove('on'); }, 1800);
+    };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>
