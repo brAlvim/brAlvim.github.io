@@ -4,18 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Higgsfield · a IA do meu avatar</title>
-<meta name="description" content="A ferramenta que eu uso pra gerar o meu avatar falando nos vídeos do @alvim_ai.">
+<meta name="description" content="Como eu uso o Higgsfield pra gerar o meu avatar falando nos vídeos do @alvim_ai, o que mais dá pra fazer lá e exemplos da comunidade.">
 <meta name="theme-color" content="#121318">
 <meta property="og:title" content="Higgsfield · a IA do meu avatar">
-<meta property="og:description" content="A ferramenta que eu uso pra gerar o meu avatar falando nos vídeos do @alvim_ai.">
+<meta property="og:description" content="Como eu uso o Higgsfield pra gerar o meu avatar falando nos vídeos do @alvim_ai.">
 <!--OG--><meta property="og:image" content="https://bralvim.github.io/higgsfield/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:url" content="https://bralvim.github.io/higgsfield/"><meta name="twitter:card" content="summary_large_image"><!--/OG-->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd23f'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' font-family='sans-serif' fill='%23121318'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 :root { --bg: #f4f2ec; --papel: #fff; --tinta: #121318; --suave: #5d6170; --linha: #e3e0d6; --amarelo: #ffd23f; --hero: #121318;
   --hero-tinta: #f5f3ee; --hero-suave: #a9adbb; --sombra: 0 1px 2px rgba(18,19,24,.06), 0 6px 20px rgba(18,19,24,.06);
-  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; }
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0;
   --linha: #262932; --hero: #17191f; --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark } }
 :root[data-theme="dark"] { --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932; --hero: #17191f;
@@ -23,20 +24,46 @@
 *,*::before,*::after { box-sizing: border-box }
 body { margin: 0; background: var(--bg); color: var(--tinta); font: 16px/1.6 var(--f-texto); -webkit-font-smoothing: antialiased; }
 a { color: inherit; } :focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; border-radius: 6px; }
-.wrap { max-width: 640px; margin: 0 auto; padding: 0 16px; }
-.hero { background: var(--hero); color: var(--hero-tinta); padding: 32px 0 34px; text-align: center; }
-.voltar { display: inline-block; color: var(--hero-suave); font-size: 14px; text-decoration: none; margin-bottom: 14px; }
-.selo { display: inline-block; font: 600 12px var(--f-texto); letter-spacing: .08em; text-transform: uppercase; color: var(--amarelo); }
-h1 { font: 800 clamp(32px, 9vw, 50px)/1.05 var(--f-titulo); margin: 8px 0 0; text-wrap: balance; }
+img, video { max-width: 100%; display: block; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+.hero { background: var(--hero); color: var(--hero-tinta); padding: 28px 0 36px; text-align: center; }
+.voltar { display: inline-block; color: var(--hero-suave); font-size: 14px; text-decoration: none; margin-bottom: 16px; }
+.quem { display: inline-flex; align-items: center; gap: 10px; font: 600 15px var(--f-texto); color: var(--hero-suave); }
+.quem img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--amarelo); }
+h1 { font: 800 clamp(32px, 9vw, 52px)/1.05 var(--f-titulo); margin: 14px 0 0; text-wrap: balance; }
 h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em; }
-.hero p { margin: 14px auto 0; color: var(--hero-suave); max-width: 44ch; }
+.hero p { margin: 14px auto 0; color: var(--hero-suave); max-width: 46ch; }
 .botao { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 26px; margin-top: 22px; border-radius: 12px;
   background: var(--amarelo); color: #121318; font: 700 17px var(--f-texto); text-decoration: none; }
-main.wrap { display: grid; gap: 14px; padding-block: 26px 56px; }
-.cartao { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; padding: 18px 18px; box-shadow: var(--sombra); }
-.cartao h2 { font: 700 20px/1.3 var(--f-titulo); margin: 0 0 6px; }
-.cartao p { margin: 0; color: var(--suave); }
-.aviso { color: var(--suave); font-size: 13px; text-align: center; margin: 4px 0 0; }
+main.wrap { display: grid; gap: 40px; padding-block: 32px 56px; }
+h2 { font: 800 clamp(24px, 6vw, 32px)/1.15 var(--f-titulo); margin: 0 0 6px; }
+.sub { color: var(--suave); margin: 0 0 16px; }
+.demo { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 20px; align-items: center; }
+.demo video { width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 16px; background: #000; box-shadow: var(--sombra); }
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; gap: 12px; }
+ol.passos li { counter-increment: p; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
+ol.passos li::before { content: counter(p); width: 34px; height: 34px; border-radius: 50%; background: var(--amarelo); color: #121318;
+  display: grid; place-items: center; font: 800 16px var(--f-titulo); }
+ol.passos b { display: block; font: 600 17px/1.3 var(--f-titulo); }
+ol.passos span { color: var(--suave); font-size: 15px; }
+@media (max-width: 560px) { .demo { grid-template-columns: 1fr; } .demo video { max-width: 240px; margin: 0 auto; } }
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+a.ferr { display: grid; gap: 4px; align-content: start; background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; padding: 14px 16px;
+  text-decoration: none; box-shadow: var(--sombra); }
+a.ferr:hover, a.ex:hover { border-color: var(--amarelo); }
+a.ferr small { width: fit-content; font: 600 11px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; padding: 2px 8px; border-radius: 6px;
+  background: var(--amarelo); color: #121318; }
+a.ferr b { font: 600 18px/1.3 var(--f-titulo); }
+a.ferr span { color: var(--suave); font-size: 14px; }
+.galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+a.ex { display: grid; background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; text-decoration: none; box-shadow: var(--sombra); }
+a.ex img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #222; }
+a.ex span { padding: 10px 14px; font-size: 14px; color: var(--suave); }
+a.ex span b { color: var(--tinta); font: 600 16px var(--f-titulo); margin-right: 4px; }
+.final { background: var(--hero); color: var(--hero-tinta); border-radius: 18px; padding: 26px 20px; text-align: center; }
+.final h2 { color: var(--hero-tinta); }
+.final p { color: var(--hero-suave); margin: 0; }
+.aviso { color: var(--suave); font-size: 13px; text-align: center; margin: -24px 0 0; }
 </style>
 
 </head>
@@ -44,22 +71,70 @@ main.wrap { display: grid; gap: 14px; padding-block: 26px 56px; }
 <header class="hero">
   <div class="wrap">
     <a class="voltar" href="../">← todos os guias do @alvim_ai</a><br>
-    <span class="selo">O que eu uso</span>
+    <span class="quem"><img src="../foto.jpg" alt="Lucas Alvim" width="44" height="44">@alvim_ai · o que eu uso</span>
     <h1>O meu avatar dos vídeos sai do <em>Higgsfield</em></h1>
-    <p>É a ferramenta de IA que eu uso pra gerar o meu avatar falando nos reels: uma foto minha + a minha voz viram vídeo.</p>
-    <a class="botao" href="https://higgsfield.ai?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored">Abrir o Higgsfield ↗</a>
+    <p>Uma foto minha + a minha voz viram o vídeo de mim falando. E lá dentro tem muito mais: modelos de vídeo, de imagem e mais de 40 apps prontos.</p>
+    <a class="botao" href="https://higgsfield.ai?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored">Criar conta no Higgsfield ↗</a>
   </div>
 </header>
 <main class="wrap">
-  <div class="cartao">
-    <h2>Como eu uso</h2>
-    <p>Eu mando uma foto minha e o áudio da fala. O Higgsfield devolve o vídeo com a boca acompanhando a voz. Depois eu edito o reel em cima disso.</p>
+  <section>
+    <h2>Esse aqui sou eu, gerado no Higgsfield</h2>
+    <p class="sub">Trecho de um reel meu. Ninguém filmou essa fala: é uma foto minha animada com o áudio da minha voz. Liga o som.</p>
+    <div class="demo">
+      <video src="avatar_exemplo.mp4" poster="avatar_exemplo.jpg" controls muted autoplay loop playsinline preload="metadata"></video>
+      <ol class="passos">
+        <li><div><b>Uma foto minha</b><span>Um quadro tirado de um vídeo que eu gravei uma vez, sempre com a mesma roupa e o mesmo fundo.</span></div></li>
+        <li><div><b>O áudio da fala</b><span>A minha voz lendo o roteiro do reel.</span></div></li>
+        <li><div><b>Foto + áudio no Higgsfield</b><span>O modelo de vídeo devolve eu falando, com a boca acompanhando a voz, de 5 a 15 segundos por vez.</span></div></li>
+        <li><div><b>Edição</b><span>Junto os trechos, coloco telas, legenda e música. O Higgsfield está ligado no Claude, então a minha automação pede tudo sozinha.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>O que mais tem lá dentro</h2>
+    <p class="sub">Vários modelos de IA num lugar só. Toque pra abrir cada um.</p>
+    <div class="grade">
+<a class="ferr" href="https://higgsfield.ai/ai/video?model=kling4_0&amp;fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><small>Vídeo</small><b>Kling 4.0</b><span>Cria e edita vídeo a partir de texto, imagem e referências.</span></a>
+<a class="ferr" href="https://higgsfield.ai/ai/video?model=seedance_2_5&amp;resolution=1080p&amp;fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><small>Vídeo</small><b>Seedance 2.5</b><span>O modelo de vídeo mais avançado do catálogo, em até 1080p.</span></a>
+<a class="ferr" href="https://higgsfield.ai/genjutsu?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><small>Vídeo</small><b>Genjutsu</b><span>Você manda um vídeo e ele gera variações novas: troca personagem, lugar ou produto mantendo o movimento.</span></a>
+<a class="ferr" href="https://higgsfield.ai/cinematic-video-generator?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><small>Vídeo</small><b>Cinema Studio</b><span>Gerador de vídeo com cara de cinema: câmera, lente e enquadramento.</span></a>
+<a class="ferr" href="https://higgsfield.ai/ai-influencer-studio?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><small>Pessoas</small><b>AI Influencer Studio</b><span>Cria um influenciador de IA e gera conteúdo com ele.</span></a>
+<a class="ferr" href="https://higgsfield.ai/apps?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><small>Apps</small><b>+40 apps prontos</b><span>Troca de rosto, troca de roupa, reiluminar foto, expandir imagem, novos ângulos, tirar fundo de vídeo e mais.</span></a>
+<a class="ferr" href="https://higgsfield.ai/apps/virality-predictor?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><small>Apps</small><b>Virality Predictor</b><span>Dá uma nota pro gancho do seu vídeo antes de postar.</span></a>
+<a class="ferr" href="https://higgsfield.ai/mcp?tab=claude&amp;fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><small>Claude</small><b>Higgsfield no Claude</b><span>Conecta o Higgsfield ao Claude: você pede a imagem ou o vídeo na conversa. É assim que a minha automação gera o avatar.</span></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Feitos pela comunidade</h2>
+    <p class="sub">Projetos públicos que criadores fizeram no Higgsfield. Toque pra assistir lá.</p>
+    <div class="galeria">
+<a class="ex" href="https://higgsfield.ai/@joeysnoisygroup/projects/don-t-poison-ivy?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_331f3fS1QFk3dF3AmXGIp1vAryH/ed03fb11-3e35-4abb-96b7-14f3ca3030bf.png" alt="Don&#x27;t Poison Ivy" loading="lazy"><span><b>Don&#x27;t Poison Ivy</b> @joeysnoisygroup</span></a>
+<a class="ex" href="https://higgsfield.ai/@aist/projects/detour?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_2vOlZqHm9l70zjwiloUuTFoQts9/3a83321e-bfcf-46bd-8519-7c9ed8a52584.png" alt="Detour" loading="lazy"><span><b>Detour</b> @aist</span></a>
+<a class="ex" href="https://higgsfield.ai/@pandaproduction/projects/thread?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_39tDAPbknLeiOHGT4b1AsPWiZ3z/d54e034b-40b5-48be-bd07-e3441c28f499.webp" alt="THREAD" loading="lazy"><span><b>THREAD</b> @pandaproduction</span></a>
+<a class="ex" href="https://higgsfield.ai/@gabrielbosisio/projects/charlie-boy?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_2vHMzS1qO3b9GKZBpOuyCjtUPgO/11afe005-bb38-4c5d-9787-07707e6eb765.jpg" alt="Charlie Boy" loading="lazy"><span><b>Charlie Boy</b> @gabrielbosisio</span></a>
+<a class="ex" href="https://higgsfield.ai/@allan_ripley/projects/the-prompter?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3HX1LQs6hZHF6munwI7va1V6vOt/hf_20260825_142559_99051765-9467-4b14-8645-42dc2a29a4bb_min.webp" alt="The Prompter" loading="lazy"><span><b>The Prompter</b> @allan_ripley</span></a>
+<a class="ex" href="https://higgsfield.ai/@pietromalegori/projects/control?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32KhQdtLdeVmwm7igkUuGWxEdNQ/4600b66d-e108-4017-8b66-965a33957751.jpg" alt="CONTROL" loading="lazy"><span><b>CONTROL</b> @pietromalegori</span></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Como começar</h2>
+    <ol class="passos">
+      <li><div><b>Crie a conta pelo botão abaixo</b><span>O cadastro é no próprio site do Higgsfield.</span></div></li>
+      <li><div><b>Escolha um plano</b><span>Cada geração gasta créditos do plano: vídeo gasta mais que imagem. Eu assino o Plus.</span></div></li>
+      <li><div><b>Comece pelos apps</b><span>Os apps prontos (troca de roupa, novos ângulos, reiluminar) são o jeito mais rápido de ver o que ele faz. Pra aprender o resto, tem a <a href="https://higgsfield.ai/academy?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored">Higgsfield Academy</a>.</span></div></li>
+    </ol>
+  </section>
+
+  <div class="final">
+    <h2>Quer testar?</h2>
+    <p>Abre pelo meu link e cria a conta.</p>
+    <a class="botao" href="https://higgsfield.ai?fpr=lucas-a32f53" target="_blank" rel="noopener sponsored">Abrir o Higgsfield ↗</a>
   </div>
-  <div class="cartao">
-    <h2>O que mais dá pra fazer lá</h2>
-    <p>Gerar imagem, vídeo a partir de imagem ou texto, e editar imagem, com vários modelos de IA num lugar só.</p>
-  </div>
-  <p class="aviso">É o meu link de indicação: se você assinar por ele, eu ganho uma comissão e você não paga nada a mais.</p>
+  <p class="aviso">É o meu link de indicação: se você assinar por ele, eu ganho uma comissão e você não paga nada a mais. Imagens da comunidade e nomes das ferramentas: higgsfield.ai.</p>
 </main>
 </body>
 </html>

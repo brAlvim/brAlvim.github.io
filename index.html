@@ -29,7 +29,7 @@ a { color: inherit; } :focus-visible { outline: 3px solid var(--amarelo); outlin
 .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
 .hero { background: var(--hero); color: var(--hero-tinta); padding: 32px 0 30px; text-align: center; }
 .avatar { width: 72px; height: 72px; border-radius: 50%; background: var(--amarelo); color: #121318; display: grid; place-items: center;
-  font: 800 34px var(--f-titulo); margin: 0 auto 12px; }
+  font: 800 34px var(--f-titulo); margin: 0 auto 12px; object-fit: cover; border: 3px solid var(--amarelo); }
 .hero .user { font: 600 15px var(--f-texto); color: var(--hero-suave); }
 h1 { font: 800 clamp(30px, 8vw, 46px)/1.05 var(--f-titulo); margin: 10px 0 0; text-wrap: balance; }
 h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em; }
@@ -64,7 +64,7 @@ a.item .kw { grid-column: 2; grid-row: 1 / 3; align-self: center; font: 600 12px
 <body>
 <header class="hero">
   <div class="wrap">
-    <div class="avatar">A</div>
+    <img class="avatar" src="foto.jpg" alt="Lucas Alvim" width="72" height="72">
     <div class="user">@alvim_ai · Lucas Alvim</div>
     <h1>Guias e prompts de IA, <em>em português</em></h1>
     <p>Tudo que eu mostro nos vídeos, com o passo a passo pra instalar e prompts prontos pra copiar.</p>
