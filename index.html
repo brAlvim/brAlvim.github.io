@@ -54,6 +54,11 @@ a.item .kw { grid-column: 2; grid-row: 1 / 3; align-self: center; font: 600 12px
   padding: 4px 8px; border-radius: 8px; }
 .vazio { color: var(--suave); text-align: center; display: none; }
 .rodape { color: var(--suave); font-size: 14px; text-align: center; margin: 12px 0 0; }
+.destaque { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 4px 12px; background: var(--hero); color: var(--hero-tinta);
+  border: 2px solid var(--amarelo); border-radius: 14px; padding: 14px 16px; text-decoration: none; box-shadow: var(--sombra); }
+.destaque small { font: 600 11px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--amarelo); }
+.destaque b { font: 600 18px/1.3 var(--f-titulo); }
+.destaque span { grid-column: 2; grid-row: 1 / 3; font: 700 22px var(--f-titulo); color: var(--amarelo); }
 </style>
 </head>
 <body>
@@ -67,6 +72,7 @@ a.item .kw { grid-column: 2; grid-row: 1 / 3; align-self: center; font: 600 12px
   </div>
 </header>
 <main class="wrap">
+  <a class="destaque" href="higgsfield/"><small>O que eu uso</small><b>Higgsfield: a IA do meu avatar nos vídeos</b><span>→</span></a>
   <div class="busca">
     <label for="q">Comentou uma palavra num vídeo? Procure aqui</label>
     <input id="q" type="search" placeholder="Ex.: REA, SLIDES, currículo…" autocomplete="off">
