@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pare de programar login do zero em cada sistema</title>
+<meta name="description" content="O Casdoor é um servidor de login de graça e de código aberto, com painel web. Ele guarda as contas de todo mundo, cuida da entrada nos seus sistemas e separa cada cliente seu num espaço próprio, com usuários e a tela de entrada na cor da marca dele.">
+<meta name="theme-color" content="#121318">
+<meta property="og:title" content="Pare de programar login do zero em cada sistema">
+<meta property="og:description" content="O Casdoor é um servidor de login de graça e de código aberto, com painel web. Ele guarda as contas de todo mundo, cuida da entrada nos seus sistemas e separa cada cliente seu num espaço próprio, com usuários e a tela de entrada na cor da marca dele.">
+<!--OG--><meta property="og:image" content="https://bralvim.github.io/casdoor-login/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:url" content="https://bralvim.github.io/casdoor-login/"><meta name="twitter:card" content="summary_large_image"><!--/OG-->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd23f'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' font-family='sans-serif' fill='%23121318'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Identidade dos reels: tinta escura + amarelo das capas/stories. Coluna única, pensada pro celular (vem do direct). */
+:root {
+  --bg: #f4f2ec; --papel: #ffffff; --tinta: #121318; --suave: #5d6170; --linha: #e3e0d6;
+  --amarelo: #ffd23f; --amarelo-tinta: #121318; --marca: #ffd23f; --ok: #1f8a55; --alerta: #b4410f; --alerta-bg: #fff4ec;
+  --hero: #121318; --hero-tinta: #f5f3ee; --hero-suave: #a9adbb; --term: #16181f; --term-tinta: #e8eaf0; --term-suave: #8b90a0;
+  --sombra: 0 1px 2px rgba(18,19,24,.06), 0 6px 20px rgba(18,19,24,.06);
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+body { margin: 0; background: var(--bg); color: var(--tinta); font: 16px/1.65 var(--f-texto); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; border-radius: 6px; }
+
+/* topo escuro, como a capa do reel */
+.hero { background: var(--hero); color: var(--hero-tinta); padding: 28px 0 36px; border-bottom: 1px solid var(--linha); }
+.marca { display: flex; align-items: center; gap: 10px; text-decoration: none; width: fit-content; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--amarelo); color: #121318; display: grid; place-items: center;
+  font: 800 16px var(--f-titulo); }
+.marca b { font: 600 15px var(--f-texto); } .marca span { display: block; color: var(--hero-suave); font-size: 12px; line-height: 1.2; }
+.selo { display: inline-block; margin: 26px 0 14px; background: var(--amarelo); color: #121318; font: 600 12px var(--f-mono);
+  letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+h1 { font: 800 clamp(34px, 8.5vw, 54px)/1.02 var(--f-titulo); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.lead { margin: 16px 0 0; color: var(--hero-suave); font-size: 17px; max-width: 60ch; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 10px;
+  font: 600 15px var(--f-texto); text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn-amarelo { background: var(--amarelo); color: #121318; }
+.btn-linha { border-color: #3a3d48; color: var(--hero-tinta); }
+.btn svg { width: 16px; height: 16px; }
+
+/* menu rápido das seções */
+.menu { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--linha); }
+.menu ul { list-style: none; margin: 0 auto; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; max-width: 720px; scrollbar-width: none; }
+.menu ul::-webkit-scrollbar { display: none; }
+.menu a { display: block; white-space: nowrap; text-decoration: none; font: 500 14px var(--f-texto); padding: 6px 12px; border-radius: 999px;
+  background: var(--papel); border: 1px solid var(--linha); color: var(--suave); }
+
+main.wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+h2 { font: 800 26px/1.15 var(--f-titulo); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+h2 .n { font: 600 12px var(--f-mono); color: var(--suave); letter-spacing: .08em; }
+
+/* pra que serve: cartões com check */
+.serve { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.serve li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 12px; padding: 14px 16px; box-shadow: var(--sombra); }
+.serve svg { width: 22px; height: 22px; color: var(--ok); margin-top: 2px; }
+
+/* o que precisa */
+.precisa { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.precisa li { display: inline-flex; align-items: center; gap: 8px; background: var(--papel); border: 1px solid var(--linha); border-radius: 10px;
+  padding: 8px 12px; font-size: 14px; }
+.precisa li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--amarelo); flex-shrink: 0; box-shadow: 0 0 0 2px #121318 inset; }
+
+/* passo a passo em linha do tempo */
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; }
+ol.passos > li { counter-increment: p; position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 14px; padding-bottom: 22px; }
+ol.passos > li::before { content: counter(p); width: 36px; height: 36px; border-radius: 50%; background: var(--tinta); color: var(--bg);
+  font: 600 15px var(--f-mono); display: grid; place-items: center; position: relative; z-index: 1; }
+ol.passos > li::after { content: ""; position: absolute; left: 17px; top: 36px; bottom: 0; width: 2px; background: var(--linha); }
+ol.passos > li:last-child { padding-bottom: 0; } ol.passos > li:last-child::after { display: none; }
+ol.passos > li > div { grid-column: 2; min-width: 0; display: grid; gap: 10px; padding-top: 5px; }
+
+/* comando: bloco de terminal */
+.term { background: var(--term); color: var(--term-tinta); border-radius: 12px; overflow: hidden; border: 1px solid #262932; }
+.term-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 6px 6px 12px; border-bottom: 1px solid #262932; }
+.pontos { display: flex; gap: 6px; } .pontos i { width: 9px; height: 9px; border-radius: 50%; background: #3a3d48; }
+.term pre { margin: 0; padding: 12px 14px; font: 14px/1.55 var(--f-mono); overflow-x: auto; white-space: pre; }
+.term pre::before { content: "› "; color: var(--amarelo); }
+.copiar { display: inline-flex; align-items: center; gap: 6px; font: 600 13px var(--f-texto); border: 0; border-radius: 8px; padding: 7px 12px;
+  cursor: pointer; background: var(--amarelo); color: #121318; flex-shrink: 0; }
+.copiar svg { width: 14px; height: 14px; }
+.copiar.ok { background: var(--ok); color: #fff; }
+
+/* prompts prontos */
+.prompts { display: grid; gap: 14px; }
+.prompt { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; box-shadow: var(--sombra); }
+.prompt-top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 14px 16px 10px; }
+.prompt-top b { font: 600 17px/1.3 var(--f-titulo); display: block; }
+.prompt-top span { display: block; color: var(--suave); font-size: 13px; margin-top: 2px; }
+.prompt pre { margin: 0 16px 16px; padding: 14px; background: var(--bg); border-left: 3px solid var(--amarelo); border-radius: 0 10px 10px 0;
+  font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.prompt pre .troca { background: color-mix(in srgb, var(--amarelo) 45%, transparent); border-radius: 4px; padding: 0 2px; }
+
+/* cuidados */
+.faq details { background: var(--papel); border: 1px solid var(--linha); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq p { margin: 10px 0 0; }
+.cuidados { background: var(--alerta-bg); border: 1px solid color-mix(in srgb, var(--alerta) 35%, transparent); border-radius: 14px; padding: 18px; }
+.cuidados h2 { color: var(--alerta); font-size: 22px; }
+.cuidados ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+/* fecho */
+.fecho { background: var(--hero); color: var(--hero-tinta); border-radius: 18px; padding: 24px 20px; display: grid; gap: 14px; }
+.fecho p { margin: 0; font: 600 19px/1.4 var(--f-titulo); }
+.fecho .btn-linha { color: var(--hero-tinta); }
+.rodape { color: var(--suave); font-size: 14px; margin: 0; text-align: center; }
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; background: var(--tinta); color: var(--bg);
+  padding: 10px 16px; border-radius: 999px; font: 600 14px var(--f-texto); transition: .2s; pointer-events: none; z-index: 10; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toast { transition: none; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <a class="marca" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><img class="avatar" src="../perfil.jpg" alt="Lucas Alvim" width="36" height="36" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #ffd23f;flex:none"><span><b>@alvim_ai</b><span>ferramentas de IA, testadas</span></span></a>
+    <div class="selo">Guia grátis em português</div>
+    <h1>Pare de programar <em>login do zero</em> em cada sistema</h1>
+    <p class="lead">O Casdoor é um servidor de login de graça e de código aberto, com painel web. Ele guarda as contas de todo mundo, cuida da entrada nos seus sistemas e separa cada cliente seu num espaço próprio, com usuários e a tela de entrada na cor da marca dele.</p>
+    <div class="acoes">
+      <a class="btn btn-amarelo" href="#passos">Ver o passo a passo</a>
+      <a class="btn btn-linha" href="https://github.com/casdoor/casdoor" target="_blank" rel="noopener">Repositório oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
+  </div>
+</header>
+<!--REEL--><style>.reel-card{width:100%;max-width:760px;margin:20px auto 12px;padding:0 16px;box-sizing:border-box}.reel-card a{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;background:var(--papel,#fff);border:1px solid var(--linha,#e3e1da);border-radius:14px;padding:10px 14px 10px 10px}.reel-card img{width:84px;aspect-ratio:9/16;object-fit:cover;border-radius:10px;flex:none;background:#121318}.reel-card small{display:block;font:600 11px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.65}.reel-card b{display:block;font-size:17px;line-height:1.3;margin:2px 0 6px}.reel-card span{font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px}</style><div class="reel-card"><a href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><img src="reel.jpg?v=f2204b4c" alt="Capa do reel: Pare de programar login do zero em cada sistema" loading="lazy" width="84" height="149"><div><small>Veio deste reel</small><b>Esse guia é do vídeo desta capa</b><span>Ver os reels no Instagram</span></div></a></div><!--/REEL-->
+<nav class="menu" aria-label="Seções"><ul><li><a href="#serve">Pra que serve</a></li><li><a href="#precisa">O que você precisa</a></li><li><a href="#passos">Passo a passo</a></li><li><a href="#prompts">Exemplos de uso (e um prompt pro seu agente)</a></li><li><a href="#cuidados">Antes de usar</a></li></ul></nav>
+<main class="wrap">
+  <section id="serve" class=""><h2><span class="n">01</span>Pra que serve</h2><ul class="serve"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Ter um lugar só pra cadastro e entrada de usuários, em vez de refazer o login em cada sistema que você entrega.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Separar cada cliente numa organização própria, com os usuários dele e a tela de entrada no tema dele (cor principal e cantos arredondados).</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Deixar a pessoa entrar com a conta do Google Workspace, Microsoft Entra ID, GitHub e outros provedores.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Entrar com passkey, a chave guardada no celular ou no computador, sem digitar senha.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Fazer o sistema antigo do cliente (que só entende CAS, um jeito antigo de fazer login) usar as mesmas contas do app novo.</span></li></ul></section><section id="precisa" class=""><h2><span class="n">02</span>O que você precisa</h2><ul class="precisa"><li>Docker instalado (programa que roda apps prontos numa caixa isolada). Funciona no Windows, Mac e Linux</li><li>Pelo menos 100 MB de memória livre</li><li>Um navegador</li></ul></section><section id="passos" class=""><h2><span class="n">03</span>Passo a passo</h2><ol class="passos"><li><div><span>Instale e abra o Docker. Deixe ele rodando enquanto usa o Casdoor.</span></div></li><li><div><span>Abra o terminal (no Windows, o PowerShell; no Mac, o Terminal) e cole o comando abaixo. Ele já sobe o Casdoor com um banco de dados embutido e dados de exemplo, sem instalar mais nada e sem arquivo de configuração.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c1" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c1">docker run -p 8000:8000 casbin/casdoor-all-in-one</pre></div></div></li><li><div><span>No navegador, abra o endereço abaixo. Vai aparecer a tela Welcome to Casdoor. Crie a senha do usuário admin e clique em Set Password.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c2" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c2">http://localhost:8000</pre></div></div></li><li><div><span>Entre com organização built-in, usuário admin e a senha que você acabou de criar. Você cai no painel de administração.</span></div></li><li><div><span>Pra cada cliente, crie uma organização em User Management &gt; Organizations. Na página dela, em Theme, escolha a cor principal e o arredondamento dos cantos e salve. Os nomes admin e app não podem ser usados.</span></div></li><li><div><span>Pra ligar o login com Google ou GitHub, vá em Identity &gt; Providers, adicione um provedor, escolha Category OAuth e o Type (Google, GitHub…), cole o Client ID e o Client secret que o Google ou o GitHub te dão e salve. Depois, na página da aplicação, aba Providers, adicione esse provedor e salve.</span></div></li></ol></section><section id="prompts" class=""><h2><span class="n">04</span>Exemplos de uso (e um prompt pro seu agente)</h2><div class="prompts"><article class="prompt"><div class="prompt-top"><div><b>Cliente novo com a marca dele</b><span>Cada vez que você fechar um cliente</span></div><button type="button" class="copiar" data-copiar="p0" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p0">No painel: User Management &gt; Organizations &gt; crie a organização <span class="troca">[NOME DO CLIENTE]</span>.
+Abra a página dela e, em Theme, coloque a cor principal <span class="troca">[COR DA MARCA, ex.: #0057FF]</span> e o arredondamento dos cantos que combina com o site dele. Salve.
+Se um sistema desse cliente precisar de outra cor, abra a página da aplicação, desligue Follow organization theme e escolha a cor só pra ela.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Entrar com GitHub ou Google</b><span>Pra pessoa não precisar criar mais uma senha</span></div><button type="button" class="copiar" data-copiar="p1" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p1">1. No GitHub ou no Google, crie um app de login e coloque como endereço de retorno (callback):
+https://<span class="troca">[ENDEREÇO DO SEU CASDOOR]</span>/callback
+2. Copie o Client ID e o Client secret (o secret é segredo, não mostre pra ninguém).
+3. No Casdoor: Identity &gt; Providers &gt; adicionar &gt; Category OAuth &gt; Type <span class="troca">[GitHub OU Google]</span> &gt; cole os dois &gt; salve.
+4. Na aplicação <span class="troca">[NOME DA APLICAÇÃO]</span>, aba Providers, adicione o provedor e escolha se ele serve pra cadastro, pra entrada ou pros dois.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Testar sem instalar nada</b><span>Quer só ver o painel por dentro antes de instalar</span></div><button type="button" class="copiar" data-copiar="p2" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p2">Abra demo.casdoor.com e entre com organização built-in, usuário admin e senha 123.
+Pode mexer à vontade: os dados voltam ao começo mais ou menos a cada 5 minutos.
+Não coloque dados de verdade lá.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Ligar o seu app no Casdoor</b><span>Cole no Claude Code, Cursor ou outro agente de programação, dentro da pasta do seu app</span></div><button type="button" class="copiar" data-copiar="p3" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p3">Quero que o login do meu app <span class="troca">[NOME DO APP]</span>, que está nesta pasta, passe a ser feito pelo Casdoor que está rodando em http://localhost:8000, na organização <span class="troca">[NOME DA ORGANIZAÇÃO]</span>.
+Use OpenID Connect, que a documentação do Casdoor recomenda pra app novo (casdoor.ai/docs/how-to-connect/overview).
+Antes de mexer, me mostre um plano curto: o que eu preciso criar no painel do Casdoor (aplicação, endereço de retorno, Client ID e Client secret) e quais arquivos você vai mudar.
+Não escreva o Client secret dentro do código: guarde num arquivo de configuração fora do Git.
+Responda em português.</pre></article></div></section><section id="cuidados" class="cuidados"><h2><span class="n">05</span>Antes de usar</h2><ul><li>O comando de teste é só pra experimentar: os dados ficam dentro do Docker e somem quando você apaga o container. Pra usar com cliente de verdade, a documentação manda usar a imagem casbin/casdoor ligada a um banco de dados seu.</li><li>Antes de colocar na internet: troque a senha do admin e só use com https.</li><li>O endereço de retorno (callback) que você coloca no Google ou no GitHub é o do Casdoor, não o do seu app. Errar isso é o motivo mais comum do login não funcionar.</li><li>A tela de entrada mostra o logo da aplicação, não o da organização. Coloque a logo do cliente na aplicação dele.</li><li>É de graça e de código aberto (licença Apache 2.0, que permite uso comercial). O custo é o servidor onde você vai deixar ele rodando.</li></ul></section>
+  <div class="fecho"><p>Resumindo: uma linha no Docker, abre o localhost:8000, cria a senha do admin e cada cliente seu ganha a própria organização, com usuários e a tela de entrada na cor da marca dele.</p><div class="acoes" style="margin:0"><a class="btn btn-amarelo" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">Seguir @alvim_ai</a><a class="btn btn-linha" href="https://github.com/casdoor/casdoor" target="_blank" rel="noopener">Repositório oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div></div>
+  <p class="rodape"><a href="../">Todos os guias e prompts do Alvim</a></p>
+</main>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+const toast = document.querySelector('.toast');
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const original = btn.innerHTML;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => {
+      btn.classList.add('ok'); btn.textContent = 'Copiado';
+      toast.textContent = 'Copiado! Agora é só colar.'; toast.classList.add('on');
+      setTimeout(() => { btn.classList.remove('ok'); btn.innerHTML = original; toast.classList.remove('on'); }, 1800);
+    };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>
