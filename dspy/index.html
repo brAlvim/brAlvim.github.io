@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Faça os prompts da sua IA melhorarem sozinhos</title>
+<meta name="description" content="O DSPy é gratuito e de código aberto. Você mostra exemplos do que quer e diz como dar uma nota pra cada resposta. Ele testa versões diferentes do prompt, lê onde a IA errou e fica com a versão que tirou a melhor nota.">
+<meta name="theme-color" content="#121318">
+<meta property="og:title" content="Faça os prompts da sua IA melhorarem sozinhos">
+<meta property="og:description" content="O DSPy é gratuito e de código aberto. Você mostra exemplos do que quer e diz como dar uma nota pra cada resposta. Ele testa versões diferentes do prompt, lê onde a IA errou e fica com a versão que tirou a melhor nota.">
+<!--OG--><meta property="og:image" content="https://alvim.site/dspy/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:url" content="https://alvim.site/dspy/"><meta name="twitter:card" content="summary_large_image"><!--/OG-->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd23f'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' font-family='sans-serif' fill='%23121318'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Identidade dos reels: tinta escura + amarelo das capas/stories. Coluna única, pensada pro celular (vem do direct). */
+:root {
+  --bg: #f4f2ec; --papel: #ffffff; --tinta: #121318; --suave: #5d6170; --linha: #e3e0d6;
+  --amarelo: #ffd23f; --amarelo-tinta: #121318; --marca: #ffd23f; --ok: #1f8a55; --alerta: #b4410f; --alerta-bg: #fff4ec;
+  --hero: #121318; --hero-tinta: #f5f3ee; --hero-suave: #a9adbb; --term: #16181f; --term-tinta: #e8eaf0; --term-suave: #8b90a0;
+  --sombra: 0 1px 2px rgba(18,19,24,.06), 0 6px 20px rgba(18,19,24,.06);
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+body { margin: 0; background: var(--bg); color: var(--tinta); font: 16px/1.65 var(--f-texto); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; border-radius: 6px; }
+
+/* topo escuro, como a capa do reel */
+.hero { background: var(--hero); color: var(--hero-tinta); padding: 28px 0 36px; border-bottom: 1px solid var(--linha); }
+.marca { display: flex; align-items: center; gap: 10px; text-decoration: none; width: fit-content; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--amarelo); color: #121318; display: grid; place-items: center;
+  font: 800 16px var(--f-titulo); }
+.marca b { font: 600 15px var(--f-texto); } .marca span { display: block; color: var(--hero-suave); font-size: 12px; line-height: 1.2; }
+.selo { display: inline-block; margin: 26px 0 14px; background: var(--amarelo); color: #121318; font: 600 12px var(--f-mono);
+  letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+h1 { font: 800 clamp(34px, 8.5vw, 54px)/1.02 var(--f-titulo); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.lead { margin: 16px 0 0; color: var(--hero-suave); font-size: 17px; max-width: 60ch; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 10px;
+  font: 600 15px var(--f-texto); text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn-amarelo { background: var(--amarelo); color: #121318; }
+.btn-linha { border-color: #3a3d48; color: var(--hero-tinta); }
+.btn svg { width: 16px; height: 16px; }
+
+/* menu rápido das seções */
+.menu { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--linha); }
+.menu ul { list-style: none; margin: 0 auto; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; max-width: 720px; scrollbar-width: none; }
+.menu ul::-webkit-scrollbar { display: none; }
+.menu a { display: block; white-space: nowrap; text-decoration: none; font: 500 14px var(--f-texto); padding: 6px 12px; border-radius: 999px;
+  background: var(--papel); border: 1px solid var(--linha); color: var(--suave); }
+
+main.wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+h2 { font: 800 26px/1.15 var(--f-titulo); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+h2 .n { font: 600 12px var(--f-mono); color: var(--suave); letter-spacing: .08em; }
+
+/* pra que serve: cartões com check */
+.serve { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.serve li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 12px; padding: 14px 16px; box-shadow: var(--sombra); }
+.serve svg { width: 22px; height: 22px; color: var(--ok); margin-top: 2px; }
+
+/* o que precisa */
+.precisa { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.precisa li { display: inline-flex; align-items: center; gap: 8px; background: var(--papel); border: 1px solid var(--linha); border-radius: 10px;
+  padding: 8px 12px; font-size: 14px; }
+.precisa li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--amarelo); flex-shrink: 0; box-shadow: 0 0 0 2px #121318 inset; }
+
+/* passo a passo em linha do tempo */
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; }
+ol.passos > li { counter-increment: p; position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 14px; padding-bottom: 22px; }
+ol.passos > li::before { content: counter(p); width: 36px; height: 36px; border-radius: 50%; background: var(--tinta); color: var(--bg);
+  font: 600 15px var(--f-mono); display: grid; place-items: center; position: relative; z-index: 1; }
+ol.passos > li::after { content: ""; position: absolute; left: 17px; top: 36px; bottom: 0; width: 2px; background: var(--linha); }
+ol.passos > li:last-child { padding-bottom: 0; } ol.passos > li:last-child::after { display: none; }
+ol.passos > li > div { grid-column: 2; min-width: 0; display: grid; gap: 10px; padding-top: 5px; }
+
+/* comando: bloco de terminal */
+.term { background: var(--term); color: var(--term-tinta); border-radius: 12px; overflow: hidden; border: 1px solid #262932; }
+.term-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 6px 6px 12px; border-bottom: 1px solid #262932; }
+.pontos { display: flex; gap: 6px; } .pontos i { width: 9px; height: 9px; border-radius: 50%; background: #3a3d48; }
+.term pre { margin: 0; padding: 12px 14px; font: 14px/1.55 var(--f-mono); overflow-x: auto; white-space: pre; }
+.term pre::before { content: "› "; color: var(--amarelo); }
+.copiar { display: inline-flex; align-items: center; gap: 6px; font: 600 13px var(--f-texto); border: 0; border-radius: 8px; padding: 7px 12px;
+  cursor: pointer; background: var(--amarelo); color: #121318; flex-shrink: 0; }
+.copiar svg { width: 14px; height: 14px; }
+.copiar.ok { background: var(--ok); color: #fff; }
+
+/* prompts prontos */
+.prompts { display: grid; gap: 14px; }
+.prompt { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; box-shadow: var(--sombra); }
+.prompt-top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 14px 16px 10px; }
+.prompt-top b { font: 600 17px/1.3 var(--f-titulo); display: block; }
+.prompt-top span { display: block; color: var(--suave); font-size: 13px; margin-top: 2px; }
+.prompt pre { margin: 0 16px 16px; padding: 14px; background: var(--bg); border-left: 3px solid var(--amarelo); border-radius: 0 10px 10px 0;
+  font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.prompt pre .troca { background: color-mix(in srgb, var(--amarelo) 45%, transparent); border-radius: 4px; padding: 0 2px; }
+
+/* cuidados */
+.faq details { background: var(--papel); border: 1px solid var(--linha); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq p { margin: 10px 0 0; }
+.cuidados { background: var(--alerta-bg); border: 1px solid color-mix(in srgb, var(--alerta) 35%, transparent); border-radius: 14px; padding: 18px; }
+.cuidados h2 { color: var(--alerta); font-size: 22px; }
+.cuidados ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+/* fecho */
+.fecho { background: var(--hero); color: var(--hero-tinta); border-radius: 18px; padding: 24px 20px; display: grid; gap: 14px; }
+.fecho p { margin: 0; font: 600 19px/1.4 var(--f-titulo); }
+.fecho .btn-linha { color: var(--hero-tinta); }
+.rodape { color: var(--suave); font-size: 14px; margin: 0; text-align: center; }
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; background: var(--tinta); color: var(--bg);
+  padding: 10px 16px; border-radius: 999px; font: 600 14px var(--f-texto); transition: .2s; pointer-events: none; z-index: 10; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toast { transition: none; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <a class="marca" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><img class="avatar" src="../perfil.jpg" alt="Lucas Alvim" width="36" height="36" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #ffd23f;flex:none"><span><b>@alvim_ai</b><span>ferramentas de IA, testadas</span></span></a>
+    <div class="selo">Guia grátis em português</div>
+    <h1>Faça os prompts da sua IA <em>melhorarem sozinhos</em></h1>
+    <p class="lead">O DSPy é gratuito e de código aberto. Você mostra exemplos do que quer e diz como dar uma nota pra cada resposta. Ele testa versões diferentes do prompt, lê onde a IA errou e fica com a versão que tirou a melhor nota.</p>
+    <div class="acoes">
+      <a class="btn btn-amarelo" href="#passos">Ver o passo a passo</a>
+      <a class="btn btn-linha" href="https://github.com/stanfordnlp/dspy" target="_blank" rel="noopener">Repositório oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
+  </div>
+</header>
+<!--REEL--><style>.reel-card{width:100%;max-width:760px;margin:20px auto 12px;padding:0 16px;box-sizing:border-box}.reel-card a{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;background:var(--papel,#fff);border:1px solid var(--linha,#e3e1da);border-radius:14px;padding:10px 14px 10px 10px}.reel-card img{width:84px;aspect-ratio:9/16;object-fit:cover;border-radius:10px;flex:none;background:#121318}.reel-card small{display:block;font:600 11px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.65}.reel-card b{display:block;font-size:17px;line-height:1.3;margin:2px 0 6px}.reel-card span{font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px}</style><div class="reel-card"><a href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><img src="reel.jpg?v=8967165d" alt="Capa do reel: Faça os prompts da sua IA melhorarem sozinhos" loading="lazy" width="84" height="149"><div><small>Veio deste reel</small><b>Esse guia é do vídeo desta capa</b><span>Ver os reels no Instagram</span></div></a></div><!--/REEL-->
+<nav class="menu" aria-label="Seções"><ul><li><a href="#serve">Pra que serve</a></li><li><a href="#precisa">O que você precisa</a></li><li><a href="#passos">Passo a passo</a></li><li><a href="#prompts">Pedidos prontos pra colar no seu assistente de código (Claude Code, Cursor…)</a></li><li><a href="#cuidados">Antes de usar</a></li></ul></nav>
+<main class="wrap">
+  <section id="serve" class=""><h2><span class="n">01</span>Pra que serve</h2><ul class="serve"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Parar de ajustar prompt na mão: quem testa e reescreve é o otimizador, seguindo a sua nota.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Melhorar uma tarefa que se repete, como separar chamados de suporte por urgência ou tirar nome e data de um e-mail.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Fazer um modelo mais barato render mais. No tutorial oficial, a nota de um modelo pequeno subiu de 78,1% para 90,1%, passando os 82,4% de um modelo maior sem otimização.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Trocar de serviço de IA sem recomeçar: funciona com OpenAI, Claude, Gemini e também com modelos rodando no seu computador pelo Ollama.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Guardar o prompt vencedor num arquivo e usar de novo quando quiser.</span></li></ul></section><section id="precisa" class=""><h2><span class="n">02</span>O que você precisa</h2><ul class="precisa"><li>Python 3.10 ou mais novo (programa que roda o DSPy). Use até o 3.14: do 3.15 em diante, o GEPA não vem instalado</li><li>Uma chave de acesso de um serviço de IA (OpenAI, Anthropic, Google) ou o Ollama no seu computador, que não pede chave</li><li>Exemplos reais da sua tarefa, com a resposta certa</li><li>Uma regra clara pra dar nota de 0 a 1 em cada resposta</li></ul></section><section id="passos" class=""><h2><span class="n">03</span>Passo a passo</h2><ol class="passos"><li><div><span>Confira se você tem o Python 3.10 ou mais novo. Se não tiver, baixe em python.org. Depois abra o terminal: no Windows, o PowerShell; no Mac, o Terminal.</span></div></li><li><div><span>Instale o DSPy com este comando:</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c1" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c1">pip install dspy</pre></div></div></li><li><div><span>Crie um arquivo .py e diga qual IA vai usar. Troque YOUR_OPENAI_API_KEY pela sua chave e não mostre esse arquivo pra ninguém. Outros nomes que a documentação cita: anthropic/claude-sonnet-4-5-20250929, gemini/gemini-2.5-pro e ollama_chat/llama3.2:1b (no seu computador, sem chave). Modelos mudam, então confira o nome antes de usar.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c2" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c2">import dspy
+
+lm = dspy.LM(&quot;openai/gpt-5-nano&quot;, api_key=&quot;YOUR_OPENAI_API_KEY&quot;)
+
+dspy.configure(lm=lm)</pre></div></div></li><li><div><span>Descreva a tarefa: o que entra e o que sai. Você não escreve o prompt, só isso. Neste exemplo oficial, entra um e-mail e saem o nome e a data do evento.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c3" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c3">class ExtractEvent(dspy.Signature):
+    &quot;&quot;&quot;Extract event details from an email.&quot;&quot;&quot;
+    email: str = dspy.InputField()
+    event_name: str = dspy.OutputField()
+    date: str = dspy.OutputField()
+
+extract = dspy.Predict(ExtractEvent)</pre></div></div></li><li><div><span>Escreva a regra da nota. É ela que guia tudo. Neste exemplo oficial, um robô escreve haicais (poemas curtos): a nota é 0 se o poema repete o nome da estação do ano e 1 se não repete. O texto em feedback explica o erro, e o otimizador usa isso pra reescrever o prompt.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c4" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c4">def haiku_score_gepa(example, prediction, trace=None, pred_name=None, pred_trace=None):
+    &quot;&quot;&quot;
+    Penalize verbatim use of the input season string.
+    A haiku should evoke the season through imagery, not name it
+    directly.
+    &quot;&quot;&quot;
+    text = prediction.haiku.lower()
+    if example.season.strip().lower() in text:
+        return dspy.Prediction(
+            score=0.0,
+            feedback=&quot;Don&#x27;t reference the input season verbatim.&quot;
+        )
+    return dspy.Prediction(score=1.0, feedback=None)</pre></div></div></li><li><div><span>Rode a melhoria e salve o resultado. Troque haiku_bot pelo seu programa, haiku_metric pela sua função de nota, train pelos exemplos de treino e val pelos exemplos de conferência. O modo light testa cerca de seis versões do prompt. Depois é só esperar.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c5" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c5">reflection_lm = dspy.LM(&quot;openai/gpt-5.4&quot;)
+
+optimizer = dspy.GEPA(
+    metric=haiku_metric,
+    reflection_lm=reflection_lm,
+    auto=&quot;light&quot;,
+    num_threads=2,
+)
+
+optimized_haiku_bot = optimizer.compile(haiku_bot, trainset=train, valset=val)
+
+optimized_haiku_bot.save(&quot;haiku_bot.json&quot;)</pre></div></div></li></ol></section><section id="prompts" class=""><h2><span class="n">04</span>Pedidos prontos pra colar no seu assistente de código (Claude Code, Cursor…)</h2><div class="prompts"><article class="prompt"><div class="prompt-top"><div><b>Montar tudo do zero</b><span>O primeiro pedido: se você não programa, comece por aqui</span></div><button type="button" class="copiar" data-copiar="p0" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p0">Quero usar o DSPy para melhorar esta tarefa: <span class="troca">[DESCREVA A TAREFA, EX.: CLASSIFICAR MENSAGENS DE CLIENTES POR URGÊNCIA]</span>.
+O que entra: <span class="troca">[EX.: O TEXTO DA MENSAGEM]</span>. O que sai: <span class="troca">[EX.: URGÊNCIA BAIXA OU ALTA E O TIME RESPONSÁVEL]</span>.
+Meus exemplos estão em <span class="troca">[CAMINHO DO ARQUIVO]</span>, com a resposta certa em cada linha.
+Crie o programa nesta pasta, usando o modelo <span class="troca">[NOME DO MODELO]</span> e lendo a chave de um lugar seguro, fora do código.
+Antes de rodar a melhoria, me mostre a nota atual e me diga quanto essa rodada pode custar.
+Explique cada passo em português, sem termos técnicos.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Criar a regra da nota</b><span>Quando você sabe o que é bom, mas não sabe transformar isso em nota</span></div><button type="button" class="copiar" data-copiar="p1" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p1">Me ajude a criar a função de nota do DSPy para esta tarefa: <span class="troca">[DESCREVA A TAREFA]</span>.
+Uma resposta boa precisa ter: <span class="troca">[EX.: TOM EDUCADO, NO MÁXIMO 3 FRASES E O NOME DO CLIENTE]</span>.
+Uma resposta ruim é: <span class="troca">[EX.: PROMETE PRAZO OU INVENTA DESCONTO]</span>.
+A nota deve ir de 0 a 1 e vir com um feedback em texto dizendo o que errou, pro GEPA usar.
+Teste a regra em 5 exemplos meus de <span class="troca">[CAMINHO DO ARQUIVO]</span> e me mostre as notas, pra eu conferir se concordo.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Separar os exemplos</b><span>Antes da melhoria, pra não se enganar com uma nota alta</span></div><button type="button" class="copiar" data-copiar="p2" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p2">Separe os exemplos de <span class="troca">[CAMINHO DO ARQUIVO]</span> em três grupos para o DSPy: treino, conferência e um teste final que o otimizador nunca vai ver.
+Garanta que os três tenham uma mistura parecida de casos, incluindo os difíceis: <span class="troca">[EX.: MENSAGENS COM IRONIA]</span>.
+Me diga quantos exemplos ficaram em cada grupo e se você acha que faltam casos de algum tipo.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Comparar antes e depois</b><span>Depois da melhoria, pra ver se valeu a pena</span></div><button type="button" class="copiar" data-copiar="p3" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p3">Compare o programa original com o otimizado, salvo em <span class="troca">[NOME DO ARQUIVO .json]</span>, usando só os exemplos do teste final.
+Me mostre as duas notas e 3 casos em que a resposta melhorou e 3 em que piorou, se houver.
+Mostre em português o que mudou nas instruções e me diga se recomenda usar a versão nova.</pre></article></div></section><section id="cuidados" class="cuidados"><h2><span class="n">05</span>Antes de usar</h2><ul><li>Custa dinheiro: cada teste chama a IA várias vezes, e quem cobra é o serviço de IA. O site oficial mostra uma rodada ilustrativa de US$ 2,18 com 200 exemplos, mas isso é só um exemplo. A documentação não dá uma estimativa geral, então comece pelo modo light e com poucos exemplos.</li><li>O DSPy em si é grátis (licença MIT), mas exige escrever Python. Se você não programa, peça pro seu assistente de código montar, como nos pedidos acima.</li><li>A nota manda em tudo. Se a regra for ruim, ele vai otimizar a coisa errada. Teste a regra à mão antes.</li><li>Guarde um grupo de exemplos fora da melhoria pra conferir no final. Sem exemplos de conferência, o prompt pode ficar bom só nos casos que ele já viu.</li><li>Se aparecer erro de limite de uso do serviço de IA, diminua o num_threads.</li><li>O arquivo salvo não guarda a sua chave nem qual IA você usou: configure de novo ao carregar. E, se salvar o programa inteiro numa pasta, só abra pastas de quem você confia, porque ela traz código que roda no seu computador.</li></ul></section>
+  <div class="fecho"><p>Resumindo: instala com um comando, você dá os exemplos e a regra da nota, e o DSPy testa e guarda o prompt que tirou a melhor nota.</p><div class="acoes" style="margin:0"><a class="btn btn-amarelo" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">Seguir @alvim_ai</a><a class="btn btn-linha" href="https://github.com/stanfordnlp/dspy" target="_blank" rel="noopener">Repositório oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div></div>
+  <p class="rodape"><a href="../">Todos os guias e prompts do Alvim</a></p>
+</main>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+const toast = document.querySelector('.toast');
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const original = btn.innerHTML;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => {
+      btn.classList.add('ok'); btn.textContent = 'Copiado';
+      toast.textContent = 'Copiado! Agora é só colar.'; toast.classList.add('on');
+      setTimeout(() => { btn.classList.remove('ok'); btn.innerHTML = original; toast.classList.remove('on'); }, 1800);
+    };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+<!--PERGUNTA--><style>#perg{position:fixed;left:12px;right:12px;bottom:12px;z-index:40;max-width:420px;margin:0 auto;box-sizing:border-box;padding:14px 16px;background:var(--papel,#fff);color:var(--tinta,#121318);border:1px solid var(--linha,#e3e0d6);border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.22);font-family:var(--f-texto,system-ui,sans-serif)}#perg[hidden]{display:none}#perg b{display:block;font-size:16px;padding-right:40px}#perg .ops{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}#perg .ops button{min-height:44px;padding:8px;border:1px solid var(--linha,#e3e0d6);border-radius:10px;background:transparent;color:inherit;font:inherit;font-size:15px;cursor:pointer}#perg .ops button:hover{background:var(--amarelo,#ffd23f);color:#121318}#perg .x{position:absolute;top:4px;right:4px;width:44px;height:44px;border:0;background:none;color:inherit;font-size:22px;line-height:1;cursor:pointer}</style><aside id="perg" hidden aria-label="Pergunta rápida"><button type="button" class="x" aria-label="Fechar">×</button><b>O que você faz hoje?</b><div class="ops"><button type="button" data-r="dev">Sou dev</button><button type="button" data-r="negocio">Tenho negócio</button><button type="button" data-r="clt">Trabalho CLT</button><button type="button" data-r="estudo">Estudo</button></div></aside><script>(function(){var K="alvim_pergunta_v1",c=document.getElementById("perg");function le(){try{return localStorage.getItem(K)}catch(e){return null}}function grava(v){try{localStorage.setItem(K,v)}catch(e){}}if(le())return;setTimeout(function(){if(!le())c.hidden=false},5000);c.querySelector(".x").onclick=function(){grava("fechou");c.hidden=true};c.querySelector(".ops").onclick=function(e){var r=e.target.getAttribute("data-r");if(!r)return;grava("respondeu");fetch("https://alvim-publicador.alvim-ai.workers.dev/pergunta",{method:"POST",keepalive:true,body:JSON.stringify({guia:location.pathname.split("/").filter(Boolean)[0]||"",resposta:r})}).catch(function(){});c.innerHTML="<b style='padding:0'>Valeu! 🙌</b>";setTimeout(function(){c.hidden=true},1500)};})()</script><!--/PERGUNTA-->
+</body>
+</html>
