@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rode IAs gigantes numa placa de vídeo de 4 GB</title>
+<meta name="description" content="O AirLLM é um programa gratuito que roda modelos de IA enormes no seu computador, mesmo com pouca memória na placa de vídeo. Ele deixa só uma camada do modelo por vez na placa, e o resto fica no disco. Em troca, ele pede bastante espaço livre e paciência.">
+<meta name="theme-color" content="#121318">
+<meta property="og:title" content="Rode IAs gigantes numa placa de vídeo de 4 GB">
+<meta property="og:description" content="O AirLLM é um programa gratuito que roda modelos de IA enormes no seu computador, mesmo com pouca memória na placa de vídeo. Ele deixa só uma camada do modelo por vez na placa, e o resto fica no disco. Em troca, ele pede bastante espaço livre e paciência.">
+<!--OG--><meta property="og:image" content="https://bralvim.github.io/airllm-1016animairl/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:url" content="https://bralvim.github.io/airllm-1016animairl/"><meta name="twitter:card" content="summary_large_image"><!--/OG-->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd23f'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' font-family='sans-serif' fill='%23121318'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Identidade dos reels: tinta escura + amarelo das capas/stories. Coluna única, pensada pro celular (vem do direct). */
+:root {
+  --bg: #f4f2ec; --papel: #ffffff; --tinta: #121318; --suave: #5d6170; --linha: #e3e0d6;
+  --amarelo: #ffd23f; --amarelo-tinta: #121318; --marca: #ffd23f; --ok: #1f8a55; --alerta: #b4410f; --alerta-bg: #fff4ec;
+  --hero: #121318; --hero-tinta: #f5f3ee; --hero-suave: #a9adbb; --term: #16181f; --term-tinta: #e8eaf0; --term-suave: #8b90a0;
+  --sombra: 0 1px 2px rgba(18,19,24,.06), 0 6px 20px rgba(18,19,24,.06);
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+body { margin: 0; background: var(--bg); color: var(--tinta); font: 16px/1.65 var(--f-texto); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; border-radius: 6px; }
+
+/* topo escuro, como a capa do reel */
+.hero { background: var(--hero); color: var(--hero-tinta); padding: 28px 0 36px; border-bottom: 1px solid var(--linha); }
+.marca { display: flex; align-items: center; gap: 10px; text-decoration: none; width: fit-content; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--amarelo); color: #121318; display: grid; place-items: center;
+  font: 800 16px var(--f-titulo); }
+.marca b { font: 600 15px var(--f-texto); } .marca span { display: block; color: var(--hero-suave); font-size: 12px; line-height: 1.2; }
+.selo { display: inline-block; margin: 26px 0 14px; background: var(--amarelo); color: #121318; font: 600 12px var(--f-mono);
+  letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+h1 { font: 800 clamp(34px, 8.5vw, 54px)/1.02 var(--f-titulo); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.lead { margin: 16px 0 0; color: var(--hero-suave); font-size: 17px; max-width: 60ch; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 10px;
+  font: 600 15px var(--f-texto); text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn-amarelo { background: var(--amarelo); color: #121318; }
+.btn-linha { border-color: #3a3d48; color: var(--hero-tinta); }
+.btn svg { width: 16px; height: 16px; }
+
+/* menu rápido das seções */
+.menu { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--linha); }
+.menu ul { list-style: none; margin: 0 auto; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; max-width: 720px; scrollbar-width: none; }
+.menu ul::-webkit-scrollbar { display: none; }
+.menu a { display: block; white-space: nowrap; text-decoration: none; font: 500 14px var(--f-texto); padding: 6px 12px; border-radius: 999px;
+  background: var(--papel); border: 1px solid var(--linha); color: var(--suave); }
+
+main.wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+h2 { font: 800 26px/1.15 var(--f-titulo); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+h2 .n { font: 600 12px var(--f-mono); color: var(--suave); letter-spacing: .08em; }
+
+/* pra que serve: cartões com check */
+.serve { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.serve li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 12px; padding: 14px 16px; box-shadow: var(--sombra); }
+.serve svg { width: 22px; height: 22px; color: var(--ok); margin-top: 2px; }
+
+/* o que precisa */
+.precisa { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.precisa li { display: inline-flex; align-items: center; gap: 8px; background: var(--papel); border: 1px solid var(--linha); border-radius: 10px;
+  padding: 8px 12px; font-size: 14px; }
+.precisa li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--amarelo); flex-shrink: 0; box-shadow: 0 0 0 2px #121318 inset; }
+
+/* passo a passo em linha do tempo */
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; }
+ol.passos > li { counter-increment: p; position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 14px; padding-bottom: 22px; }
+ol.passos > li::before { content: counter(p); width: 36px; height: 36px; border-radius: 50%; background: var(--tinta); color: var(--bg);
+  font: 600 15px var(--f-mono); display: grid; place-items: center; position: relative; z-index: 1; }
+ol.passos > li::after { content: ""; position: absolute; left: 17px; top: 36px; bottom: 0; width: 2px; background: var(--linha); }
+ol.passos > li:last-child { padding-bottom: 0; } ol.passos > li:last-child::after { display: none; }
+ol.passos > li > div { grid-column: 2; min-width: 0; display: grid; gap: 10px; padding-top: 5px; }
+
+/* comando: bloco de terminal */
+.term { background: var(--term); color: var(--term-tinta); border-radius: 12px; overflow: hidden; border: 1px solid #262932; }
+.term-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 6px 6px 12px; border-bottom: 1px solid #262932; }
+.pontos { display: flex; gap: 6px; } .pontos i { width: 9px; height: 9px; border-radius: 50%; background: #3a3d48; }
+.term pre { margin: 0; padding: 12px 14px; font: 14px/1.55 var(--f-mono); overflow-x: auto; white-space: pre; }
+.term pre::before { content: "› "; color: var(--amarelo); }
+.copiar { display: inline-flex; align-items: center; gap: 6px; font: 600 13px var(--f-texto); border: 0; border-radius: 8px; padding: 7px 12px;
+  cursor: pointer; background: var(--amarelo); color: #121318; flex-shrink: 0; }
+.copiar svg { width: 14px; height: 14px; }
+.copiar.ok { background: var(--ok); color: #fff; }
+
+/* prompts prontos */
+.prompts { display: grid; gap: 14px; }
+.prompt { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; box-shadow: var(--sombra); }
+.prompt-top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 14px 16px 10px; }
+.prompt-top b { font: 600 17px/1.3 var(--f-titulo); display: block; }
+.prompt-top span { display: block; color: var(--suave); font-size: 13px; margin-top: 2px; }
+.prompt pre { margin: 0 16px 16px; padding: 14px; background: var(--bg); border-left: 3px solid var(--amarelo); border-radius: 0 10px 10px 0;
+  font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.prompt pre .troca { background: color-mix(in srgb, var(--amarelo) 45%, transparent); border-radius: 4px; padding: 0 2px; }
+
+/* cuidados */
+.faq details { background: var(--papel); border: 1px solid var(--linha); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq p { margin: 10px 0 0; }
+.cuidados { background: var(--alerta-bg); border: 1px solid color-mix(in srgb, var(--alerta) 35%, transparent); border-radius: 14px; padding: 18px; }
+.cuidados h2 { color: var(--alerta); font-size: 22px; }
+.cuidados ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+/* fecho */
+.fecho { background: var(--hero); color: var(--hero-tinta); border-radius: 18px; padding: 24px 20px; display: grid; gap: 14px; }
+.fecho p { margin: 0; font: 600 19px/1.4 var(--f-titulo); }
+.fecho .btn-linha { color: var(--hero-tinta); }
+.rodape { color: var(--suave); font-size: 14px; margin: 0; text-align: center; }
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; background: var(--tinta); color: var(--bg);
+  padding: 10px 16px; border-radius: 999px; font: 600 14px var(--f-texto); transition: .2s; pointer-events: none; z-index: 10; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toast { transition: none; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <a class="marca" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><img class="avatar" src="../perfil.jpg" alt="Lucas Alvim" width="36" height="36" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #ffd23f;flex:none"><span><b>@alvim_ai</b><span>ferramentas de IA, testadas</span></span></a>
+    <div class="selo">Guia grátis em português</div>
+    <h1>Rode <em>IAs gigantes</em> numa placa de vídeo de 4 GB</h1>
+    <p class="lead">O AirLLM é um programa gratuito que roda modelos de IA enormes no seu computador, mesmo com pouca memória na placa de vídeo. Ele deixa só uma camada do modelo por vez na placa, e o resto fica no disco. Em troca, ele pede bastante espaço livre e paciência.</p>
+    <div class="acoes">
+      <a class="btn btn-amarelo" href="#passos">Ver o passo a passo</a>
+      <a class="btn btn-linha" href="https://github.com/lyogavin/airllm" target="_blank" rel="noopener">Repositório oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
+  </div>
+</header>
+<!--REEL--><style>.reel-card{width:100%;max-width:760px;margin:20px auto 12px;padding:0 16px;box-sizing:border-box}.reel-card a{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;background:var(--papel,#fff);border:1px solid var(--linha,#e3e1da);border-radius:14px;padding:10px 14px 10px 10px}.reel-card img{width:84px;aspect-ratio:9/16;object-fit:cover;border-radius:10px;flex:none;background:#121318}.reel-card small{display:block;font:600 11px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.65}.reel-card b{display:block;font-size:17px;line-height:1.3;margin:2px 0 6px}.reel-card span{font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px}</style><div class="reel-card"><a href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><img src="reel.jpg?v=6780a65b" alt="Capa do reel: Rode IAs gigantes numa placa de vídeo de 4 GB" loading="lazy" width="84" height="149"><div><small>Veio deste reel</small><b>Esse guia é do vídeo desta capa</b><span>Ver os reels no Instagram</span></div></a></div><!--/REEL-->
+<nav class="menu" aria-label="Seções"><ul><li><a href="#serve">Pra que serve</a></li><li><a href="#precisa">O que você precisa</a></li><li><a href="#passos">Passo a passo</a></li><li><a href="#prompts">Exemplos prontos pra colar no arquivo teste.py</a></li><li><a href="#cuidados">Antes de usar</a></li></ul></nav>
+<main class="wrap">
+  <section id="serve" class=""><h2><span class="n">01</span>Pra que serve</h2><ul class="serve"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Rodar um modelo de 70 bilhões numa placa de vídeo de 4 GB, sem encolher nem simplificar o modelo.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Testar modelos bem maiores no seu computador: o repositório cita o Qwen3-235B com uns 3 GB de memória na placa e o DeepSeek V3, de 671 bilhões, com uns 12 GB.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Experimentar o Kimi K3, de 2,8 trilhões, que o repositório aponta como o maior modelo aberto já lançado, com menos de 4 GB. Esse exige uma preparação extra (veja os cuidados).</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Usar quase todas as IAs abertas populares (Llama, Qwen, DeepSeek, Mistral, Gemma, Phi e outras): é só trocar o nome do modelo numa linha.</span></li></ul></section><section id="precisa" class=""><h2><span class="n">02</span>O que você precisa</h2><ul class="precisa"><li>Python 3, o programa que roda o AirLLM</li><li>Uma placa de vídeo (os testes citados no repositório usaram placas RTX) ou um Mac com chip da Apple</li><li>Bastante espaço livre no disco: o modelo é baixado e depois dividido em camadas</li><li>Conta no Hugging Face (o site onde ficam os modelos) só para modelos com acesso restrito</li></ul></section><section id="passos" class=""><h2><span class="n">03</span>Passo a passo</h2><ol class="passos"><li><div><span>Abra o terminal (a janela onde se digitam comandos) num computador com Python e instale o AirLLM:</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c0" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c0">pip install airllm</pre></div></div></li><li><div><span>Só no Mac com chip da Apple: instale também o mlx, seguindo a página abaixo, e confira se o torch está instalado. Pode ser preciso instalar a versão do Python feita para o chip da Apple.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c1" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c1">https://github.com/ml-explore/mlx?tab=readme-ov-file#installation</pre></div></div></li><li><div><span>Crie um arquivo chamado teste.py e cole dentro dele o exemplo &quot;Primeiro teste&quot;, que está mais abaixo. Troque o texto entre colchetes pela sua pergunta.</span></div></li><li><div><span>Pelo terminal, peça pro Python rodar o arquivo teste.py. Antes de responder, ele baixa o modelo e divide tudo em camadas no disco, então pode demorar bastante. A resposta aparece no próprio terminal.</span></div></li><li><div><span>Pra usar outro modelo, troque só o nome dele na linha que começa com model =. O nome é o que aparece na página do modelo no Hugging Face, como Qwen/Qwen3-32B.</span></div></li><li><div><span>Quer ver um exemplo pronto antes? Abra o caderno oficial no Google Colab, que funciona pelo navegador:</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c5" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c5">https://colab.research.google.com/github/lyogavin/airllm/blob/main/air_llm/examples/run_all_types_of_models.ipynb</pre></div></div></li></ol></section><section id="prompts" class=""><h2><span class="n">04</span>Exemplos prontos pra colar no arquivo teste.py</h2><div class="prompts"><article class="prompt"><div class="prompt-top"><div><b>Primeiro teste</b><span>Comece por aqui. No Mac, troque o modelo por mistralai/Mistral-7B-Instruct-v0.1. Resposta cortada? Aumente o número 20 em max_new_tokens.</span></div><button type="button" class="copiar" data-copiar="p0" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p0">from airllm import AutoModel
+
+MAX_LENGTH = 128
+model = AutoModel.from_pretrained(&quot;Qwen/Qwen3-32B&quot;)
+
+input_text = [
+        &#x27;<span class="troca">[SUA PERGUNTA]</span>&#x27;,
+    ]
+
+input_tokens = model.tokenizer(input_text,
+    return_tensors=&quot;pt&quot;, 
+    return_attention_mask=False, 
+    truncation=True, 
+    max_length=MAX_LENGTH, 
+    padding=False)
+           
+generation_output = model.generate(
+    input_tokens<span class="troca">[&#x27;input_ids&#x27;]</span>.to(model.device), 
+    max_new_tokens=20,
+    use_cache=True,
+    return_dict_in_generate=True)
+
+output = model.tokenizer.decode(generation_output.sequences<span class="troca">[0]</span>)
+
+print(output)</pre></article><article class="prompt"><div class="prompt-top"><div><b>Subir pra um modelo gigante</b><span>Troque a linha model = do primeiro teste por uma destas. Elas não rodam no Mac e pedem muito espaço no disco.</span></div><button type="button" class="copiar" data-copiar="p1" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p1"># 235 bilhões, roda com uns 3 GB de memória na placa:
+model = AutoModel.from_pretrained(&quot;Qwen/Qwen3-235B-A22B&quot;)
+
+# 671 bilhões, roda com uns 12 GB de memória na placa:
+model = AutoModel.from_pretrained(&quot;deepseek-ai/DeepSeek-V3&quot;)</pre></article><article class="prompt"><div class="prompt-top"><div><b>Pouco espaço no disco</b><span>delete_original=True apaga o modelo original depois de dividir e economiza cerca de metade do espaço. layer_shards_saving_path escolhe outra pasta pra guardar as camadas.</span></div><button type="button" class="copiar" data-copiar="p2" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p2">model = AutoModel.from_pretrained(&quot;<span class="troca">[NOME DO MODELO]</span>&quot;,
+                     delete_original=True,
+                     layer_shards_saving_path=&quot;<span class="troca">[PASTA COM ESPAÇO LIVRE]</span>&quot;
+                    )</pre></article><article class="prompt"><div class="prompt-top"><div><b>Deixar até 3 vezes mais rápido</b><span>Opcional: comprime o modelo, e o repositório diz que a perda de qualidade é quase imperceptível. Antes, rode no terminal: pip install -U bitsandbytes</span></div><button type="button" class="copiar" data-copiar="p3" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p3">model = AutoModel.from_pretrained(&quot;<span class="troca">[NOME DO MODELO]</span>&quot;,
+                     compression=&#x27;4bit&#x27;
+                    )</pre></article></div></section><section id="cuidados" class="cuidados"><h2><span class="n">05</span>Antes de usar</h2><ul><li>Disco é o maior custo. Dividir o modelo ocupa muito espaço: só o Qwen3.8-Flash-Next pede cerca de 360 GB. Confira o tamanho do modelo antes de baixar.</li><li>Se aparecer o erro MetadataIncompleteBuffer, a causa mais provável é falta de espaço. Libere disco, limpe a pasta .cache do Hugging Face e rode de novo.</li><li>Não espere a velocidade de um chat. O repositório diz que o gargalo é carregar o modelo do disco e não informa quanto tempo cada resposta leva.</li><li>No Mac, só funciona com chip da Apple, e por enquanto só rodam modelos do tipo Llama e Mistral. Os outros dão erro antes de baixar.</li><li>O repositório não traz instruções para Windows. Ele só cita Linux e Mac, então no Windows você pode não achar solução pronta se der erro.</li><li>O Kimi K3 dá mais trabalho: precisa de pip install compressed-tensors flash-attn, do torch para CUDA 12 e do transformers 4.56.x. Siga as instruções do repositório oficial.</li><li>Erro 401 quer dizer que o modelo tem acesso restrito. Acrescente hf_token=&#x27;HF_API_TOKEN&#x27; depois do nome do modelo, trocando HF_API_TOKEN pela sua chave do Hugging Face. Nunca compartilhe essa chave.</li><li>O AirLLM usa a licença Apache 2.0. O repositório não fala das regras de cada modelo, então confira na página do modelo antes de usar em trabalho.</li></ul></section>
+  <div class="fecho"><p>Resumindo: instala com um comando, escolhe o modelo pelo nome e roda IA gigante com pouca memória na placa. O preço é bastante espaço no disco e paciência.</p><div class="acoes" style="margin:0"><a class="btn btn-amarelo" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">Seguir @alvim_ai</a><a class="btn btn-linha" href="https://github.com/lyogavin/airllm" target="_blank" rel="noopener">Repositório oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div></div>
+  <p class="rodape"><a href="../">Todos os guias e prompts do Alvim</a></p>
+</main>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+const toast = document.querySelector('.toast');
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const original = btn.innerHTML;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => {
+      btn.classList.add('ok'); btn.textContent = 'Copiado';
+      toast.textContent = 'Copiado! Agora é só colar.'; toast.classList.add('on');
+      setTimeout(() => { btn.classList.remove('ok'); btn.innerHTML = original; toast.classList.remove('on'); }, 1800);
+    };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>
