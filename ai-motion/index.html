@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Faça o Claude Code criar animações limpas, sem resultado genérico</title>
+<meta name="description" content="O Awesome AI Motion é uma biblioteca aberta com 637 técnicas de animação e 128 clipes de referência, feita pro Claude Code ler. Você escolhe um efeito e o Claude segue a ficha dele, com os ajustes já feitos, em vez de inventar uma animação do zero.">
+<meta name="theme-color" content="#121318">
+<meta property="og:title" content="Faça o Claude Code criar animações limpas, sem resultado genérico">
+<meta property="og:description" content="O Awesome AI Motion é uma biblioteca aberta com 637 técnicas de animação e 128 clipes de referência, feita pro Claude Code ler. Você escolhe um efeito e o Claude segue a ficha dele, com os ajustes já feitos, em vez de inventar uma animação do zero.">
+<!--OG--><meta property="og:image" content="https://bralvim.github.io/ai-motion/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:url" content="https://bralvim.github.io/ai-motion/"><meta name="twitter:card" content="summary_large_image"><!--/OG-->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23ffd23f'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' font-family='sans-serif' fill='%23121318'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Identidade dos reels: tinta escura + amarelo das capas/stories. Coluna única, pensada pro celular (vem do direct). */
+:root {
+  --bg: #f4f2ec; --papel: #ffffff; --tinta: #121318; --suave: #5d6170; --linha: #e3e0d6;
+  --amarelo: #ffd23f; --amarelo-tinta: #121318; --marca: #ffd23f; --ok: #1f8a55; --alerta: #b4410f; --alerta-bg: #fff4ec;
+  --hero: #121318; --hero-tinta: #f5f3ee; --hero-suave: #a9adbb; --term: #16181f; --term-tinta: #e8eaf0; --term-suave: #8b90a0;
+  --sombra: 0 1px 2px rgba(18,19,24,.06), 0 6px 20px rgba(18,19,24,.06);
+  --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d0e12; --papel: #17191f; --tinta: #eceae4; --suave: #9ea2b0; --linha: #262932;
+  --ok: #4fc98a; --alerta: #ff9a62; --alerta-bg: #241a14; --hero: #17191f; --term: #0a0b0e;
+  --sombra: 0 1px 2px rgba(0,0,0,.4); color-scheme: dark }
+*,*::before,*::after { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+body { margin: 0; background: var(--bg); color: var(--tinta); font: 16px/1.65 var(--f-texto); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; border-radius: 6px; }
+
+/* topo escuro, como a capa do reel */
+.hero { background: var(--hero); color: var(--hero-tinta); padding: 28px 0 36px; border-bottom: 1px solid var(--linha); }
+.marca { display: flex; align-items: center; gap: 10px; text-decoration: none; width: fit-content; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--amarelo); color: #121318; display: grid; place-items: center;
+  font: 800 16px var(--f-titulo); }
+.marca b { font: 600 15px var(--f-texto); } .marca span { display: block; color: var(--hero-suave); font-size: 12px; line-height: 1.2; }
+.selo { display: inline-block; margin: 26px 0 14px; background: var(--amarelo); color: #121318; font: 600 12px var(--f-mono);
+  letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+h1 { font: 800 clamp(34px, 8.5vw, 54px)/1.02 var(--f-titulo); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 em { font-style: normal; background: var(--amarelo); color: #121318; padding: 0 .12em; border-radius: .12em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.lead { margin: 16px 0 0; color: var(--hero-suave); font-size: 17px; max-width: 60ch; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 10px;
+  font: 600 15px var(--f-texto); text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn-amarelo { background: var(--amarelo); color: #121318; }
+.btn-linha { border-color: #3a3d48; color: var(--hero-tinta); }
+.btn svg { width: 16px; height: 16px; }
+
+/* menu rápido das seções */
+.menu { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--linha); }
+.menu ul { list-style: none; margin: 0 auto; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; max-width: 720px; scrollbar-width: none; }
+.menu ul::-webkit-scrollbar { display: none; }
+.menu a { display: block; white-space: nowrap; text-decoration: none; font: 500 14px var(--f-texto); padding: 6px 12px; border-radius: 999px;
+  background: var(--papel); border: 1px solid var(--linha); color: var(--suave); }
+
+main.wrap { display: grid; gap: 44px; padding-block: 32px 56px; }
+h2 { font: 800 26px/1.15 var(--f-titulo); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+h2 .n { font: 600 12px var(--f-mono); color: var(--suave); letter-spacing: .08em; }
+
+/* pra que serve: cartões com check */
+.serve { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.serve li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; background: var(--papel); border: 1px solid var(--linha);
+  border-radius: 12px; padding: 14px 16px; box-shadow: var(--sombra); }
+.serve svg { width: 22px; height: 22px; color: var(--ok); margin-top: 2px; }
+
+/* o que precisa */
+.precisa { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.precisa li { display: inline-flex; align-items: center; gap: 8px; background: var(--papel); border: 1px solid var(--linha); border-radius: 10px;
+  padding: 8px 12px; font-size: 14px; }
+.precisa li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--amarelo); flex-shrink: 0; box-shadow: 0 0 0 2px #121318 inset; }
+
+/* passo a passo em linha do tempo */
+ol.passos { margin: 0; padding: 0; list-style: none; counter-reset: p; display: grid; }
+ol.passos > li { counter-increment: p; position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 14px; padding-bottom: 22px; }
+ol.passos > li::before { content: counter(p); width: 36px; height: 36px; border-radius: 50%; background: var(--tinta); color: var(--bg);
+  font: 600 15px var(--f-mono); display: grid; place-items: center; position: relative; z-index: 1; }
+ol.passos > li::after { content: ""; position: absolute; left: 17px; top: 36px; bottom: 0; width: 2px; background: var(--linha); }
+ol.passos > li:last-child { padding-bottom: 0; } ol.passos > li:last-child::after { display: none; }
+ol.passos > li > div { grid-column: 2; min-width: 0; display: grid; gap: 10px; padding-top: 5px; }
+
+/* comando: bloco de terminal */
+.term { background: var(--term); color: var(--term-tinta); border-radius: 12px; overflow: hidden; border: 1px solid #262932; }
+.term-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 6px 6px 12px; border-bottom: 1px solid #262932; }
+.pontos { display: flex; gap: 6px; } .pontos i { width: 9px; height: 9px; border-radius: 50%; background: #3a3d48; }
+.term pre { margin: 0; padding: 12px 14px; font: 14px/1.55 var(--f-mono); overflow-x: auto; white-space: pre; }
+.term pre::before { content: "› "; color: var(--amarelo); }
+.copiar { display: inline-flex; align-items: center; gap: 6px; font: 600 13px var(--f-texto); border: 0; border-radius: 8px; padding: 7px 12px;
+  cursor: pointer; background: var(--amarelo); color: #121318; flex-shrink: 0; }
+.copiar svg { width: 14px; height: 14px; }
+.copiar.ok { background: var(--ok); color: #fff; }
+
+/* prompts prontos */
+.prompts { display: grid; gap: 14px; }
+.prompt { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; box-shadow: var(--sombra); }
+.prompt-top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 14px 16px 10px; }
+.prompt-top b { font: 600 17px/1.3 var(--f-titulo); display: block; }
+.prompt-top span { display: block; color: var(--suave); font-size: 13px; margin-top: 2px; }
+.prompt pre { margin: 0 16px 16px; padding: 14px; background: var(--bg); border-left: 3px solid var(--amarelo); border-radius: 0 10px 10px 0;
+  font: 14px/1.6 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.prompt pre .troca { background: color-mix(in srgb, var(--amarelo) 45%, transparent); border-radius: 4px; padding: 0 2px; }
+
+/* cuidados */
+.faq details { background: var(--papel); border: 1px solid var(--linha); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq p { margin: 10px 0 0; }
+.cuidados { background: var(--alerta-bg); border: 1px solid color-mix(in srgb, var(--alerta) 35%, transparent); border-radius: 14px; padding: 18px; }
+.cuidados h2 { color: var(--alerta); font-size: 22px; }
+.cuidados ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+/* fecho */
+.fecho { background: var(--hero); color: var(--hero-tinta); border-radius: 18px; padding: 24px 20px; display: grid; gap: 14px; }
+.fecho p { margin: 0; font: 600 19px/1.4 var(--f-titulo); }
+.fecho .btn-linha { color: var(--hero-tinta); }
+.rodape { color: var(--suave); font-size: 14px; margin: 0; text-align: center; }
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; background: var(--tinta); color: var(--bg);
+  padding: 10px 16px; border-radius: 999px; font: 600 14px var(--f-texto); transition: .2s; pointer-events: none; z-index: 10; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toast { transition: none; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <a class="marca" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><img class="avatar" src="../perfil.jpg" alt="Lucas Alvim" width="36" height="36" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #ffd23f;flex:none"><span><b>@alvim_ai</b><span>ferramentas de IA, testadas</span></span></a>
+    <div class="selo">Guia grátis em português</div>
+    <h1>Faça o Claude Code criar <em>animações limpas</em>, sem resultado genérico</h1>
+    <p class="lead">O Awesome AI Motion é uma biblioteca aberta com 637 técnicas de animação e 128 clipes de referência, feita pro Claude Code ler. Você escolhe um efeito e o Claude segue a ficha dele, com os ajustes já feitos, em vez de inventar uma animação do zero.</p>
+    <div class="acoes">
+      <a class="btn btn-amarelo" href="#passos">Ver o passo a passo</a>
+      <a class="btn btn-linha" href="https://github.com/gongnyang/awesome-ai-motion" target="_blank" rel="noopener">Repositório oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
+  </div>
+</header>
+<!--REEL--><style>.reel-card{width:100%;max-width:760px;margin:20px auto 12px;padding:0 16px;box-sizing:border-box}.reel-card a{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;background:var(--papel,#fff);border:1px solid var(--linha,#e3e1da);border-radius:14px;padding:10px 14px 10px 10px}.reel-card img{width:84px;aspect-ratio:9/16;object-fit:cover;border-radius:10px;flex:none;background:#121318}.reel-card small{display:block;font:600 11px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.65}.reel-card b{display:block;font-size:17px;line-height:1.3;margin:2px 0 6px}.reel-card span{font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px}</style><div class="reel-card"><a href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener"><img src="reel.jpg?v=3851487d" alt="Capa do reel: Faça o Claude Code criar animações limpas, sem resultado genérico" loading="lazy" width="84" height="149"><div><small>Veio deste reel</small><b>Esse guia é do vídeo desta capa</b><span>Ver os reels no Instagram</span></div></a></div><!--/REEL-->
+<nav class="menu" aria-label="Seções"><ul><li><a href="#serve">Pra que serve</a></li><li><a href="#precisa">O que você precisa</a></li><li><a href="#passos">Passo a passo</a></li><li><a href="#prompts">Prompts prontos pra colar no Claude Code</a></li><li><a href="#cuidados">Antes de usar</a></li></ul></nav>
+<main class="wrap">
+  <section id="serve" class=""><h2><span class="n">01</span>Pra que serve</h2><ul class="serve"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Criar animações pra vídeo, vídeo curto, infográfico e apresentação com um ponto de partida testado.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Consultar a ficha de cada efeito: o que ele faz, quando usar, quando evitar, ajustes recomendados, exemplos e prompts prontos.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Usar 11 receitas que juntam vários efeitos em sequência, como gancho de vídeo curto, antes e depois, história com dados e demonstração de produto.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Receber o resultado em três arquivos: vídeo (clip.mp4), GIF de prévia (preview.gif) e imagem de capa (poster.jpg).</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="m8 12 3 3 5-6"/></svg><span>Ver e comparar até quatro clipes no site, inclusive em câmera lenta, antes de escolher.</span></li></ul></section><section id="precisa" class=""><h2><span class="n">02</span>O que você precisa</h2><ul class="precisa"><li>Claude Code ou Codex</li><li>Git, o programa que baixa a pasta do GitHub</li><li>Só pra gerar vídeo no seu computador: Node.js 20 ou mais novo, ffmpeg (programa que monta o vídeo) e Playwright com Chromium (um navegador que grava a animação)</li><li>Pra só olhar o site, ler as fichas e usar a skill, não precisa instalar esses programas de vídeo</li></ul></section><section id="passos" class=""><h2><span class="n">03</span>Passo a passo</h2><ol class="passos"><li><div><span>Abra o site, assista aos clipes e anote os efeitos de que gostou. Essa parte não precisa de instalação.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c0" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c0">https://gongnyang.github.io/awesome-ai-motion/</pre></div></div></li><li><div><span>Abra o terminal, a tela onde você digita comandos, e baixe a biblioteca. No Windows, pule pro prompt &quot;Instalar no Windows&quot; lá embaixo, porque os comandos oficiais são pra Mac e Linux.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c1" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c1">git clone https://github.com/gongnyang/awesome-ai-motion.git
+cd awesome-ai-motion</pre></div></div></li><li><div><span>Ligue a pasta nas skills do Claude Code. Skill é um pacote de instruções que o Claude consulta. No Codex é igual, trocando o destino por ~/.codex/skills/.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c2" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c2">mkdir -p ~/.claude/skills
+ln -s &quot;$PWD&quot; ~/.claude/skills/awesome-ai-motion</pre></div></div></li><li><div><span>Vai gerar vídeo no seu computador? Instale o que falta. Se já tiver o Playwright ou o Chromium, pode pular a linha correspondente. A última linha só confere se o ffmpeg está funcionando.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c3" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c3">npm install
+npx playwright install chromium
+ffmpeg -version</pre></div></div></li><li><div><span>Faça o primeiro teste. Depois abra a pasta .staging/my-first-motion e veja o clip.mp4, o preview.gif ou o poster.jpg.</span><div class="term"><div class="term-top"><span class="pontos"><i></i><i></i><i></i></span><button type="button" class="copiar" data-copiar="c4" aria-label="Copiar comando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="c4">node scripts/render.mjs effects/mask-reveal \
+  --embed --text &quot;Make it move&quot; --out .staging/my-first-motion</pre></div></div></li><li><div><span>Pronto. Abra o Claude Code e peça em português, como nos prompts abaixo. O guia oficial não indica nenhum comando especial pra chamar a skill: basta pedir que ele use a awesome-ai-motion.</span></div></li></ol></section><section id="prompts" class=""><h2><span class="n">04</span>Prompts prontos pra colar no Claude Code</h2><div class="prompts"><article class="prompt"><div class="prompt-top"><div><b>Instalar no Windows</b><span>Use no lugar dos passos 2 e 3 se o seu computador for Windows</span></div><button type="button" class="copiar" data-copiar="p0" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p0">Estou no Windows e quero instalar a biblioteca https://github.com/gongnyang/awesome-ai-motion.git como skill do Claude Code.
+As instruções oficiais são pra Mac e Linux, então adapte os comandos.
+Baixe a biblioteca e copie a pasta inteira pra .claude/skills/awesome-ai-motion, dentro da minha pasta de usuário.
+Antes de executar, me mostre em português o que vai fazer. No fim, confira se a pasta ficou no lugar certo.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Escolher o efeito certo</b><span>Quando você sabe o que quer mostrar, mas não sabe qual efeito usar</span></div><button type="button" class="copiar" data-copiar="p1" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p1">Use a skill awesome-ai-motion pra escolher a animação de <span class="troca">[O QUE VOU MOSTRAR, ex.: o lançamento do meu produto]</span>.
+O material é um <span class="troca">[VÍDEO, INFOGRÁFICO OU APRESENTAÇÃO]</span> pra <span class="troca">[PÚBLICO]</span>.
+Me sugira 3 efeitos que já tenham clipe pronto e explique em uma frase por que cada um combina.
+Depois que eu escolher, leia a ficha do efeito e use os ajustes padrão dela.
+Responda em português.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Gancho de vídeo curto</b><span>Pra prender a atenção nos primeiros segundos de um Reels ou Shorts</span></div><button type="button" class="copiar" data-copiar="p2" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p2">Use a skill awesome-ai-motion e monte a receita shorts-hook pra abrir meu vídeo sobre <span class="troca">[ASSUNTO]</span>.
+Leia a ficha de cada efeito da receita e use os ajustes padrão.
+Frase na tela: &quot;<span class="troca">[FRASE DO GANCHO]</span>&quot;.
+Número em destaque: <span class="troca">[NÚMERO]</span>.
+Formato vertical. Salve em .staging/<span class="troca">[NOME DO PROJETO]</span>, sem mexer nos exemplos originais, e me entregue clip.mp4, preview.gif e poster.jpg.
+Responda em português.</pre></article><article class="prompt"><div class="prompt-top"><div><b>Dados que contam uma história</b><span>Pra infográfico ou slide com números que você já tem</span></div><button type="button" class="copiar" data-copiar="p3" aria-label="Copiar prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar</button></div><pre id="p3">Use a skill awesome-ai-motion e monte a receita data-story com estes dados: <span class="troca">[COLE SEUS NÚMEROS]</span>.
+A mensagem principal é: <span class="troca">[O QUE O PÚBLICO PRECISA ENTENDER]</span>.
+Leia a ficha de cada efeito e use os ajustes padrão.
+Toda a escrita na tela deve ficar em português e os números não podem ser alterados.
+Salve em .staging/<span class="troca">[NOME DO PROJETO]</span> e me entregue clip.mp4, preview.gif e poster.jpg.</pre></article></div></section><section id="cuidados" class="cuidados"><h2><span class="n">05</span>Antes de usar</h2><ul><li>Nem toda técnica vem com vídeo pronto: são 637 técnicas e 128 clipes de referência. As outras têm só a ficha, então o Claude precisa criar a animação a partir dela.</li><li>As instruções oficiais não falam de Windows. Os comandos são pra Mac e Linux, então, no Windows, confira o que o Claude Code vai fazer antes de aprovar.</li><li>O repositório não informa custo. A biblioteca é aberta, mas o uso do Claude Code ou do Codex segue as regras do plano que você tem.</li><li>Sempre use uma pasta própria pra salvar, como .staging/. Gerar um efeito sem indicar a pasta de saída sobrescreve os arquivos do exemplo original.</li><li>Parte do material está em coreano, como os guias por tipo de conteúdo (redes, vídeo, apresentação). Peça sempre a resposta em português.</li><li>O material original usa a licença MIT, que é bem livre. A biblioteca de animação GSAP e as fontes incluídas têm licenças próprias, e as fontes citadas nas fichas variam. O repositório não fala diretamente de uso comercial dos vídeos gerados, então confira as licenças antes de usar em cliente ou redistribuir arquivos.</li><li>Se você copiou a pasta em vez de ligar, ela não recebe as novidades sozinha: precisa atualizar a cópia quando a biblioteca mudar.</li></ul></section>
+  <div class="fecho"><p>Resumindo: baixe a biblioteca, ligue nas skills do Claude Code e peça o efeito em português. Você sai com vídeo, GIF de prévia e imagem de capa.</p><div class="acoes" style="margin:0"><a class="btn btn-amarelo" href="https://www.instagram.com/alvim_ai/" target="_blank" rel="noopener">Seguir @alvim_ai</a><a class="btn btn-linha" href="https://github.com/gongnyang/awesome-ai-motion" target="_blank" rel="noopener">Repositório oficial no GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div></div>
+  <p class="rodape"><a href="../">Todos os guias e prompts do Alvim</a></p>
+</main>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+const toast = document.querySelector('.toast');
+document.querySelectorAll('[data-copiar]').forEach((btn) => {
+  const original = btn.innerHTML;
+  btn.addEventListener('click', () => {
+    const alvo = document.getElementById(btn.dataset.copiar);
+    const ok = () => {
+      btn.classList.add('ok'); btn.textContent = 'Copiado';
+      toast.textContent = 'Copiado! Agora é só colar.'; toast.classList.add('on');
+      setTimeout(() => { btn.classList.remove('ok'); btn.innerHTML = original; toast.classList.remove('on'); }, 1800);
+    };
+    const manual = () => { const r = document.createRange(); r.selectNodeContents(alvo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Use Ctrl+C'; };
+    try { navigator.clipboard.writeText(alvo.innerText).then(ok, manual); } catch (err) { manual(); }
+  });
+});
+</script>
+</body>
+</html>
